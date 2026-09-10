@@ -125,11 +125,13 @@ def interactive_mode() -> argparse.Namespace:
 def parse_args() -> argparse.Namespace:
     """
     Parse CLI arguments. If no arguments are provided (double-click),
-    fall back to interactive mode.
+    launch the modern graphical workstation directly.
     """
-    # Double-click detection: only argv[0] present (the exe itself)
+    # Double-click or run without arguments: launch Modern Workstation UI directly
     if len(sys.argv) == 1:
-        return interactive_mode()
+        import run_ui
+        run_ui.main()
+        sys.exit(0)
 
     parser = argparse.ArgumentParser(
         description="OmniDoc Studio with AI gap-filling via OpenRouter",
@@ -162,7 +164,6 @@ def parse_args() -> argparse.Namespace:
         return interactive_mode()
 
     if not args.input and not args.batch:
-        # Default behavior for normal double-click: open the full unified Workstation App directly!
         import run_ui
         run_ui.main()
         sys.exit(0)
@@ -334,8 +335,8 @@ def _pause_if_interactive(args):
 
 
 if __name__ == "__main__":
-    print_banner()
     args = parse_args()
+    print_banner()
 
     # -- Step 0: Model selection ----------------------------------------
     selected_model = None

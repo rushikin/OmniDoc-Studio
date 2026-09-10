@@ -308,11 +308,11 @@
           </p>
 <!-- Action Buttons -->
 <div class="flex items-center gap-3">
-<button class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold rounded flex items-center gap-2 shadow-sm active:translate-y-px transition-all">
+<button onclick="window.openNativeFileDialog()" class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold rounded flex items-center gap-2 shadow-sm active:translate-y-px transition-all">
 <span class="material-symbols-outlined text-[18px]">folder_open</span>
 <span>Open from computer</span>
 </button>
-<button class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-label-md font-label-md font-medium rounded flex items-center gap-1.5 active:translate-y-px transition-all shadow-sm">
+<button onclick="window.openNativeFileDialog()" class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-label-md font-label-md font-medium rounded flex items-center gap-1.5 active:translate-y-px transition-all shadow-sm">
 <span class="material-symbols-outlined text-[18px] text-outline">add</span>
 <span>Open Files</span>
 </button>
@@ -544,15 +544,15 @@
 <!-- Animated Progress Bar with percentage and status -->
 <div class="mt-space-md pt-space-sm border-t border-outline-variant">
 <div class="flex items-center justify-between text-label-md font-label-md mb-1.5">
-<span class="font-medium text-on-surface flex items-center gap-1.5">
+<span id="ocr-prog-text" class="font-medium text-on-surface flex items-center gap-1.5">
 <span class="w-2 h-2 rounded-full bg-primary-container animate-ping inline-block"></span>
-                Processing Page 3 of 12 — 65%
+                Ready to Process
               </span>
-<span class="text-code-xs font-code-xs text-on-surface-variant font-medium">Estimated remaining: 18s</span>
+<span class="text-code-xs font-code-xs text-on-surface-variant font-medium">PaddleOCR 3.x + Stirling Core</span>
 </div>
 <!-- Bar -->
 <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary-container rounded-full transition-all duration-300 w-[65%] shadow-sm"></div>
+<div id="ocr-prog-bar" class="h-full bg-primary-container rounded-full transition-all duration-300 w-[0%] shadow-sm"></div>
 </div>
 </div>
 </div>
@@ -564,15 +564,11 @@
 <span class="text-headline-sm font-headline-sm text-on-surface">Extraction Engine Runtime Stream</span>
 </div>
 <div class="flex items-center gap-2">
-<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface">Clear</button>
-<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px]">unfold_less</span>
-                Minimize
-              </button>
+<button onclick="document.getElementById('terminal-log-content').innerHTML=''" class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface">Clear</button>
 </div>
 </div>
 <!-- Terminal logs list -->
-<div class="font-code-sm text-code-sm space-y-1.5 overflow-y-auto pr-1 flex-1">
+<div id="terminal-log-content" class="font-code-sm text-code-sm space-y-1.5 overflow-y-auto pr-1 flex-1">
 <div class="flex items-start gap-2 text-on-surface-variant">
 <span class="text-outline select-none">[10:42:01]</span>
 <span class="text-emerald-700 font-medium">CLAHE contrast enhancement completed (0.42s)</span>
@@ -597,7 +593,7 @@
 </div>
 <!-- Primary Action CTA -->
 <div class="mt-auto pt-1">
-<button class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded shadow-lg shadow-primary-container/25 flex items-center justify-center gap-2 transition-all duration-150 active:translate-y-0.5">
+<button id="btn-run-ocr" onclick="window.runOCRReconstruction()" class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded shadow-lg shadow-primary-container/25 flex items-center justify-center gap-2 transition-all duration-150 active:translate-y-0.5">
 <span class="text-[18px]">🚀</span>
 <span>Extract &amp; Reconstruct Word Document</span>
 <span class="ml-2 text-code-xs font-code-xs bg-on-primary/20 px-2 py-0.5 rounded">Ctrl + Enter</span>
@@ -1348,7 +1344,7 @@
           </p>
 </div>
 <!-- Prominent Cobalt Blue CTA: Export Split Files -->
-<button class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary-container rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:translate-y-px">
+<button onclick="window.executeSplit()" class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary-container rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:translate-y-px">
 <span class="material-symbols-outlined text-lg fill-icon" data-icon="content_cut">content_cut</span>
 <span>Export Split Files</span>
 </button>
@@ -1610,7 +1606,7 @@
 </div>
 </div>
 <!-- Add More Files drop banner at the bottom of queue -->
-<div class="border-2 border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest hover:bg-surface-container-low rounded-xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors group">
+<div onclick="window.selectMergePDFs()" class="border-2 border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest hover:bg-surface-container-low rounded-xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors group">
 <div class="w-10 h-10 rounded-full bg-surface-container group-hover:bg-primary-container text-outline group-hover:text-on-primary flex items-center justify-center transition-colors">
 <span class="material-symbols-outlined text-[24px]">add</span>
 </div>
@@ -1738,7 +1734,7 @@
 <!-- Panel Footer & Primary CTA Button -->
 <div class="pt-4 border-t border-outline-variant flex flex-col gap-2">
 <!-- Primary CTA Button: Large Cobalt Blue button -->
-<button class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary rounded-xl text-headline-sm font-headline-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:translate-y-px">
+<button onclick="window.executeMerge()" class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary rounded-xl text-headline-sm font-headline-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:translate-y-px">
 <span class="material-symbols-outlined text-[18px]">link</span>
             Merge into Single PDF
           </button>
@@ -2669,12 +2665,12 @@
 <!-- Left Action Cluster -->
 <div class="flex items-center space-x-3 w-full sm:w-auto">
 <!-- Primary Button: Open in Microsoft Word (Cobalt blue #2563EB with Word icon) -->
-<button class="bg-[#2563EB] hover:bg-primary-container text-white text-body-md font-body-md font-semibold px-5 h-9 rounded-lg flex items-center space-x-2 shadow-sm transition-all duration-150 active:translate-y-0.5" onclick="window.showNotification('Opening reconstructed Word document in Microsoft Word...', 'info')">
+<button class="bg-[#2563EB] hover:bg-primary-container text-white text-body-md font-body-md font-semibold px-5 h-9 rounded-lg flex items-center space-x-2 shadow-sm transition-all duration-150 active:translate-y-0.5" onclick="window.openExportedWord()">
 <span class="material-symbols-outlined text-[18px]">description</span>
 <span>Open in Microsoft Word</span>
 </button>
 <!-- Secondary Button: Open Output Folder (Slate outline button) -->
-<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant hover:border-outline text-body-md font-body-md font-medium px-4 h-9 rounded-lg flex items-center space-x-2 transition-colors duration-150 active:translate-y-0.5" onclick="window.showNotification('Opening Desktop/Extracted Files...', 'info')">
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant hover:border-outline text-body-md font-body-md font-medium px-4 h-9 rounded-lg flex items-center space-x-2 transition-colors duration-150 active:translate-y-0.5" onclick="window.openDestinationFolder()">
 <span class="material-symbols-outlined text-[18px] text-outline">folder_open</span>
 <span>Open Output Folder</span>
 </button>
