@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniDoc Studio - Completion &amp; Inspection State</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c3c6d7",
+            "surface-dim": "#cbdbf5",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-secondary-fixed": "#410002",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "inverse-primary": "#b4c5ff",
+            "on-error-container": "#93000a",
+            "on-background": "#0b1c30",
+            "error": "#ba1a1a",
+            "surface": "#f8f9ff",
+            "tertiary-container": "#8343f4",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed": "#00174b",
+            "secondary-container": "#e02928",
+            "on-secondary-container": "#fffbff",
+            "secondary": "#bb0112",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#d2bbff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#f7edff",
+            "tertiary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary": "#6a1edb",
+            "surface-container-high": "#dce9ff",
+            "on-surface": "#0b1c30",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "code-xs": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-xs": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Native desktop window frame simulation */
+    body {
+      background-color: #0b1c30;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="p-2 sm:p-4 text-on-surface">
+<!-- Desktop Native Window 1440x900 Outer Container -->
+<div class="w-[1440px] h-[900px] max-w-full max-h-screen bg-surface-container-lowest border border-outline-variant shadow-2xl rounded-xl flex flex-col overflow-hidden relative">
+<!-- Top Window Chrome / Desktop App Bar (Shared Component exact execution) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline flat no shadows flex items-center justify-between px-space-md w-full h-10 select-none z-30 shrink-0">
+<!-- Left: macOS Traffic Lights + Window Identity -->
+<div class="flex items-center space-x-3">
+<div class="flex items-center space-x-1.5 pr-2">
+<div class="w-3 h-3 rounded-full bg-secondary cursor-pointer hover:opacity-80"></div>
+<div class="w-3 h-3 rounded-full bg-outline-variant cursor-pointer hover:opacity-80"></div>
+<div class="w-3 h-3 rounded-full bg-surface-container-highest cursor-pointer hover:opacity-80"></div>
+</div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px]">document_scanner</span>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">OmniDoc Studio</span>
+<span class="bg-surface-container text-primary font-code-xs text-code-xs px-1.5 py-0.5 rounded border border-outline-variant">v2.4 Pro</span>
+</div>
+<!-- Search bar on left -->
+<div class="relative ml-4">
+<span class="material-symbols-outlined text-outline absolute left-2 top-1.5 text-[14px]">search</span>
+<input class="h-6 w-56 pl-7 pr-2 text-label-sm font-label-sm bg-surface-container-low border border-outline-variant rounded focus:outline-none text-on-surface cursor-default" placeholder="Quick search tools, symbols..." readonly="" type="text" value="Invoice_2026.pdf (Converted)"/>
+</div>
+</div>
+<!-- Center: Navigation Links -->
+<nav class="hidden md:flex items-center space-x-4 h-full">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md px-2 h-full flex items-center hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">Home Dashboard</a>
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary font-semibold text-label-md font-label-md px-2 h-full flex items-center hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">AI OCR to Word</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md px-2 h-full flex items-center hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">PDF Split &amp; Merge</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md px-2 h-full flex items-center hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">Batch Engine</a>
+</nav>
+<!-- Right: Trailing Actions & Window Chrome Controls -->
+<div class="flex items-center space-x-2">
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant text-label-sm font-label-sm px-2.5 h-6 rounded flex items-center space-x-1 transition-colors duration-150 active:translate-y-px">
+<span class="material-symbols-outlined text-[13px]">layers</span>
+<span>Batch Process</span>
+</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary text-label-sm font-label-sm px-2.5 h-6 rounded flex items-center space-x-1 shadow-sm transition-colors duration-150 active:translate-y-px">
+<span class="material-symbols-outlined text-[13px]">description</span>
+<span>Export Word</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Trailing icon actions (Window Controls) -->
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container text-on-surface-variant rounded">
+<span class="material-symbols-outlined text-[14px]">remove</span>
+</button>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container text-on-surface-variant rounded">
+<span class="material-symbols-outlined text-[14px]">crop_square</span>
+</button>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-secondary-container hover:text-on-error text-on-surface-variant rounded">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</header>
+<!-- Global Secondary Tool Ribbon (Stirling & Pipeline Status) -->
+<div class="h-9 bg-surface-container-low border-b border-outline-variant px-space-md flex items-center justify-between text-label-sm shrink-0 z-20">
+<div class="flex items-center space-x-3">
+<span class="font-code-xs text-code-xs text-outline flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block mr-1.5"></span>
+          WORKFLOW / INGEST_QUEUE #9402
+        </span>
+<span class="text-outline-variant">/</span>
+<div class="flex items-center space-x-1 font-label-sm text-on-surface">
+<span class="material-symbols-outlined text-[15px] text-outline">picture_as_pdf</span>
+<span class="font-medium">Invoice_2026.pdf</span>
+<span class="text-outline text-label-sm">(12 Pages, 3.8 MB)</span>
+</div>
+</div>
+<!-- Pipeline Stepper Micro-Strip -->
+<div class="flex items-center space-x-2">
+<div class="flex items-center space-x-1 text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+<span class="text-label-sm text-primary font-semibold">1. Stirling Ingest</span>
+</div>
+<span class="text-outline-variant text-[10px]">→</span>
+<div class="flex items-center space-x-1 text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+<span class="text-label-sm text-primary font-semibold">2. Neural OCR</span>
+</div>
+<span class="text-outline-variant text-[10px]">→</span>
+<div class="flex items-center space-x-1 text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+<span class="text-label-sm text-primary font-semibold">3. OpenXML Synthesis</span>
+</div>
+<span class="ml-2 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant text-primary font-code-xs text-code-xs font-semibold">
+          PIPELINE 100% COMPLETE
+        </span>
+</div>
+</div>
+<!-- Main Workstation Layout (Sidebar + Center Work Canvas with Success Modal/Drawer) -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- Left SideNavBar (Shared Component exact execution) -->
+<aside class="bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flat no shadows flex flex-col justify-between p-space-sm w-64 h-full shrink-0 select-none z-10">
+<div class="flex flex-col space-y-3">
+<!-- Header Area -->
+<div class="flex items-center space-x-2 px-2 py-1.5 border-b border-outline-variant pb-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">OmniDoc Studio</div>
+<div class="text-label-sm font-label-sm text-outline">v2.4 Pro Workstation</div>
+</div>
+</div>
+<!-- CTA: Import Document -->
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container border border-outline text-primary text-label-sm font-label-sm py-1.5 px-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-150 active:translate-y-px">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Import Document</span>
+</button>
+<!-- Navigation items: 6 defined tabs -->
+<nav class="flex flex-col space-y-1">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">
+<span class="material-symbols-outlined text-[18px]">home</span>
+<span>Home</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span>Workflows</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">
+<span class="material-symbols-outlined text-[18px]">call_split</span>
+<span>Split &amp; Merge</span>
+</a>
+<!-- Active Navigation state on OCR Pipelines -->
+<a class="bg-surface-container dark:bg-surface-container-high text-primary dark:text-inverse-primary font-semibold rounded-lg px-2.5 py-1.5 flex items-center justify-between text-label-sm font-label-sm active:translate-y-px" href="#">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">document_scanner</span>
+<span>OCR Pipelines</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">
+<span class="material-symbols-outlined text-[18px]">mop</span>
+<span>Sanitize</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px" href="#">
+<span class="material-symbols-outlined text-[18px]">archive</span>
+<span>Archive Vault</span>
+</a>
+</nav>
+<!-- Thumbnail Micro-Stack of processed pages -->
+<div class="pt-2 border-t border-outline-variant">
+<div class="flex items-center justify-between px-2 mb-2">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider font-semibold">Page Feed (12)</span>
+<span class="font-code-xs text-code-xs text-primary font-semibold">ALL SYNTH</span>
+</div>
+<div class="space-y-1 px-1">
+<div class="flex items-center justify-between p-1.5 rounded bg-surface-container-high border border-primary-container">
+<div class="flex items-center space-x-2">
+<span class="w-4 h-4 bg-primary text-on-primary rounded text-[9px] flex items-center justify-center font-bold">1</span>
+<span class="text-label-sm font-label-sm text-on-surface truncate w-32">Page 1: Summary &amp; Bill</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[14px]">check</span>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded bg-surface-container-low text-outline hover:bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="w-4 h-4 bg-outline text-on-primary rounded text-[9px] flex items-center justify-center font-bold">2</span>
+<span class="text-label-sm font-label-sm truncate w-32">Page 2: Line Items Tab...</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px]">check</span>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded bg-surface-container-low text-outline hover:bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="w-4 h-4 bg-outline text-on-primary rounded text-[9px] flex items-center justify-center font-bold">3</span>
+<span class="text-label-sm font-label-sm truncate w-32">Page 3: Tax Schedules</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px]">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SideNav Footer Tabs -->
+<div class="pt-2 border-t border-outline-variant flex flex-col space-y-1">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[16px]">settings</span>
+<span>Engine Settings</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-2.5 py-1.5 flex items-center space-x-2 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[16px]">dns</span>
+<span>System Health</span>
+</a>
+</div>
+</aside>
+<!-- Center Work Canvas: Background Document Workspace with Layer 3 Completion Inspection Drawer -->
+<main class="flex-1 bg-surface-container-low relative overflow-hidden flex flex-col">
+<!-- Underneath Workstation Ambient Canvas Preview (Lightly De-emphasized) -->
+<div class="absolute inset-0 p-6 flex justify-center items-center opacity-30 select-none pointer-events-none">
+<div class="w-[620px] h-[780px] bg-surface-container-lowest shadow-lg border border-outline-variant rounded p-10 flex flex-col space-y-4">
+<div class="h-6 w-48 bg-outline-variant rounded"></div>
+<div class="h-3 w-full bg-surface-container-high rounded"></div>
+<div class="h-3 w-5/6 bg-surface-container-high rounded"></div>
+<div class="h-32 border border-outline-variant rounded-lg p-2 grid grid-cols-4 gap-2">
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+</div>
+<div class="space-y-2 pt-4">
+<div class="h-2.5 w-full bg-surface-container-high rounded"></div>
+<div class="h-2.5 w-full bg-surface-container-high rounded"></div>
+<div class="h-2.5 w-3/4 bg-surface-container-high rounded"></div>
+</div>
+</div>
+</div>
+<!-- Semi-transparent Modal/Drawer Overlay Backdrop for Focus -->
+<div class="absolute inset-0 bg-on-background/20 backdrop-blur-[3px] z-10"></div>
+<!-- Screen 7: Completion & Inspection Drawer / Modal Viewport (Centered High Precision Card) -->
+<div class="relative z-20 flex-1 overflow-y-auto custom-scrollbar p-6 flex items-center justify-center">
+<div class="w-full max-w-4xl bg-surface-container-lowest border border-outline-variant rounded-xl shadow-2xl overflow-hidden flex flex-col">
+<!-- Top Card Action Bar & Status Strip -->
+<div class="px-6 py-3 bg-surface border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-code-xs text-code-xs text-outline font-semibold tracking-wide">STATUS // TASK_ID_88319 • COMPLETE</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-outline">Engine:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-code-xs text-code-xs font-semibold">Tesseract 5.3 + OmniParser v4</span>
+<button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<div class="p-6 md:p-8 flex flex-col space-y-6">
+<!-- Header / Hero Badge Section -->
+<div class="flex items-start space-x-5 pb-2">
+<div class="relative shrink-0">
+<!-- Vibrant Emerald Green Circle (w-16 h-16) with White Checkmark & Subtle Green Glow -->
+<div class="w-16 h-16 rounded-full bg-[#059669] text-white flex items-center justify-center shadow-[0_0_24px_rgba(5,150,105,0.35)] border-2 border-emerald-300/40">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-0.5 border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">auto_awesome</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center space-x-2 mb-1">
+<h1 class="text-headline-xl font-headline-xl text-on-surface tracking-tight font-bold">
+                      Document Successfully Reconstructed!
+                    </h1>
+<span class="px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] border border-[#059669]/30 text-label-sm font-label-sm font-semibold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span>100% Validated</span>
+</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-2xl">
+                    Neural OCR &amp; OpenXML Word synthesis finished with zero unresolvable glyphs.
+                  </p>
+</div>
+</div>
+<!-- Main Split: Left (Artifact Card & Telemetry) + Right (High Fidelity Document Preview) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column (5 Cols): Artifact Details + Telemetry -->
+<div class="lg:col-span-5 flex flex-col space-y-4">
+<!-- Generated Artifact Details Card -->
+<div class="p-4 rounded-lg bg-surface border border-outline-variant flex flex-col space-y-3">
+<div class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-outline flex items-center justify-between">
+<span>Generated Artifact</span>
+<span class="font-code-xs text-code-xs text-primary bg-surface-container px-1.5 py-0.5 rounded">DOCX OpenXML</span>
+</div>
+<!-- File Icon & Details -->
+<div class="flex items-center space-x-3.5 bg-surface-container-lowest p-3 rounded-lg border border-outline-variant">
+<!-- Word .docx icon (blue doc icon with 'W' logo badge) -->
+<div class="w-11 h-12 rounded bg-[#2563EB] relative flex flex-col items-center justify-center text-white shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[24px]">description</span>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded bg-[#1D4ED8] text-white font-bold text-[9px] flex items-center justify-center border border-white">
+                          W
+                        </div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center space-x-1.5">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface truncate">Invoice_2026.docx</span>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline mt-0.5">
+<span>File size: <strong class="text-on-surface font-medium">1.4 MB</strong></span>
+<span>•</span>
+<span>Office 365+ Ready</span>
+</div>
+</div>
+</div>
+<!-- Save Path Chip with copy button -->
+<div class="flex flex-col space-y-1">
+<span class="text-label-sm font-label-sm text-outline">Target Local Destination:</span>
+<div class="flex items-center justify-between bg-surface-container-low border border-outline-variant rounded px-2.5 py-1.5 text-code-xs font-code-xs text-on-surface">
+<div class="flex items-center space-x-1.5 truncate pr-2">
+<span class="text-[12px]">📁</span>
+<span class="truncate">C:/Users/Admin/Desktop/OmniDoc_Output/Invoice_2026.docx</span>
+</div>
+<button class="p-1 hover:bg-surface-container rounded text-outline hover:text-primary transition-colors" title="Copy path">
+<span class="material-symbols-outlined text-[13px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Benchmark & Extraction Telemetry Strip -->
+<div class="p-4 rounded-lg bg-surface border border-outline-variant flex flex-col space-y-2.5">
+<div class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-outline flex items-center justify-between">
+<span>Extraction Telemetry</span>
+<span class="font-code-xs text-code-xs text-[#059669]">Benchmarked</span>
+</div>
+<!-- 4 Required Benchmark Chips in Grid -->
+<div class="grid grid-cols-2 gap-2">
+<!-- Chip 1: Total time -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="text-label-sm">⚡</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Execution</div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">14.2s Total time</div>
+</div>
+</div>
+<!-- Chip 2: AI gap-filled -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-[#F5F3FF] text-[#7C3AED] flex items-center justify-center shrink-0">
+<span class="text-label-sm">🧠</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Neural Infill</div>
+<div class="text-label-md font-label-md font-semibold text-[#7C3AED]">18 words, 1 table</div>
+</div>
+</div>
+<!-- Chip 3: Pages processed -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="text-label-sm">📄</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Document Scope</div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">12 processed</div>
+</div>
+</div>
+<!-- Chip 4: OCR Confidence -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-[#ECFDF5] text-[#059669] flex items-center justify-center shrink-0">
+<span class="text-label-sm">🎯</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Confidence</div>
+<div class="text-headline-sm font-headline-sm font-bold text-[#059669]">99.4% Valid</div>
+</div>
+</div>
+</div>
+<!-- Structure Fidelity Mini-tags -->
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Vector Kerning Preserved
+                      </span>
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Native Tabular Grids
+                      </span>
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Embedded Helvetica Fonts
+                      </span>
+</div>
+</div>
+</div>
+<!-- Right Column (7 Cols): Document Preview Card -->
+<div class="lg:col-span-7 flex flex-col">
+<div class="rounded-lg bg-surface border border-outline-variant p-3 flex flex-col flex-1 shadow-sm">
+<!-- Preview Title bar -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant text-label-sm">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[16px]">visibility</span>
+<span class="font-headline-sm font-headline-sm text-on-surface">Reconstructed Word Document Preview</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-outline">Zoom: 100%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span class="text-code-xs font-code-xs text-[#059669] font-medium">Page 1 of 12</span>
+</div>
+</div>
+<!-- High-Fidelity Clean Preview Showing Reconstructed Microsoft Word Layout -->
+<div class="flex-1 bg-surface-container-high rounded p-3 flex items-center justify-center overflow-hidden border border-outline-variant">
+<!-- Simulated Clean Microsoft Word Page Canvas (Letter/A4 aspect) -->
+<div class="w-full max-w-[440px] bg-white shadow-md border border-outline-variant rounded p-6 font-sans text-on-surface select-text">
+<!-- Invoice Letterhead / Header Layout -->
+<div class="flex justify-between items-start border-b-2 border-primary pb-3 mb-4">
+<div>
+<h2 class="text-headline-lg font-headline-lg font-bold text-primary tracking-tight">ACME GLOBAL LOGISTICS</h2>
+<p class="text-code-xs font-code-xs text-outline">Enterprise Invoicing &amp; Cleared Freight</p>
+</div>
+<div class="text-right">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container font-code-xs font-semibold text-primary">INVOICE #2026-908</span>
+<p class="text-code-xs font-code-xs text-outline mt-0.5">Date: Oct 24, 2026</p>
+</div>
+</div>
+<!-- Bill to / Ship to Columns -->
+<div class="grid grid-cols-2 gap-3 text-label-sm font-label-sm mb-4">
+<div class="bg-surface p-2 rounded border border-outline-variant/60">
+<span class="font-semibold text-on-surface block text-[10px] uppercase text-outline">Billed Client</span>
+<p class="font-medium text-on-surface">OmniGlobal Retail Corp</p>
+<p class="text-outline text-[10px]">742 Evergreen Blvd, Suite 400</p>
+</div>
+<div class="bg-surface p-2 rounded border border-outline-variant/60">
+<span class="font-semibold text-on-surface block text-[10px] uppercase text-outline">Tax ID &amp; Terms</span>
+<p class="font-medium text-on-surface">VAT-US-9930129</p>
+<p class="text-outline text-[10px]">Payment Terms: Net 30 Days</p>
+</div>
+</div>
+<!-- Reconstructed Table Layout (Native Word Table Simulation) -->
+<div class="border border-outline-variant rounded overflow-hidden mb-3">
+<table class="w-full text-left border-collapse text-[10px]">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant font-semibold text-on-surface">
+<th class="p-1.5">Description</th>
+<th class="p-1.5 text-center">Qty</th>
+<th class="p-1.5 text-right">Unit Price</th>
+<th class="p-1.5 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/60 text-on-surface">
+<tr class="hover:bg-surface-container-low">
+<td class="p-1.5 font-medium">Neural Processing Engine API Token</td>
+<td class="p-1.5 text-center">12</td>
+<td class="p-1.5 text-right font-mono">$120.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$1,440.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low">
+<td class="p-1.5 font-medium">OpenXML Document Synthesizer Node</td>
+<td class="p-1.5 text-center">1</td>
+<td class="p-1.5 text-right font-mono">$850.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$850.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low bg-surface">
+<td class="p-1.5 font-medium text-[#7C3AED] flex items-center space-x-1">
+<span>Table Infill: Stirling PDF Ingest Pass</span>
+</td>
+<td class="p-1.5 text-center">1</td>
+<td class="p-1.5 text-right font-mono">$320.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$320.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Total calculation strip -->
+<div class="flex justify-end pt-1">
+<div class="w-48 space-y-1 text-right text-[10px]">
+<div class="flex justify-between text-outline">
+<span>Subtotal:</span>
+<span class="font-mono text-on-surface">$2,610.00</span>
+</div>
+<div class="flex justify-between text-outline">
+<span>Tax (8.25%):</span>
+<span class="font-mono text-on-surface">$215.33</span>
+</div>
+<div class="flex justify-between border-t border-outline-variant pt-1 text-label-sm font-bold text-primary">
+<span>Grand Total:</span>
+<span class="font-mono">$2,825.33</span>
+</div>
+</div>
+</div>
+<!-- Micro Doc Signature Stamp -->
+<div class="mt-4 pt-2 border-t border-dashed border-outline-variant flex justify-between items-center text-[9px] text-outline">
+<div class="flex items-center space-x-1 text-[#059669] font-medium">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Digitally Verified Reconstructed Word Table</span>
+</div>
+<span>Page 1 of 12</span>
+</div>
+</div>
+</div>
+<!-- Bottom Preview Utility Strip -->
+<div class="mt-2 flex items-center justify-between text-label-sm font-label-sm text-outline px-1">
+<div class="flex items-center space-x-2">
+<button class="hover:text-on-surface flex items-center space-x-0.5">
+<span class="material-symbols-outlined text-[13px]">chevron_left</span>
+<span>Prev</span>
+</button>
+<span>|</span>
+<button class="hover:text-on-surface flex items-center space-x-0.5">
+<span>Next</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center space-x-2 font-code-xs text-code-xs">
+<span class="text-[#059669]">● Structure: Perfect Hierarchy</span>
+<span class="text-outline-variant">•</span>
+<span>Tables: 1/1 Exact</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button Bar -->
+<div class="pt-4 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+<!-- Left Action Cluster -->
+<div class="flex items-center space-x-3 w-full sm:w-auto">
+<!-- Primary Button: Open in Microsoft Word (Cobalt blue #2563EB with Word icon) -->
+<button class="bg-[#2563EB] hover:bg-primary-container text-white text-body-md font-body-md font-semibold px-5 h-9 rounded-lg flex items-center space-x-2 shadow-sm transition-all duration-150 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[18px]">description</span>
+<span>Open in Microsoft Word</span>
+</button>
+<!-- Secondary Button: Open Output Folder (Slate outline button) -->
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant hover:border-outline text-body-md font-body-md font-medium px-4 h-9 rounded-lg flex items-center space-x-2 transition-colors duration-150 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[18px] text-outline">folder_open</span>
+<span>Open Output Folder</span>
+</button>
+<!-- Tertiary Button: Convert Another Document (Subtle ghost link/button) -->
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low text-body-md font-body-md px-3 h-9 rounded-lg flex items-center space-x-1.5 transition-colors duration-150 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Convert Another Document</span>
+</button>
+</div>
+<!-- Secondary Link: Inspect Full Execution JSON Log -->
+<div class="w-full sm:w-auto flex justify-end">
+<a class="text-primary hover:text-primary-fixed-dim text-label-md font-label-md flex items-center space-x-1 underline hover:no-underline" href="#">
+<span class="material-symbols-outlined text-[15px]">code</span>
+<span>Inspect Full Execution JSON Log</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro Docked Workstation Status Footer -->
+<footer class="h-6 bg-surface-container-low border-t border-outline-variant px-space-md flex items-center justify-between text-code-xs font-code-xs text-outline select-none shrink-0 z-20">
+<div class="flex items-center space-x-4">
+<span class="flex items-center space-x-1 text-[#059669]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span>OpenXML Synthesizer: IDLE</span>
+</span>
+<span>•</span>
+<span>Memory: 412 MB / 8 GB</span>
+<span>•</span>
+<span>Temp Buffer: Cleared</span>
+</div>
+<div class="flex items-center space-x-4">
+<span>Encoding: UTF-8 / OpenXML 2021 Strict</span>
+<span>Ready</span>
+</div>
+</footer>
+</div>
+</body></html>

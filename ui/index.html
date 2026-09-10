@@ -4,7 +4,9 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OmniDoc Studio - v2.4 Enterprise Workstation</title>
+  <!-- Material Symbols Outlined -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <!-- Inter & JetBrains Mono Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -30,26 +32,71 @@
             'surface-container-low': '#eff4ff',
             'surface-container': '#e5eeff',
             'surface-container-high': '#dce9ff',
+            'surface-container-highest': '#d3e4fe',
             'tertiary': '#6a1edb',
             'tertiary-fixed': '#eaddff',
             'outline': '#737686',
             'error-container': '#ffdad6',
-            'error': '#ba1a1a'
+            'error': '#ba1a1a',
+            'inverse-surface': '#213145',
+            'inverse-on-surface': '#eaf1ff'
+          },
+          fontFamily: {
+            'headline-lg': ['Inter'],
+            'headline-xl': ['Inter'],
+            'headline-md': ['Inter'],
+            'headline-sm': ['Inter'],
+            'label-md': ['Inter'],
+            'label-sm': ['Inter'],
+            'body-lg': ['Inter'],
+            'body-md': ['Inter'],
+            'body-sm': ['Inter'],
+            'code-sm': ['JetBrains Mono'],
+            'code-xs': ['JetBrains Mono']
           }
         }
       }
     };
   </script>
+  <style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 4px;
+    }
+  </style>
   <link rel="stylesheet" href="css/animations.css"/>
 </head>
 <body class="bg-surface text-on-surface select-none overflow-hidden h-screen flex flex-col antialiased font-['Inter']">
 
+  <!-- TOP WINDOW CHROME (TopNavBar Shared Component) -->
   <header class="bg-surface-container-lowest border-b border-outline-variant docked full-width top-0 h-10 flex items-center justify-between px-3 w-full shrink-0 z-30">
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-1.5 mr-2">
-        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block cursor-pointer hover:opacity-80"></span>
-        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block cursor-pointer hover:opacity-80"></span>
-        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block cursor-pointer hover:opacity-80"></span>
+        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block cursor-pointer hover:opacity-80" title="Close"></span>
+        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block cursor-pointer hover:opacity-80" title="Minimize"></span>
+        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block cursor-pointer hover:opacity-80" title="Maximize"></span>
       </div>
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-primary text-[18px]">description</span>
@@ -64,6 +111,9 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
+      <button onclick="window.openSecurityModal()" class="h-6 px-2.5 text-[11px] bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action shadow-xs">
+        <span class="material-symbols-outlined text-[14px]">lock</span> Security & Compress
+      </button>
       <button onclick="switchTab('batch')" class="h-6 px-2.5 text-[11px] bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action shadow-xs">
         <span class="material-symbols-outlined text-[14px]">bolt</span> Batch Process
       </button>
@@ -72,6 +122,8 @@
       </button>
     </div>
   </header>
+
+  <!-- Top Notice Banner -->
   <div class="bg-[#EFF6FF] border-b border-blue-100 px-3 py-1.5 flex items-center justify-between shrink-0" id="notice-banner">
     <div class="flex items-center gap-2">
       <span class="material-symbols-outlined text-primary text-[18px]">folder_open</span>
@@ -79,323 +131,2574 @@
     </div>
     <button class="text-outline hover:text-on-surface p-0.5 rounded" onclick="document.getElementById('notice-banner').classList.add('hidden')"><span class="material-symbols-outlined text-[16px]">close</span></button>
   </div>
-  <main class="flex-1 flex overflow-hidden relative">
 
-    <aside class="w-[260px] bg-surface border-r border-outline-variant flex flex-col justify-between shrink-0 h-full select-none">
+  <!-- MAIN WORKSTATION SHELL (SideNav + Center Viewport) -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT SIDEBAR: Shared SideNav -->
+    <aside class="w-[260px] bg-surface border-r border-outline-variant flex flex-col justify-between shrink-0 h-full select-none z-20">
       <div class="flex flex-col h-full overflow-hidden">
-        <div class="p-2 border-b border-outline-variant/60 flex items-center gap-2 shrink-0">
-          <div class="flex items-baseline gap-1">
-            <span class="text-[15px] font-bold text-on-surface tracking-tight">OmniDoc</span>
-            <span class="text-[15px] font-bold text-secondary tracking-tight">Studio</span>
-          </div>
-        </div>
-        <div class="p-2 space-y-1 shrink-0">
-          <button onclick="switchTab('home')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">home</span> <span>Home</span></button>
-          <button onclick="switchTab('ocr')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] bg-surface-container text-primary font-semibold rounded-lg"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-primary">document_scanner</span> <span>AI OCR to Word</span></div><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></button>
-          <button onclick="switchTab('split')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>Split & Page Grid</span></button>
-          <button onclick="switchTab('merge')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Workbench</span></button>
-          <button onclick="switchTab('batch')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></button>
-        </div>
-        <div class="px-2 pt-3 pb-1 flex items-center justify-between shrink-0"><span class="text-[10px] font-bold text-outline tracking-wider uppercase">Recent Documents</span></div>
-        <div class="flex-1 overflow-y-auto px-2 space-y-1.5">
-          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
-            <div class="flex items-start gap-2"><div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><div class="min-w-0 flex-1"><p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Invoice_2026.pdf</p><div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>14.2 MB</span><span>•</span><span>2m ago</span></div></div></div>
-          </div>
-          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
-            <div class="flex items-start gap-2"><div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><div class="min-w-0 flex-1"><p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Lecture_Notes_Scan.pdf</p><div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>8.5 MB</span><span>•</span><span>1h ago</span></div></div></div>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar">
-      <div class="h-11 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-4 shrink-0 sticky top-0 z-20">
-        <nav class="flex items-center gap-1 h-full">
-          <button id="nav-home" onclick="switchTab('home')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-primary border-b-2 border-primary transition-all"><span class="material-symbols-outlined text-[16px]">home</span> <span>Home</span></button>
-          <button id="nav-ocr" onclick="switchTab('ocr')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">document_scanner</span> <span>AI OCR to Word</span></button>
-          <button id="nav-split" onclick="switchTab('split')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>PDF Split & Organize</span></button>
-          <button id="nav-merge" onclick="switchTab('merge')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Queue</span></button>
-          <button id="nav-batch" onclick="switchTab('batch')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></button>
-        </nav>
-        <span class="text-[10px] font-mono text-outline flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Stirling + PaddleOCR Ready</span>
-      </div>
-
-      <!-- PANE 1: HOME -->
-      <div id="pane-home" class="flex-1 flex flex-col items-center justify-center p-6 min-h-[560px]">
-        <div id="main-dropzone" onclick="switchTab('ocr'); window.showNotification('Loaded Invoice_2026.pdf into AI OCR Workbench');" class="w-full max-w-2xl border-2 border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest/80 rounded-xl p-8 flex flex-col items-center text-center group shadow-sm hover:shadow-md cursor-pointer transition-all">
-          <div class="relative w-36 h-32 mb-4 flex items-center justify-center anim-float">
-            <div class="absolute w-28 h-20 bg-blue-200 rounded-lg shadow-sm transform -rotate-6 translate-y-1"></div>
-            <div class="absolute w-28 h-20 bg-primary-container rounded-lg shadow-md transform rotate-3 -translate-y-1 flex items-start justify-end p-2"><span class="material-symbols-outlined text-white/40 text-[18px]">auto_awesome</span></div>
-            <div class="relative z-10 w-24 h-28 bg-surface-container-lowest rounded-md shadow-lg border border-outline-variant/60 p-2.5 flex flex-col justify-between overflow-hidden">
-              <div class="anim-scanline"></div>
-              <div class="flex items-center justify-between border-b border-outline-variant/40 pb-1.5"><span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span><span class="text-[10px] font-mono text-outline font-semibold">PDF</span></div>
-              <div class="space-y-1.5 my-auto"><div class="h-1.5 bg-surface-container-high rounded w-full"></div><div class="h-1.5 bg-surface-container-high rounded w-4/5"></div><div class="h-1.5 bg-surface-container rounded w-3/5"></div></div>
-              <div class="flex items-center justify-between text-[8px] text-outline font-mono"><span>P.01</span> <span class="material-symbols-outlined text-primary text-[12px]">verified</span></div>
-            </div>
-          </div>
-          <h1 class="text-[24px] font-bold text-on-surface tracking-tight mb-1 shimmer-text">OmniDoc Studio</h1>
-          <p class="text-[13px] text-on-surface-variant max-w-md mb-6">Drop in or add an existing PDF to get started. High-precision OCR extraction, split/merge transformations, and neural docx synthesis.</p>
-          <div class="flex items-center gap-3">
-            <button onclick="event.stopPropagation(); switchTab('ocr'); window.showNotification('Selected document for OCR extraction');" class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-[12px] font-semibold rounded flex items-center gap-2 shadow-sm btn-action"><span class="material-symbols-outlined text-[18px]">folder_open</span> <span>Open from computer</span></button>
-            <button onclick="event.stopPropagation(); switchTab('split'); window.showNotification('Opened Split & Organize View');" class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-[12px] font-medium rounded flex items-center gap-1.5 shadow-sm btn-action"><span class="material-symbols-outlined text-[18px] text-outline">add</span> <span>Open Files</span></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PANE 2: OCR -->
-      <div id="pane-ocr" class="hidden flex-1 flex overflow-hidden p-4 gap-4">
-        <div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-1">
-          <div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center justify-between shadow-sm">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded bg-secondary-fixed text-secondary flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">picture_as_pdf</span></div>
-              <div><span id="target-filename-ocr" class="text-[15px] font-bold text-on-surface">Invoice_2026.pdf</span><div class="text-[11px] text-on-surface-variant mt-0.5">12 Pages • 18.4 MB • <span class="text-primary font-medium">Ready</span></div></div>
-            </div>
-          </div>
-          <div class="bg-surface-container-lowest border border-outline-variant p-4 rounded">
-            <div class="grid grid-cols-4 gap-2 text-center text-[12px] mb-3">
-              <div class="text-emerald-700 font-semibold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> Phase 1: Deskew</div>
-              <div class="text-primary font-bold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Phase 2: PaddleOCR</div>
-              <div class="text-outline">Phase 3: AI Gap-Filling</div>
-              <div class="text-outline">Phase 4: Word Docx</div>
-            </div>
-            <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden"><div id="ocr-prog-bar" class="h-full bg-primary-container rounded-full transition-all duration-300 w-[65%]"></div></div>
-            <p id="ocr-prog-text" class="text-[11px] text-on-surface-variant mt-2 font-medium">Processing Page 3 of 12 — 65%</p>
-          </div>
-          <div class="bg-surface-container-lowest border border-outline-variant rounded p-3 flex-1 flex flex-col min-h-[160px]">
-            <div class="flex items-center justify-between border-b border-outline-variant pb-1.5 mb-1.5"><span class="text-[12px] font-semibold flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">terminal</span> Live Terminal Log</span></div>
-            <div id="terminal-log-content" class="font-mono text-[11px] space-y-1 overflow-y-auto flex-1 text-on-surface-variant">
-              <div>[10:42:01] CLAHE contrast enhancement completed (0.42s)</div>
-              <div>[10:42:02] PaddleOCR detected 14 text blocks, 2 tables, 1 header title</div>
-              <div>[10:42:03] OpenRouter Gemini 2.0 Flash queued for column reconciliation</div>
-            </div>
-          </div>
-          <button id="btn-run-ocr" onclick="window.runOCRSimulation()" class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-bold text-[14px] rounded shadow-md flex items-center justify-center gap-2 btn-action">
-            <span>🚀</span> <span>Extract & Reconstruct Word Document</span>
-          </button>
-        </div>
-        <div class="w-[300px] bg-surface-container-lowest border border-outline-variant p-4 rounded flex flex-col gap-4 shrink-0 overflow-y-auto">
-          <h2 class="text-[15px] font-bold border-b border-outline-variant pb-2 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">tune</span> OCR & AI Settings
-          </h2>
-          <div class="space-y-1">
-            <label class="text-[12px] font-semibold flex items-center justify-between">
-              <span>Render DPI</span>
-              <span id="dpi-val" class="font-mono text-primary font-bold">300 DPI</span>
-            </label>
-            <input type="range" min="150" max="600" value="300" step="50" oninput="document.getElementById('dpi-val').textContent = this.value + ' DPI'" class="w-full accent-primary cursor-pointer"/>
-            <div class="flex justify-between text-[10px] text-outline font-mono"><span>150 DPI</span><span>300 DPI</span><span>600 DPI</span></div>
-          </div>
-          <div class="p-3 bg-surface-container-low border border-outline-variant rounded-lg space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="text-[12px] font-bold text-primary flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">psychology</span> OpenRouter AI</span>
-              <input type="checkbox" checked onchange="window.showNotification(this.checked ? 'Neural Context Engine Enabled' : 'Raw OCR Mode Active')" class="w-4 h-4 text-primary rounded cursor-pointer"/>
-            </div>
-            <select onchange="window.showNotification('Switched Model: ' + this.value)" class="w-full h-8 text-[12px] bg-surface-container-lowest border border-outline-variant rounded px-2 font-medium focus:border-primary focus:outline-none">
-              <option value="Gemini 2.0 Flash">Gemini 2.0 Flash (Free ⚡)</option>
-              <option value="Llama 3.3 70B">Llama 3.3 70B Instruct (Free)</option>
-              <option value="Mistral Small 24B">Mistral Small 24B (Free)</option>
-              <option value="DeepSeek V3">DeepSeek V3 (Free)</option>
-            </select>
-          </div>
-          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-lg space-y-1.5 text-[11px]">
-            <span class="font-semibold text-on-surface flex items-center gap-1"><span class="material-symbols-outlined text-emerald-600 text-[15px]">auto_fix_high</span> Auto-Enhancements</span>
-            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> CLAHE Contrast Equalizer</label>
-            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> Deskew (±10° Hough Angle)</label>
-            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> Multi-column Gap Reconciliation</label>
-          </div>
-        </div>
-      </div>
-
-      <!-- PANE 3: SPLIT -->
-      <div id="pane-split" class="hidden flex-1 flex flex-col overflow-hidden p-4">
-        <div class="flex justify-between items-center mb-3">
+        <div class="p-2.5 border-b border-outline-variant/60 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2">
-            <span class="text-[14px] font-bold">Interactive Page Visualizer & Splitter</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 text-primary font-semibold">Click cards to toggle selection</span>
+            <div class="w-7 h-7 rounded bg-primary-container text-on-primary flex items-center justify-center font-bold text-headline-sm">
+              <span class="material-symbols-outlined text-[18px]">document_scanner</span>
+            </div>
+            <div class="flex items-baseline gap-1">
+              <span class="text-[15px] font-bold text-on-surface tracking-tight">OmniDoc</span>
+              <span class="text-[15px] font-bold text-secondary tracking-tight">Studio</span>
+            </div>
           </div>
-          <button onclick="window.showNotification('Split pages exported to Desktop/Extracted Files!', 'success')" class="h-8 px-4 bg-primary-container text-on-primary rounded font-semibold text-[12px] btn-action flex items-center gap-1.5 shadow-sm">
-            <span class="material-symbols-outlined text-[16px]">file_download</span> Export Split Files
+          <span class="text-[9px] font-mono text-outline uppercase bg-surface-container px-1 py-0.5 rounded">v2.4</span>
+        </div>
+
+        <!-- Primary Navigation Tabs -->
+        <div class="p-2 space-y-1 shrink-0">
+          <button id="nav-home" onclick="switchTab('home')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] font-semibold bg-surface-container text-primary rounded-lg">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-primary">home</span> <span>Home</span></div>
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          </button>
+          <button id="nav-ocr" onclick="switchTab('ocr')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">document_scanner</span> <span>AI OCR to Word</span></div>
+          </button>
+          <button id="nav-split" onclick="switchTab('split')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>Split & Organize</span></div>
+          </button>
+          <button id="nav-merge" onclick="switchTab('merge')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Workbench</span></div>
+          </button>
+          <button id="nav-batch" onclick="switchTab('batch')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></div>
+          </button>
+          <button onclick="window.openSecurityModal()" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">lock</span> <span>Security & Crypt</span></div>
+            <span class="text-[9px] font-mono px-1 py-0.2 rounded bg-surface-container text-primary font-bold">AES</span>
+          </button>
+          <button onclick="window.openCompletionModal()" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-600">task_alt</span> <span>Completion Inspector</span></div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           </button>
         </div>
-        <div class="flex-1 overflow-y-auto grid grid-cols-4 gap-4 p-2 custom-scrollbar">
-          <div onclick="window.toggleCardSelection(this, 1)" class="border-2 border-primary anim-glow bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
-            <div class="w-full flex justify-between items-center mb-2">
-              <span class="text-[12px] font-bold text-primary">Page #1</span>
-              <span class="status-badge text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-primary text-white">SELECTED</span>
-            </div>
-            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
-              <div class="space-y-1.5"><div class="h-2 bg-slate-200 rounded w-3/4"></div><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-5/6"></div></div>
-              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Title / Header</span><span>OCR Ready</span></div>
-            </div>
-          </div>
-          <div onclick="window.toggleCardSelection(this, 2)" class="border-2 border-primary anim-glow bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
-            <div class="w-full flex justify-between items-center mb-2">
-              <span class="text-[12px] font-bold text-primary">Page #2</span>
-              <span class="status-badge text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-primary text-white">SELECTED</span>
-            </div>
-            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
-              <div class="grid grid-cols-3 gap-1 border border-slate-200 p-1 rounded"><div class="h-2 bg-blue-100 rounded"></div><div class="h-2 bg-blue-100 rounded"></div><div class="h-2 bg-blue-100 rounded"></div></div>
-              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Financial Table</span><span>OCR Ready</span></div>
-            </div>
-          </div>
-          <div onclick="window.toggleCardSelection(this, 3)" class="border border-outline-variant bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
-            <div class="w-full flex justify-between items-center mb-2">
-              <span class="text-[12px] font-medium text-on-surface">Page #3</span>
-              <span class="status-badge text-[10px] font-mono text-outline">READY</span>
-            </div>
-            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
-              <div class="space-y-1.5"><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-4/5"></div><div class="h-1.5 bg-slate-100 rounded w-full"></div></div>
-              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Body Text</span><span>Idle</span></div>
-            </div>
-          </div>
-          <div onclick="window.toggleCardSelection(this, 4)" class="border border-outline-variant bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
-            <div class="w-full flex justify-between items-center mb-2">
-              <span class="text-[12px] font-medium text-on-surface">Page #4</span>
-              <span class="status-badge text-[10px] font-mono text-outline">READY</span>
-            </div>
-            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
-              <div class="space-y-1.5"><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-3/5"></div></div>
-              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Appendix</span><span>Idle</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- PANE 4: MERGE -->
-      <div id="pane-merge" class="hidden flex-1 flex p-6 gap-6 overflow-hidden">
-        <div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
-          <div class="flex items-center justify-between">
-            <h2 class="text-[18px] font-bold tracking-tight">Merge & Sequence Document Queue</h2>
-            <button onclick="window.showNotification('Added document to queue')" class="text-[11px] px-2.5 py-1 bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action">
-              <span class="material-symbols-outlined text-[14px]">add</span> Add PDF
-            </button>
-          </div>
-          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between shadow-sm interactive-card">
-            <div class="flex items-center gap-3">
-              <div class="p-1.5 rounded bg-secondary-fixed text-secondary"><span class="material-symbols-outlined text-[20px]">picture_as_pdf</span></div>
-              <div>
-                <span class="font-semibold text-[13px] text-on-surface">01_Executive_Summary_Signed.pdf</span>
-                <div class="text-[11px] font-mono text-outline mt-0.5">6 Pages • 2.8 MB • SHA-256 Valid</div>
+        <!-- Recent Documents Section -->
+        <div class="px-2 pt-3 pb-1 flex items-center justify-between shrink-0">
+          <span class="text-[10px] font-bold text-outline tracking-wider uppercase">Recent Documents</span>
+          <button class="text-outline hover:text-primary p-0.5 rounded hover:bg-surface-container transition-colors" title="Add file"><span class="material-symbols-outlined text-[15px]">add</span></button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-2 space-y-1.5 custom-scrollbar">
+          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+            <div class="flex items-start gap-2">
+              <div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Invoice_2026.pdf</p>
+                <div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>14.2 MB</span><span>•</span><span>2m ago</span></div>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_upward</span>
-              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_downward</span>
-              <button onclick="this.closest('.interactive-card').remove(); window.showNotification('Removed file from merge queue')" class="text-outline hover:text-secondary p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
-            </div>
           </div>
-          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between shadow-sm interactive-card">
-            <div class="flex items-center gap-3">
-              <div class="p-1.5 rounded bg-secondary-fixed text-secondary"><span class="material-symbols-outlined text-[20px]">picture_as_pdf</span></div>
-              <div>
-                <span class="font-semibold text-[13px] text-on-surface">02_Financial_Tables_Q1-Q4.pdf</span>
-                <div class="text-[11px] font-mono text-outline mt-0.5">24 Pages • 8.1 MB • SHA-256 Valid</div>
+          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+            <div class="flex items-start gap-2">
+              <div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Lecture_Notes_Scan.pdf</p>
+                <div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>8.5 MB</span><span>•</span><span>1h ago</span></div>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_upward</span>
-              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_downward</span>
-              <button onclick="this.closest('.interactive-card').remove(); window.showNotification('Removed file from merge queue')" class="text-outline hover:text-secondary p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+          </div>
+          <div onclick="switchTab('split')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+            <div class="flex items-start gap-2">
+              <div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div>
+              <div class="min-w-0 flex-1">
+                <p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Contract_Vendor_Final.pdf</p>
+                <div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>1.1 MB</span><span>•</span><span>yesterday</span></div>
+              </div>
             </div>
           </div>
         </div>
-        <aside class="w-80 bg-surface-container-lowest border border-outline-variant p-4 rounded-xl flex flex-col justify-between shrink-0">
-          <div class="space-y-4">
-            <h3 class="text-[15px] font-bold border-b border-outline-variant pb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]">tune</span> Assembly Rules</h3>
-            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
-              <span>Linearize Fast Web View</span>
-              <input type="checkbox" checked class="rounded text-primary"/>
-            </label>
-            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
-              <span>Preserve Bookmarks & Outline</span>
-              <input type="checkbox" checked class="rounded text-primary"/>
-            </label>
-            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
-              <span>Compress Embedded JPEGs</span>
-              <input type="checkbox" checked class="rounded text-primary"/>
-            </label>
-          </div>
-          <button onclick="window.showNotification('Documents joined into Merged_OmniDoc_Export.pdf!', 'success')" class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary rounded-lg font-bold text-[13px] btn-action flex items-center justify-center gap-2 shadow-md">
-            <span class="material-symbols-outlined text-[18px]">merge_type</span> Merge into Single PDF
-          </button>
-        </aside>
-      </div>
 
-      <!-- PANE 5: BATCH -->
-      <div id="pane-batch" class="hidden flex-1 flex flex-col p-6 gap-4 overflow-hidden">
-        <div class="flex justify-between items-center bg-surface-container-lowest p-3 rounded-xl border border-outline-variant shadow-sm">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[20px]">folder_open</span> <span class="font-mono text-[12px] font-semibold text-on-surface">C:/Scanned_Archive_2026/</span></div>
-          <button onclick="window.showNotification('Rescanned directory: 24 PDF files found.', 'info')" class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded-md text-[11px] font-medium btn-action flex items-center gap-1.5 text-primary border border-outline-variant/40">
-            <span class="material-symbols-outlined text-[14px]">refresh</span> Rescan Directory
-          </button>
-        </div>
-        <div class="flex-1 border border-outline-variant rounded-xl bg-surface-container-lowest overflow-y-auto p-3 space-y-2 custom-scrollbar">
-          <div class="p-2.5 border border-outline-variant/50 rounded-lg flex items-center justify-between text-[12px] interactive-card">
-            <div class="flex items-center gap-2.5">
-              <span class="material-symbols-outlined text-emerald-600 text-[18px]">task_alt</span>
-              <span class="font-semibold text-on-surface">Batch_Scan_Archive_01.pdf</span>
+        <!-- User profile footer -->
+        <div class="p-2 border-t border-outline-variant/60 bg-surface-container-low/60 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-2 min-w-0">
+            <div class="w-6 h-6 rounded bg-primary text-on-primary font-bold text-[10px] flex items-center justify-center shrink-0">OD</div>
+            <div class="min-w-0">
+              <p class="text-[11px] font-semibold text-on-surface truncate">OmniDoc Pro</p>
+              <p class="text-[9px] text-outline leading-tight truncate">PaddleOCR + Stirling</p>
             </div>
-            <span class="text-emerald-700 font-mono text-[11px] font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">14 Pages Completed</span>
           </div>
-          <div class="p-2.5 border border-outline-variant/50 rounded-lg flex items-center justify-between text-[12px] interactive-card">
-            <div class="flex items-center gap-2.5">
-              <span class="material-symbols-outlined text-primary text-[18px] animate-spin">sync</span>
-              <span class="font-semibold text-on-surface">Invoice_Contract_2026.pdf</span>
-            </div>
-            <span class="text-primary font-mono text-[11px] font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Processing 45%</span>
-          </div>
+          <button onclick="window.openSecurityModal()" class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container" title="Security Settings"><span class="material-symbols-outlined text-[16px]">settings</span></button>
         </div>
-        <button onclick="window.showNotification('Batch execution active across 24 files!', 'success')" class="h-11 bg-primary-container hover:bg-primary text-on-primary font-bold text-[13px] rounded-lg btn-action flex items-center justify-center gap-2 shadow-md">
-          <span class="material-symbols-outlined text-[18px]">play_arrow</span> Start All Batch Ingestion
-        </button>
-      </div>
-    </section>
-
-    <!-- RIGHT SIDEBAR: TOOLS -->
-    <aside class="w-[280px] bg-surface border-l border-outline-variant flex flex-col shrink-0 h-full overflow-hidden select-none">
-      <div class="p-2 border-b border-outline-variant/60 bg-surface-container-low shrink-0">
-        <div class="bg-surface-container-lowest rounded-lg border border-outline-variant/60 p-2 shadow-sm space-y-1.5">
-          <div class="flex items-center justify-between border-b border-outline-variant/40 pb-1">
-            <span class="text-[11px] font-semibold text-on-surface">System Diagnostic</span>
-            <span class="text-[9px] text-primary font-mono font-semibold">ALL ONLINE</span>
-          </div>
-          <div class="flex justify-between text-[11px]"><span class="text-outline">Security</span> <span class="font-mono text-emerald-700 font-semibold">AES-256 Enabled</span></div>
-          <div class="flex justify-between text-[11px]"><span class="text-outline">AI Model</span> <span class="font-mono text-tertiary font-semibold">Gemini 2.0 Flash</span></div>
-        </div>
-      </div>
-      <div class="px-2 pt-2 pb-1 text-[10px] font-bold text-outline tracking-wider uppercase">Stirling PDF Tools</div>
-      <div class="flex-1 overflow-y-auto px-2 space-y-1 custom-scrollbar">
-        <button onclick="switchTab('ocr')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[17px] icon-tilt">edit_document</span><span class="text-[11px] font-medium">PDF to Word AI Extractor</span></div>
-          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">AI</span>
-        </button>
-        <button onclick="switchTab('split')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-[17px] icon-tilt">call_split</span><span class="text-[11px] font-medium">Split PDF by Pages</span></div>
-          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 font-bold">HOT</span>
-        </button>
-        <button onclick="switchTab('merge')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[17px] icon-tilt">join_inner</span><span class="text-[11px] font-medium">Merge Multiple PDFs</span></div>
-          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
-        </button>
-        <button onclick="window.showNotification('Streams compressed and linearized via Stirling core!', 'success')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[17px] icon-tilt">compress</span><span class="text-[11px] font-medium">Compress & Linearize</span></div>
-          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
-        </button>
-        <button onclick="window.showNotification('Pages rotated 90° clockwise!', 'info')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
-          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-on-surface-variant text-[17px] icon-tilt">sync</span><span class="text-[11px] font-medium">Rotate & Clean Pages</span></div>
-          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
-        </button>
       </div>
     </aside>
 
-    <!-- 1-Click Auto-Fix Floating Action Button -->
-    <div class="absolute bottom-5 right-5 z-40">
-      <button onclick="switchTab('ocr'); window.runOCRSimulation();" class="h-11 px-4 rounded-full bg-primary-container hover:bg-primary text-on-primary font-semibold text-[13px] flex items-center gap-2 shadow-lg hover:shadow-xl btn-action ring-4 ring-primary/20">
-        <span class="material-symbols-outlined text-[20px] text-yellow-300 animate-pulse">bolt</span>
-        <span>1-Click Auto-Fix</span>
-      </button>
+    <!-- CENTER DYNAMIC WORKSPACE (Hosts all 5 view panes) -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+      <!-- ==================== PANE 1: HOME DASHBOARD & DROP ZONE (Screen 1) ==================== -->
+      <section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar" id="pane-home">
+<!-- Top Segmented Switcher & Tool Ribbon -->
+<div class="h-11 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-space-lg shrink-0 sticky top-0 z-20">
+<!-- Navigation Switcher -->
+<nav class="flex items-center gap-1 h-full">
+<!-- Active: Home (mapped from JSON navigation_links) -->
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-primary font-semibold border-b-2 border-primary transition-all">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">document_scanner</span>
+<span>AI OCR to Word</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">call_split</span>
+<span>PDF Split &amp; Merge</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Batch Engine</span>
+</button>
+</nav>
+<!-- Right Quick Actions -->
+<div class="flex items-center gap-2">
+<span class="text-code-xs font-code-xs text-outline flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Stirling Engine Ready
+          </span>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container transition-colors" title="Zoom In"><span class="material-symbols-outlined text-[16px]">zoom_in</span></button>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container transition-colors" title="Full Screen"><span class="material-symbols-outlined text-[16px]">fullscreen</span></button>
+</div>
+</div>
+<!-- Main Central Drop Hero Area -->
+<div class="flex-1 flex flex-col items-center justify-center p-space-xl min-h-[560px]">
+<!-- Dashed Container Drop Zone -->
+<div class="w-full max-w-2xl border-2 border-dashed border-outline-variant/80 hover:border-primary/70 bg-surface-container-lowest/80 rounded-xl p-8 transition-all duration-200 flex flex-col items-center text-center group shadow-sm hover:shadow-md">
+<!-- Stylized 3D-effect Document & Folder Vector Graphic -->
+<div class="relative w-36 h-32 mb-4 flex items-center justify-center">
+<!-- Back Folder Layer -->
+<div class="absolute w-28 h-20 bg-blue-200 rounded-lg shadow-sm transform -rotate-6 translate-y-1 transition-transform group-hover:-rotate-8"></div>
+<!-- Middle Accent Layer (Cobalt) -->
+<div class="absolute w-28 h-20 bg-primary-container rounded-lg shadow-md transform rotate-3 -translate-y-1 flex items-start justify-end p-2 transition-transform group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 text-[18px]">auto_awesome</span>
+</div>
+<!-- Front Floating White Document Sheet with hairline gridlines -->
+<div class="relative z-10 w-24 h-28 bg-surface-container-lowest rounded-md shadow-lg border border-outline-variant/60 p-2.5 flex flex-col justify-between transform transition-transform group-hover:-translate-y-1">
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span>
+<span class="text-code-xs font-code-xs text-outline font-semibold">PDF</span>
+</div>
+<!-- Skeleton guides -->
+<div class="space-y-1.5 my-auto">
+<div class="h-1.5 bg-surface-container-high rounded w-full"></div>
+<div class="h-1.5 bg-surface-container-high rounded w-4/5"></div>
+<div class="h-1.5 bg-surface-container rounded w-3/5"></div>
+<div class="h-1 bg-primary/20 rounded w-full"></div>
+</div>
+<div class="flex items-center justify-between text-[8px] text-outline font-code-xs">
+<span>P.01</span>
+<span class="material-symbols-outlined text-primary text-[12px]">verified</span>
+</div>
+</div>
+<!-- Ambient glow behind vector -->
+<div class="absolute inset-0 bg-primary/5 filter blur-xl rounded-full pointer-events-none"></div>
+</div>
+<!-- Hero Typography -->
+<h1 class="text-headline-xl font-headline-xl font-bold text-on-surface tracking-tight mb-1">
+            OmniDoc Studio
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-md mb-6">
+            Drop in or add an existing PDF to get started. High-precision OCR extraction, split/merge transformations, and neural docx synthesis.
+          </p>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3">
+<button class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold rounded flex items-center gap-2 shadow-sm active:translate-y-px transition-all">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span>Open from computer</span>
+</button>
+<button class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-label-md font-label-md font-medium rounded flex items-center gap-1.5 active:translate-y-px transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-outline">add</span>
+<span>Open Files</span>
+</button>
+</div>
+<!-- Supported format tags -->
+<div class="mt-6 flex items-center gap-2 text-code-xs font-code-xs text-outline">
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">PDF 1.4-2.0</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">TIFF/Scans</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">Native Docx Engine</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">Max 500 MB</span>
+</div>
+</div>
+<!-- Quick Pipeline Status Indicators below Dropzone -->
+<div class="w-full max-w-2xl mt-4 grid grid-cols-3 gap-3">
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Sub-second Parsing</p>
+<p class="text-[10px] text-outline">Multi-threaded Stirling core</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Neural Layout AI</p>
+<p class="text-[10px] text-outline">Preserves table geometry</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-surface-container-high text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Offline Quarantine</p>
+<p class="text-[10px] text-outline">Air-gapped security mode</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+      <!-- ==================== PANE 2: AI OCR TO WORD STUDIO (Screen 2) ==================== -->
+      <main class="flex-1 flex overflow-hidden bg-surface hidden" id="pane-ocr">
+<!-- ================= LEFT PANE: Document & Real-time Live Log ================= -->
+<section class="flex-1 flex flex-col h-full border-r border-outline-variant overflow-y-auto p-space-md gap-space-md">
+<!-- Document Card Header -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary-container/10 border border-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-on-surface tracking-tight">Scanned_Invoice_Batch_2026.pdf</span>
+<span class="bg-error-container text-secondary text-code-xs font-code-xs px-2 py-0.5 rounded font-semibold border border-secondary/20">RAW SCANNED</span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">layers</span> 12 Pages</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">save</span> 18.4 MB</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">check_circle</span> Ready for Reconstruction</span>
+</div>
+</div>
+</div>
+<button class="h-8 px-space-md bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface text-label-md font-label-md rounded flex items-center gap-1.5 transition-colors duration-150">
+<span class="material-symbols-outlined text-[16px] text-outline">info</span>
+            Inspect Metadata
+          </button>
+</div>
+<!-- Interactive Horizontal Page Thumbnail Carousel -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">Document Page Grid &amp; Selection</span>
+<span class="text-code-xs font-code-xs bg-primary-container text-on-primary px-1.5 py-0.5 rounded">3/12 Selected for processing</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<button class="hover:underline">Select All</button>
+<span class="text-outline-variant">|</span>
+<button class="hover:underline text-on-surface-variant">Clear Selection</button>
+</div>
+</div>
+<!-- Carousel Container -->
+<div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1">
+<!-- Page 1 (Checked & Active) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-primary-container rounded p-1.5 flex flex-col items-center group cursor-pointer shadow-sm">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-primary text-on-primary px-1 rounded">#1</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-3/4 bg-on-surface-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-5/6 bg-outline-variant/40 rounded"></div>
+<div class="h-8 w-full border border-dashed border-outline-variant rounded mt-1 flex items-center justify-center text-code-xs text-outline">TABLE [4x3]</div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded mt-auto"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface mt-1 font-medium">Page 1 (Done)</span>
+</div>
+<!-- Page 2 (Checked) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-primary-container rounded p-1.5 flex flex-col items-center group cursor-pointer shadow-sm">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-primary text-on-primary px-1 rounded">#2</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/2 bg-on-surface-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-4/5 bg-outline-variant/40 rounded"></div>
+<div class="h-10 w-full bg-surface-container border border-outline-variant rounded p-1">
+<div class="h-1.5 w-2/3 bg-outline-variant rounded mb-1"></div>
+<div class="h-1.5 w-1/2 bg-outline-variant rounded"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface mt-1 font-medium">Page 2 (Done)</span>
+</div>
+<!-- Page 3 (Checked & CURRENTLY PROCESSING) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-tertiary-container rounded p-1.5 flex flex-col items-center ring-2 ring-tertiary-container/30 group cursor-pointer shadow">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-tertiary text-on-tertiary px-1 rounded animate-pulse">#3 ⚙</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-tertiary/40 rounded p-2 flex flex-col gap-1.5 overflow-hidden relative">
+<div class="absolute inset-0 bg-tertiary/5 animate-pulse"></div>
+<div class="h-2 w-3/5 bg-tertiary/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/60 rounded"></div>
+<div class="h-6 w-full border border-tertiary/60 rounded flex items-center justify-center text-code-xs text-tertiary">OCR SCANNING</div>
+<div class="h-1.5 w-5/6 bg-outline-variant/60 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/60 rounded mt-auto"></div>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary mt-1 font-bold">Page 3 (Active)</span>
+</div>
+<!-- Pages 4 to 12 (Unchecked / Queued) -->
+<!-- Page 4 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#4</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/3 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-2/3 bg-outline-variant/30 rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 4</span>
+</div>
+<!-- Page 5 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#5</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/2 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-8 w-full bg-surface-container-low border border-outline-variant rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 5</span>
+</div>
+<!-- Page 6 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#6</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-2/3 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-4/5 bg-outline-variant/30 rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 6</span>
+</div>
+<!-- Trailing Overflow Indicator -->
+<div class="shrink-0 w-24 h-36 border border-dashed border-outline-variant rounded flex flex-col items-center justify-center text-outline text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[20px] mb-1">more_horiz</span>
+<span>+6 Pages</span>
+</div>
+</div>
+</div>
+<!-- 4-Stage Visual Pipeline Stepper -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded">
+<div class="text-label-md font-label-md text-outline mb-space-sm uppercase tracking-wider">Reconstruction Execution Graph</div>
+<div class="grid grid-cols-4 gap-2 relative">
+<!-- Connecting hairline line behind stages -->
+<div class="absolute top-4 left-6 right-6 h-0.5 bg-outline-variant -z-0"></div>
+<!-- Phase 1: CLAHE Deskew (Green check) -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-500 text-emerald-600 flex items-center justify-center font-bold text-[14px] shadow-sm mb-1.5">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 1: CLAHE Deskew</span>
+<span class="text-code-xs font-code-xs text-emerald-700 font-medium">Binarized &amp; Cleaned</span>
+</div>
+<!-- Phase 2: PaddleOCR Extraction (Cobalt pulsing) -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-[14px] shadow ring-4 ring-primary-container/20 animate-pulse mb-1.5">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-primary font-bold">Phase 2: PaddleOCR</span>
+<span class="text-code-xs font-code-xs text-primary font-semibold">Extracting Glyphs (65%)</span>
+</div>
+<!-- Phase 3: AI Context Gap-Filling -->
+<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
+<span class="text-code-xs font-code-xs">3</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 3: AI Gap-Filling</span>
+<span class="text-code-xs font-code-xs text-outline">Gemini 2.0 Queued</span>
+</div>
+<!-- Phase 4: Word Docx Synthesis -->
+<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
+<span class="text-code-xs font-code-xs">4</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 4: Docx Synthesis</span>
+<span class="text-code-xs font-code-xs text-outline">OpenXML Engine Ready</span>
+</div>
+</div>
+<!-- Animated Progress Bar with percentage and status -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant">
+<div class="flex items-center justify-between text-label-md font-label-md mb-1.5">
+<span class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-ping inline-block"></span>
+                Processing Page 3 of 12 — 65%
+              </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant font-medium">Estimated remaining: 18s</span>
+</div>
+<!-- Bar -->
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full transition-all duration-300 w-[65%] shadow-sm"></div>
+</div>
+</div>
+</div>
+<!-- Collapsible Terminal / Event Log card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-md shadow-sm flex-1 flex flex-col min-h-[160px]">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[16px]">terminal</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Extraction Engine Runtime Stream</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface">Clear</button>
+<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">unfold_less</span>
+                Minimize
+              </button>
+</div>
+</div>
+<!-- Terminal logs list -->
+<div class="font-code-sm text-code-sm space-y-1.5 overflow-y-auto pr-1 flex-1">
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="text-outline select-none">[10:42:01]</span>
+<span class="text-emerald-700 font-medium">CLAHE contrast enhancement completed (0.42s)</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface">
+<span class="text-outline select-none">[10:42:02]</span>
+<span>PaddleOCR detected <strong class="text-primary">14 text blocks</strong>, <strong class="text-primary">2 tables</strong>, 1 header title on page 3</span>
+</div>
+<div class="flex items-start gap-2 text-tertiary">
+<span class="text-outline select-none">[10:42:03]</span>
+<span class="font-medium">OpenRouter Gemini 2.0 Flash queued for table column reconciliation</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="text-outline select-none">[10:42:04]</span>
+<span>Bounding box coordinates mapped to OpenXML Word geometry (DPI translation: 300 -&gt; 72pt)</span>
+</div>
+<div class="flex items-start gap-2 text-primary font-medium animate-pulse">
+<span class="text-outline select-none">[10:42:05]</span>
+<span>Reconciling semantic hierarchy: Converting block #4 to Heading 2...</span>
+</div>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<div class="mt-auto pt-1">
+<button class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded shadow-lg shadow-primary-container/25 flex items-center justify-center gap-2 transition-all duration-150 active:translate-y-0.5">
+<span class="text-[18px]">🚀</span>
+<span>Extract &amp; Reconstruct Word Document</span>
+<span class="ml-2 text-code-xs font-code-xs bg-on-primary/20 px-2 py-0.5 rounded">Ctrl + Enter</span>
+</button>
+</div>
+</section>
+<!-- ================= RIGHT PANE: Configuration Matrix (340px) ================= -->
+<aside class="w-[340px] h-full bg-surface-container-lowest overflow-y-auto p-space-md flex flex-col gap-space-md shrink-0 border-l border-outline-variant">
+<!-- Header -->
+<div class="border-b border-outline-variant pb-space-sm flex items-center justify-between">
+<div>
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface">Configuration Matrix</h2>
+<p class="text-label-sm font-label-sm text-outline">OCR Engine &amp; Word Staging Rules</p>
+</div>
+<span class="material-symbols-outlined text-outline">tune</span>
+</div>
+<!-- Setting 1: Render DPI Slider (150–600 DPI) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-headline-sm font-headline-sm text-on-surface">Render Rasterization DPI</label>
+<span class="text-code-xs font-code-xs font-bold text-primary bg-surface-container px-2 py-0.5 rounded">300 DPI</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Higher values improve mathematical symbols &amp; small fonts.</p>
+<input class="w-full accent-primary-container cursor-pointer mt-1" max="600" min="150" step="50" type="range" value="300"/>
+<div class="flex items-center justify-between text-code-xs font-code-xs text-outline mt-0.5">
+<span>Speed (150 DPI)</span>
+<span class="text-primary font-semibold">Standard (300)</span>
+<span>High Quality (600 DPI)</span>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 2: OCR Language Dropdown -->
+<div class="flex flex-col gap-1.5">
+<label class="text-headline-sm font-headline-sm text-on-surface">OCR Language Model</label>
+<div class="relative">
+<select class="w-full h-8 bg-surface-container-low border border-outline-variant text-body-sm font-body-sm rounded px-2 text-on-surface appearance-none focus:outline-none focus:border-primary">
+<option selected="">English (US &amp; UK) + Latin Characters</option>
+<option>Multilingual (English, German, French, Spanish)</option>
+<option>East Asian (CJK + English Technical)</option>
+<option>Arabic &amp; Semitic Right-to-Left</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">arrow_drop_down</span>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Uses PaddleOCR v2.8 multi-script dictionaries.</p>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 3: AI Gap-Filling Toggle switch (Checked ON) -->
+<div class="bg-surface-container-low border border-outline-variant p-space-sm rounded flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="pr-2">
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm text-on-surface font-semibold">AI Context Gap-Filling</span>
+<span class="text-code-xs font-code-xs bg-tertiary text-on-tertiary px-1 rounded font-bold">LLM</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                Uses OpenRouter LLM to reconstruct broken text &amp; fill empty table cells.
+              </p>
+</div>
+<!-- Toggle Checkbox Switch -->
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-tertiary-container"></div>
+</label>
+</div>
+<!-- Setting 4: AI Model Selector Dropdown -->
+<div class="mt-1 pt-2 border-t border-outline-variant/60">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium block mb-1">Inference Provider &amp; Model:</label>
+<div class="relative">
+<select class="w-full h-8 bg-surface-container-lowest border border-outline-variant text-body-sm font-body-sm rounded px-2 text-on-surface appearance-none focus:outline-none focus:border-tertiary font-medium">
+<option selected="">Gemini 2.0 Flash (Free Tier ⚡)</option>
+<option>Llama 3.3 70B Instruct (High Fidelity)</option>
+<option>DeepSeek V3 (Reasoning &amp; Math Tables)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">expand_more</span>
+</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 5: Docx Formatting Checkbox options -->
+<div class="flex flex-col gap-2">
+<label class="text-headline-sm font-headline-sm text-on-surface">Docx Synthesizer Rules</label>
+<div class="space-y-2">
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Auto-generate Table of Contents (TOC)</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Add Centered 'Page X of Y' Footers</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Preserve Heading Hierarchy &amp; Font Sizes</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Convert detected tables to editable Word tables</span>
+</label>
+</div>
+</div>
+<!-- Output Target Pill -->
+<div class="mt-auto bg-surface-container p-space-sm rounded border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">description</span>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface font-semibold">Target: Microsoft Word</p>
+<p class="text-code-xs font-code-xs text-outline">OpenXML (.docx) Strict</p>
+</div>
+</div>
+<span class="text-code-xs font-code-xs bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded border border-outline-variant">ISO/IEC 29500</span>
+</div>
+</aside>
+</main>
+
+      <!-- ==================== PANE 3: VISUAL PDF SPLITTER & ORGANIZER (Screen 3) ==================== -->
+      <div id="pane-split" class="hidden flex-1 flex overflow-hidden">
+        <main class="flex-1 flex flex-col bg-surface-container-low overflow-hidden">
+<!-- Subheader: Document Context Strip -->
+<div class="h-10 px-space-lg bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-sm">
+<span class="px-1.5 py-0.5 rounded text-code-xs font-code-xs bg-secondary-fixed text-secondary font-medium">PDF 1.7</span>
+<div class="flex items-center gap-1.5 text-headline-sm font-headline-sm text-on-surface">
+<span class="text-outline">Document:</span>
+<span class="font-semibold text-on-surface">Annual_Financial_Report_2025_Final.pdf</span>
+<span class="text-label-sm font-label-sm text-outline ml-1">(16 Pages total • 8.4 MB)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="h-7 px-space-sm bg-surface border border-outline-variant hover:bg-surface-container text-on-surface rounded-lg text-label-sm font-label-sm flex items-center gap-1.5 transition-colors active:translate-y-px">
+<span class="material-symbols-outlined text-outline" data-icon="swap_horiz">swap_horiz</span>
+<span>Replace File</span>
+</button>
+<button class="h-7 w-7 flex items-center justify-center rounded-lg border border-outline-variant text-outline hover:text-on-surface hover:bg-surface" title="Document Properties">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</button>
+</div>
+</div>
+<!-- Action Toolbar Strip across top of Visual Canvas -->
+<div class="h-11 px-space-lg bg-surface border-b border-outline-variant flex items-center justify-between shrink-0">
+<!-- Left Selection and Batch Operation Buttons -->
+<div class="flex items-center gap-space-xs">
+<!-- Select All -->
+<button class="h-7 px-space-sm bg-surface-container-lowest border border-outline-variant hover:bg-surface-container rounded-lg text-label-sm font-label-sm text-on-surface flex items-center gap-1.5 transition-colors active:translate-y-px" id="btn-select-all">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="select_all">select_all</span>
+<span>Select All</span>
+</button>
+<!-- Deselect -->
+<button class="h-7 px-space-sm bg-surface-container-lowest border border-outline-variant hover:bg-surface-container rounded-lg text-label-sm font-label-sm text-on-surface flex items-center gap-1.5 transition-colors active:translate-y-px" id="btn-deselect-all">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="check_box_outline_blank">check_box_outline_blank</span>
+<span>Deselect</span>
+</button>
+<!-- Invert Selection -->
+<button class="h-7 px-space-sm bg-surface-container-lowest border border-outline-variant hover:bg-surface-container rounded-lg text-label-sm font-label-sm text-on-surface flex items-center gap-1.5 transition-colors active:translate-y-px">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="sync_alt">sync_alt</span>
+<span>Invert Selection</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Rotate 90° -->
+<button class="h-7 px-space-sm bg-surface-container-lowest border border-outline-variant hover:bg-surface-container rounded-lg text-label-sm font-label-sm text-on-surface flex items-center gap-1.5 transition-colors active:translate-y-px">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="rotate_right">rotate_right</span>
+<span>Rotate 90°</span>
+</button>
+<!-- Delete Selected (3) - Stirling destructive style badge -->
+<button class="h-7 px-space-sm bg-error-container text-error border border-secondary-fixed-dim hover:bg-error hover:text-on-error rounded-lg text-label-sm font-label-sm flex items-center gap-1.5 transition-colors active:translate-y-px">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+<span>Delete Selected (4)</span>
+</button>
+</div>
+<!-- Right Zoom Controls -->
+<div class="flex items-center gap-space-sm">
+<span class="text-label-sm font-label-sm text-outline">Zoom</span>
+<div class="flex items-center gap-2">
+<button class="text-outline hover:text-on-surface transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+</button>
+<input class="w-24 h-1.5 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" max="150" min="50" type="range" value="100"/>
+<button class="text-outline hover:text-on-surface transition-colors" title="Zoom In">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+<span class="px-2 py-0.5 bg-surface-container-highest border border-outline-variant text-on-surface rounded text-code-xs font-code-xs font-semibold">100%</span>
+</div>
+</div>
+<!-- Interactive Page Grid View: 4-column responsive grid -->
+<div class="flex-1 overflow-y-auto p-space-lg">
+<div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-space-lg max-w-7xl mx-auto">
+<!-- Page 1 (SELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border-2 border-primary shadow-sm p-space-sm flex flex-col items-center transition-all duration-150 hover:shadow-md">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-sm fill-icon" data-icon="check">check</span>
+</div>
+<span class="text-code-xs font-code-xs font-semibold px-2 py-0.5 rounded bg-primary text-on-primary">SELECTED</span>
+</div>
+<!-- Page Thumbnail Simulation -->
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-2">
+<div class="h-3 w-2/3 bg-surface-container-high rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-5/6 bg-surface-container rounded"></div>
+<div class="h-1.5 w-4/6 bg-surface-container rounded"></div>
+<div class="mt-4 grid grid-cols-2 gap-1.5">
+<div class="h-10 bg-surface-container-low rounded border border-outline-variant"></div>
+<div class="h-10 bg-surface-container-low rounded border border-outline-variant"></div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>OMNIDOC-2025</span>
+<span>SEC-1</span>
+</div>
+<!-- Hover Action Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm" title="Rotate Page">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm" title="Quick Preview">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm" title="Delete Page">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Page Number Badge -->
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-semibold text-primary">Page #1</span>
+<span class="text-code-xs font-code-xs text-outline">Cover &amp; Summary</span>
+</div>
+</div>
+<!-- Page 2 (SELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border-2 border-primary shadow-sm p-space-sm flex flex-col items-center transition-all duration-150 hover:shadow-md">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-sm fill-icon" data-icon="check">check</span>
+</div>
+<span class="text-code-xs font-code-xs font-semibold px-2 py-0.5 rounded bg-primary text-on-primary">SELECTED</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2.5 w-1/2 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-11/12 bg-surface-container rounded"></div>
+<div class="h-1.5 w-3/4 bg-surface-container rounded"></div>
+<div class="h-16 w-full mt-3 bg-surface-container-low rounded border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-xs" data-icon="table_chart">table_chart</span>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>BALANCE SHEET</span>
+<span>P-02</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-semibold text-primary">Page #2</span>
+<span class="text-code-xs font-code-xs text-outline">Balance Sheet</span>
+</div>
+</div>
+<!-- Page 3 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-1/3 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-4/5 bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-3/4 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>AUDIT NOTE</span>
+<span>P-03</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #3</span>
+<span class="text-code-xs font-code-xs text-outline">Auditor Report</span>
+</div>
+</div>
+<!-- Page 4 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-2/5 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-11/12 bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>INCOME STAT</span>
+<span>P-04</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #4</span>
+<span class="text-code-xs font-code-xs text-outline">Statement of Ops</span>
+</div>
+</div>
+<!-- Page 5 (SELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border-2 border-primary shadow-sm p-space-sm flex flex-col items-center transition-all duration-150 hover:shadow-md">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-sm fill-icon" data-icon="check">check</span>
+</div>
+<span class="text-code-xs font-code-xs font-semibold px-2 py-0.5 rounded bg-primary text-on-primary">SELECTED</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2.5 w-3/4 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-5/6 bg-surface-container rounded"></div>
+<div class="h-14 w-full mt-2 bg-surface-container-low rounded border border-outline-variant"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>CASH FLOW</span>
+<span>P-05</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-semibold text-primary">Page #5</span>
+<span class="text-code-xs font-code-xs text-outline">Cash Flow Plan</span>
+</div>
+</div>
+<!-- Page 6 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-1/2 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-2/3 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>EQUITY STAT</span>
+<span>P-06</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #6</span>
+<span class="text-code-xs font-code-xs text-outline">Shareholders Equity</span>
+</div>
+</div>
+<!-- Page 7 (SELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border-2 border-primary shadow-sm p-space-sm flex flex-col items-center transition-all duration-150 hover:shadow-md">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-sm fill-icon" data-icon="check">check</span>
+</div>
+<span class="text-code-xs font-code-xs font-semibold px-2 py-0.5 rounded bg-primary text-on-primary">SELECTED</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2.5 w-1/3 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-4/5 bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>NOTES DISCL</span>
+<span>P-07</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-semibold text-primary">Page #7</span>
+<span class="text-code-xs font-code-xs text-outline">Notes &amp; Disclosures</span>
+</div>
+</div>
+<!-- Page 8 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-2/5 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-3/4 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>NOTES CONT</span>
+<span>P-08</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #8</span>
+<span class="text-code-xs font-code-xs text-outline">Tax Accounting</span>
+</div>
+</div>
+<!-- Page 9 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-3/5 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-1/2 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>LEGAL REVIEW</span>
+<span>P-09</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #9</span>
+<span class="text-code-xs font-code-xs text-outline">Litigation &amp; Risk</span>
+</div>
+</div>
+<!-- Page 10 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-1/2 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-5/6 bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>SEGMENT RPT</span>
+<span>P-10</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #10</span>
+<span class="text-code-xs font-code-xs text-outline">Segment Breakdown</span>
+</div>
+</div>
+<!-- Page 11 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-1/3 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-3/4 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>DIRECTORS</span>
+<span>P-11</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #11</span>
+<span class="text-code-xs font-code-xs text-outline">Governance Board</span>
+</div>
+</div>
+<!-- Page 12 (UNSELECTED) -->
+<div class="group relative bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xs p-space-sm flex flex-col items-center transition-all duration-150 hover:border-outline hover:shadow-sm">
+<div class="w-full flex items-center justify-between mb-space-xs z-10">
+<div class="w-5 h-5 rounded border border-outline-variant bg-surface hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<span class="text-code-xs font-code-xs text-outline">READY</span>
+</div>
+<div class="w-full aspect-[1/1.414] bg-white border border-outline-variant rounded p-3 flex flex-col justify-between relative overflow-hidden shadow-xs">
+<div class="space-y-1.5">
+<div class="h-2 w-2/5 bg-surface-container-high rounded mb-2"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-full bg-surface-container rounded"></div>
+<div class="h-1.5 w-1/2 bg-surface-container rounded"></div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center text-code-xs text-outline">
+<span>APPENDIX A</span>
+<span>P-12</span>
+</div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-inverse-surface/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center gap-2">
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="rotate_right">rotate_right</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-error-container text-error hover:bg-error hover:text-on-error flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-space-xs flex items-center justify-between w-full px-1">
+<span class="text-label-md font-label-md font-medium text-on-surface">Page #12</span>
+<span class="text-code-xs font-code-xs text-outline">Appendix &amp; Index</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Canvas Bottom Status Footbar -->
+<footer class="h-8 px-space-lg bg-surface border-t border-outline-variant flex items-center justify-between shrink-0 text-label-sm font-label-sm text-outline">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span class="text-on-surface">4 of 16 Pages Selected</span>
+</span>
+<span class="text-outline-variant">|</span>
+<span>Engine: Stirling-PDF Native C++ V8.4</span>
+</div>
+<div class="flex items-center gap-space-md font-code-sm">
+<span>Memory: 142 MB</span>
+<span>DPI: 300 Hi-Res</span>
+</div>
+</footer>
+</main>
+        <aside class="w-80 bg-surface-container-lowest border-l border-outline-variant flex flex-col justify-between shrink-0 z-20 overflow-y-auto">
+<div class="p-space-lg space-y-space-lg">
+<!-- Panel Header -->
+<div class="border-b border-outline-variant pb-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="text-headline-md font-headline-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary" data-icon="alt_route">alt_route</span>
+<span>Splitting Strategy</span>
+</h3>
+<span class="px-1.5 py-0.5 rounded text-code-xs font-code-xs bg-surface-container text-primary font-semibold">CONFIG</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline mt-1">Configure batch page extraction parameters and naming syntax.</p>
+</div>
+<!-- Strategy Tabs -->
+<div class="space-y-space-sm">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-semibold">SEPARATION MODE</label>
+<div class="grid grid-cols-1 gap-1.5 bg-surface-container-low p-1 rounded-xl border border-outline-variant">
+<!-- Tab A: Split into Single Pages (Active) -->
+<button class="w-full p-space-sm bg-surface-container-lowest border border-primary rounded-lg text-left shadow-xs flex items-start gap-2.5">
+<div class="w-4 h-4 rounded-full border-4 border-primary bg-white shrink-0 mt-0.5"></div>
+<div>
+<div class="text-headline-sm font-headline-sm text-primary">Split into Single Pages</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">Exports every selected page as an individual PDF document.</div>
+</div>
+</button>
+<!-- Tab B: Custom Ranges -->
+<button class="w-full p-space-sm bg-transparent hover:bg-surface-container rounded-lg text-left flex items-start gap-2.5 transition-colors">
+<div class="w-4 h-4 rounded-full border border-outline shrink-0 mt-0.5"></div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface">Custom Ranges</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">Extract specific continuous sequences into segmented blocks.</div>
+</div>
+</button>
+<!-- Tab C: Split by File Size -->
+<button class="w-full p-space-sm bg-transparent hover:bg-surface-container rounded-lg text-left flex items-start gap-2.5 transition-colors">
+<div class="w-4 h-4 rounded-full border border-outline shrink-0 mt-0.5"></div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface">Split by File Size</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">Partition into equal files under a target byte ceiling.</div>
+</div>
+</button>
+</div>
+</div>
+<!-- Settings Group -->
+<div class="space-y-space-md pt-space-xs">
+<!-- Destination Field -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Output Destination</label>
+<span class="text-code-xs font-code-xs text-outline">Local Storage</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="flex-1 h-8 px-2 bg-surface border border-outline-variant rounded-lg flex items-center text-code-xs font-code-xs text-on-surface truncate">
+<span class="material-symbols-outlined text-sm text-outline mr-1.5" data-icon="folder_open">folder_open</span>
+                Desktop/Split_Output/
+              </div>
+<button class="h-8 px-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant rounded-lg text-label-sm font-label-sm transition-colors active:translate-y-px shrink-0">
+                Browse...
+              </button>
+</div>
+</div>
+<!-- Naming Pattern Field -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Naming Pattern</label>
+<button class="text-code-xs font-code-xs text-primary hover:underline">Insert Tag</button>
+</div>
+<div class="h-8 px-2 bg-white border border-outline-variant rounded-lg flex items-center focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+<input class="w-full bg-transparent border-0 p-0 text-code-xs font-code-xs text-on-surface focus:outline-none focus:ring-0" type="text" value="[OriginalName]_Page_[#].pdf"/>
+</div>
+<p class="text-code-xs font-code-xs text-outline">Preview: Annual_Financial_Report_2025_Final_Page_1.pdf</p>
+</div>
+<!-- Extraction Metadata Options -->
+<div class="space-y-2 pt-2 border-t border-outline-variant">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Processing Options</label>
+<div class="space-y-1.5">
+<label class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface cursor-pointer">
+<input checked="" class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>Preserve Embedded Bookmarks</span>
+</label>
+<label class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface cursor-pointer">
+<input checked="" class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>Retain PDF/A Compliance Profiles</span>
+</label>
+<label class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface cursor-pointer">
+<input class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>Compress Output Streams (Zstandard)</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Panel Action Drawer -->
+<div class="p-space-lg bg-surface border-t border-outline-variant space-y-space-md">
+<!-- Summary Callout Box -->
+<div class="p-space-sm bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-2 text-primary font-semibold text-headline-sm font-headline-sm">
+<span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span>
+<span>Batch Plan Ready</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">
+<span class="font-semibold text-on-surface">4 pages selected</span> to export as individual PDF documents.
+          </p>
+</div>
+<!-- Prominent Cobalt Blue CTA: Export Split Files -->
+<button class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary-container rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:translate-y-px">
+<span class="material-symbols-outlined text-lg fill-icon" data-icon="content_cut">content_cut</span>
+<span>Export Split Files</span>
+</button>
+</div>
+</aside>
+      </div>
+
+      <!-- ==================== PANE 4: PDF MERGE & ASSEMBLY WORKBENCH (Screen 4) ==================== -->
+      <div id="pane-merge" class="hidden flex-1 flex flex-col overflow-hidden">
+        <div class="h-10 bg-surface-container-low border-b border-outline-variant flex items-center justify-between px-4 shrink-0">
+<div class="flex items-center gap-3">
+<!-- View Mode Segmented Controls -->
+<div class="inline-flex p-0.5 bg-surface-container rounded border border-outline-variant">
+<button class="px-3 py-1 bg-surface-container-lowest text-primary shadow-sm rounded text-label-sm font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">call_merge</span>
+            PDF Merge &amp; Assembly
+          </button>
+<button class="px-3 py-1 text-on-surface-variant hover:text-on-surface rounded text-label-sm font-medium flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[14px]">call_split</span>
+            Split &amp; Extract
+          </button>
+<button class="px-3 py-1 text-on-surface-variant hover:text-on-surface rounded text-label-sm font-medium flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[14px]">layers</span>
+            Overlay &amp; Watermark
+          </button>
+</div>
+<span class="text-outline-variant">|</span>
+<!-- Engine Status Micro Badge -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant text-code-xs font-code-xs text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span>
+          Stirling Core: <span class="font-semibold text-on-surface">Online (v1.18.2)</span>
+</div>
+</div>
+<!-- Quick Action Utility Strip -->
+<div class="flex items-center gap-2">
+<button class="h-7 px-2.5 rounded bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-label-sm font-medium flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[15px]">sort</span>
+          Auto-Sort A-Z
+        </button>
+<button class="h-7 px-2.5 rounded bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-label-sm font-medium flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[15px]">restart_alt</span>
+          Reset Order
+        </button>
+<button class="h-7 px-2.5 rounded bg-surface-container-lowest border border-outline-variant hover:bg-error-container text-label-sm font-medium flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[15px]">delete_sweep</span>
+          Clear All
+        </button>
+</div>
+</div>
+        <div class="flex-1 flex overflow-hidden">
+          <main class="flex-1 flex flex-col bg-background overflow-y-auto relative">
+<div class="max-w-4xl w-full mx-auto p-6 flex flex-col gap-6">
+<!-- Canvas Header -->
+<div class="flex flex-col gap-1 pb-4 border-b border-outline-variant">
+<div class="flex items-center justify-between">
+<h1 class="text-headline-xl font-headline-xl text-on-surface font-semibold tracking-tight">
+                Merge &amp; Sequence Document Queue
+              </h1>
+<span class="text-code-xs font-code-xs px-2 py-1 rounded bg-[#fef2f2] text-secondary border border-secondary/20 font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Stirling Native PDF Pipeline
+              </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Drag cards to re-order the merging hierarchy. Top-most file will form the initial pages.
+            </p>
+</div>
+<!-- Drag-and-Drop Queue List Container -->
+<div class="flex flex-col gap-3.5" id="queue-container">
+<!-- Card 1 -->
+<div class="group flex items-center justify-between p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-all duration-150">
+<!-- Left Item Details & Drag Handle -->
+<div class="flex items-center gap-4">
+<!-- Six-dot drag handle icon -->
+<button class="cursor-grab active:cursor-grabbing text-outline group-hover:text-primary transition-colors p-1" title="Drag to re-order">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<!-- Page Index Stamp -->
+<div class="w-6 h-6 rounded bg-surface-container text-on-surface-variant font-code-sm text-code-xs flex items-center justify-center font-bold">
+                  01
+                </div>
+<!-- Mini PDF Thumbnail with red icon -->
+<div class="relative w-12 h-16 bg-surface-container-low border border-outline-variant rounded flex flex-col items-center justify-between p-1.5 overflow-hidden shadow-xs">
+<span class="text-code-xs font-code-xs text-secondary font-bold self-start">PDF</span>
+<div class="w-full flex flex-col gap-1 opacity-40">
+<div class="h-1 bg-outline-variant rounded-full w-4/5"></div>
+<div class="h-1 bg-outline-variant rounded-full w-full"></div>
+<div class="h-1 bg-outline-variant rounded-full w-2/3"></div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span>
+</div>
+<!-- File Meta Information -->
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-2">
+<span class="text-body-md font-headline-md font-semibold text-on-surface">
+                      01_Executive_Summary_Signed.pdf
+                    </span>
+<span class="text-code-xs font-code-xs px-1.5 py-0.2 rounded bg-surface-container text-primary font-medium">
+                      Source A
+                    </span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[14px]">description</span>
+                      6 Pages
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 font-code-sm text-code-xs">
+<span class="material-symbols-outlined text-[14px]">hard_drive</span>
+                      2.8 MB
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="text-[#059669] flex items-center gap-0.5 text-code-xs">
+<span class="material-symbols-outlined text-[13px]">verified</span> Digital Signature Valid
+                    </span>
+</div>
+</div>
+</div>
+<!-- Action Controls: [Move Down], [✕ Remove] -->
+<div class="flex items-center gap-1.5">
+<button class="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Move Down">
+<span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+                  Move Down
+                </button>
+<div class="h-5 w-px bg-outline-variant mx-1"></div>
+<button class="h-8 px-2.5 bg-surface-container-lowest hover:bg-error-container text-secondary border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Remove from queue">
+<span class="material-symbols-outlined text-[15px]">close</span>
+                  Remove
+                </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex items-center justify-between p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-all duration-150">
+<!-- Left Item Details & Drag Handle -->
+<div class="flex items-center gap-4">
+<!-- Six-dot drag handle icon -->
+<button class="cursor-grab active:cursor-grabbing text-outline group-hover:text-primary transition-colors p-1" title="Drag to re-order">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<!-- Page Index Stamp -->
+<div class="w-6 h-6 rounded bg-surface-container text-on-surface-variant font-code-sm text-code-xs flex items-center justify-center font-bold">
+                  02
+                </div>
+<!-- Mini PDF Thumbnail with red icon -->
+<div class="relative w-12 h-16 bg-surface-container-low border border-outline-variant rounded flex flex-col items-center justify-between p-1.5 overflow-hidden shadow-xs">
+<span class="text-code-xs font-code-xs text-secondary font-bold self-start">PDF</span>
+<div class="w-full flex flex-col gap-1 opacity-40">
+<div class="h-1 bg-outline-variant rounded-full w-full"></div>
+<div class="h-1 bg-outline-variant rounded-full w-4/5"></div>
+<div class="h-1 bg-outline-variant rounded-full w-3/4"></div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span>
+</div>
+<!-- File Meta Information -->
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-2">
+<span class="text-body-md font-headline-md font-semibold text-on-surface">
+                      02_Financial_Tables_Q1-Q4.pdf
+                    </span>
+<span class="text-code-xs font-code-xs px-1.5 py-0.2 rounded bg-surface-container text-primary font-medium">
+                      Spreadsheets
+                    </span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[14px]">description</span>
+                      24 Pages
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 font-code-sm text-code-xs">
+<span class="material-symbols-outlined text-[14px]">hard_drive</span>
+                      8.1 MB
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant flex items-center gap-0.5 text-code-xs">
+<span class="material-symbols-outlined text-[13px]">table_chart</span> 14 Structured Tables
+                    </span>
+</div>
+</div>
+</div>
+<!-- Action Controls: [Move Up] [Move Down], [✕ Remove] -->
+<div class="flex items-center gap-1.5">
+<button class="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Move Up">
+<span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+                  Move Up
+                </button>
+<button class="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Move Down">
+<span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+                  Move Down
+                </button>
+<div class="h-5 w-px bg-outline-variant mx-1"></div>
+<button class="h-8 px-2.5 bg-surface-container-lowest hover:bg-error-container text-secondary border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Remove from queue">
+<span class="material-symbols-outlined text-[15px]">close</span>
+                  Remove
+                </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex items-center justify-between p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-all duration-150">
+<!-- Left Item Details & Drag Handle -->
+<div class="flex items-center gap-4">
+<!-- Six-dot drag handle icon -->
+<button class="cursor-grab active:cursor-grabbing text-outline group-hover:text-primary transition-colors p-1" title="Drag to re-order">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<!-- Page Index Stamp -->
+<div class="w-6 h-6 rounded bg-surface-container text-on-surface-variant font-code-sm text-code-xs flex items-center justify-center font-bold">
+                  03
+                </div>
+<!-- Mini PDF Thumbnail with red icon -->
+<div class="relative w-12 h-16 bg-surface-container-low border border-outline-variant rounded flex flex-col items-center justify-between p-1.5 overflow-hidden shadow-xs">
+<span class="text-code-xs font-code-xs text-secondary font-bold self-start">PDF</span>
+<div class="w-full flex flex-col gap-1 opacity-40">
+<div class="h-1 bg-outline-variant rounded-full w-full"></div>
+<div class="h-1 bg-outline-variant rounded-full w-1/2"></div>
+<div class="h-1 bg-outline-variant rounded-full w-3/4"></div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span>
+</div>
+<!-- File Meta Information -->
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-2">
+<span class="text-body-md font-headline-md font-semibold text-on-surface">
+                      03_Auditor_Appendices.pdf
+                    </span>
+<span class="text-code-xs font-code-xs px-1.5 py-0.2 rounded bg-surface-container text-primary font-medium">
+                      Annexure
+                    </span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[14px]">description</span>
+                      18 Pages
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 font-code-sm text-code-xs">
+<span class="material-symbols-outlined text-[14px]">hard_drive</span>
+                      3.3 MB
+                    </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant flex items-center gap-0.5 text-code-xs">
+<span class="material-symbols-outlined text-[13px]">font_download</span> Embedded TrueType
+                    </span>
+</div>
+</div>
+</div>
+<!-- Action Controls: [Move Up], [✕ Remove] -->
+<div class="flex items-center gap-1.5">
+<button class="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Move Up">
+<span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+                  Move Up
+                </button>
+<div class="h-5 w-px bg-outline-variant mx-1"></div>
+<button class="h-8 px-2.5 bg-surface-container-lowest hover:bg-error-container text-secondary border border-outline-variant rounded-lg text-label-sm font-label-sm flex items-center gap-1 transition-colors active:translate-y-px" title="Remove from queue">
+<span class="material-symbols-outlined text-[15px]">close</span>
+                  Remove
+                </button>
+</div>
+</div>
+</div>
+<!-- Add More Files drop banner at the bottom of queue -->
+<div class="border-2 border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest hover:bg-surface-container-low rounded-xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container group-hover:bg-primary-container text-outline group-hover:text-on-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-headline-sm font-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
+                + Drop additional PDF files or click to add
+              </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">
+                Supports batch ingestion up to 500 MB per container (PDF, PDF/A, Encrypted)
+              </span>
+</div>
+</div>
+<!-- Pipeline Execution Sequence Visualizer (Bonus Contextual Ribbon) -->
+<div class="p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface">Assembly Graph Pipeline</span>
+<span class="text-code-xs font-code-xs text-on-surface-variant">Ingest [3 docs] ➔ Reindex Pages [1..48] ➔ Synthesize TOC ➔ Linearize Stream</span>
+</div>
+</div>
+<span class="text-code-xs font-code-xs text-[#059669] bg-[#ecfdf5] border border-[#059669]/20 px-2 py-0.5 rounded font-medium">
+              Structure Ready
+            </span>
+</div>
+</div>
+</main>
+          <aside class="w-80 bg-surface-container-lowest border-l border-outline-variant flex flex-col justify-between p-space-md shrink-0 h-full overflow-y-auto">
+<div class="flex flex-col gap-5">
+<!-- Panel Header -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<span class="text-headline-md font-headline-md text-on-surface font-semibold">Assembly Inspector</span>
+</div>
+<span class="text-code-xs font-code-xs text-outline px-1.5 py-0.5 rounded bg-surface-container">MOD_04</span>
+</div>
+<!-- Summary Card -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant flex flex-col gap-2">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">Queue Metrics</span>
+<div class="text-headline-sm font-headline-sm text-on-surface font-semibold">
+              3 files selected · 48 total pages · 14.2 MB
+            </div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-1 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between items-center text-code-xs font-code-xs text-on-surface-variant pt-1">
+<span>Memory Footprint: 28.4 MB</span>
+<span class="text-[#059669]">Pass: Zero Faults</span>
+</div>
+</div>
+<!-- Target PDF Name Input -->
+<div class="flex flex-col gap-1.5">
+<label class="text-label-sm font-label-sm font-semibold text-on-surface flex items-center justify-between" for="target-filename">
+<span>Target PDF Name</span>
+<span class="text-code-xs font-code-xs text-outline">.pdf suffix required</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-outline text-[16px]">edit_document</span>
+<input class="w-full h-8 pl-8 pr-3 bg-surface-container-lowest border border-outline-variant rounded-lg text-code-sm font-code-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all" id="target-filename" type="text" value="Merged_OmniDoc_Export_2026.pdf"/>
+</div>
+</div>
+<!-- Merging Options Checkboxes -->
+<div class="flex flex-col gap-2.5 pt-2">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
+              Stirling Assembly Engine Rules
+            </span>
+<div class="flex flex-col gap-2 bg-surface-container-lowest p-1 rounded-lg">
+<!-- Option 1: Linearize for Fast Web Viewing (Stirling engine) -->
+<label class="flex items-start gap-2.5 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-medium text-on-surface leading-snug">
+                    Linearize for Fast Web Viewing (Stirling engine)
+                  </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant">
+                    Optimizes byte-serving for instant page 1 render in browsers
+                  </span>
+</div>
+</label>
+<!-- Option 2: Auto-Bookmark each document's original filename as TOC entry -->
+<label class="flex items-start gap-2.5 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-medium text-on-surface leading-snug">
+                    Auto-Bookmark each document's original filename as TOC entry
+                  </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant">
+                    Generates native interactive PDF bookmarks tree
+                  </span>
+</div>
+</label>
+<!-- Option 3: Normalize Page Dimensions to Letter / A4 -->
+<label class="flex items-start gap-2.5 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-medium text-on-surface leading-snug">
+                    Normalize Page Dimensions to Letter / A4
+                  </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant">
+                    Maintains consistent viewport geometry across all joined pages
+                  </span>
+</div>
+</label>
+<!-- Option 4: Discard Duplicate Fonts & Metadata (unchecked) -->
+<label class="flex items-start gap-2.5 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="mt-0.5 w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-medium text-on-surface leading-snug">
+                    Discard Duplicate Fonts &amp; Metadata
+                  </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant">
+                    Deep clean redundant glyph sets to reduce final output size
+                  </span>
+</div>
+</label>
+</div>
+</div>
+<!-- Compliance Metadata Preview Callout -->
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span>Target format compliance: <strong>PDF/A-2b ISO 19005-2</strong></span>
+</div>
+</div>
+<!-- Panel Footer & Primary CTA Button -->
+<div class="pt-4 border-t border-outline-variant flex flex-col gap-2">
+<!-- Primary CTA Button: Large Cobalt Blue button -->
+<button class="w-full h-10 bg-primary-container hover:bg-primary text-on-primary rounded-xl text-headline-sm font-headline-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:translate-y-px">
+<span class="material-symbols-outlined text-[18px]">link</span>
+            Merge into Single PDF
+          </button>
+<div class="flex items-center justify-between text-code-xs font-code-xs text-outline px-1">
+<span>Engine: Stirling-Core 64-bit</span>
+<span>Est. build time: &lt; 1.4s</span>
+</div>
+</div>
+</aside>
+        </div>
+      </div>
+
+      <!-- ==================== PANE 5: BATCH PROCESSING ENGINE (Screen 5) ==================== -->
+      <div id="pane-batch" class="hidden flex-1 flex overflow-hidden">
+        <main class="flex-1 flex flex-col min-w-0 bg-surface-container-lowest overflow-hidden">
+<!-- Top Folder Selector Banner -->
+<section class="border-b border-outline-variant bg-surface px-space-md py-space-sm flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm flex-1">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="folder_open">folder_open</span>
+<div class="flex flex-col">
+<span class="text-code-xs font-code-xs text-outline uppercase tracking-wider">Source Ingestion Directory</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant px-space-sm py-1 rounded w-96 shadow-sm">
+<span class="material-symbols-outlined text-outline text-label-sm mr-1" data-icon="terminal">terminal</span>
+<input class="font-code-sm text-code-sm text-on-surface bg-transparent border-none p-0 w-full focus:ring-0 outline-none" readonly="" type="text" value="C:/Scanned_Archive_2026/"/>
+</div>
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm" data-icon="drive_folder_upload">drive_folder_upload</span>
+                  Browse Folder
+                </button>
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                  ↻ Rescan
+                </button>
+</div>
+</div>
+</div>
+<!-- File Count Status Badge -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome_motion">auto_awesome_motion</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">24 Files Detected</span>
+</div>
+</section>
+<!-- Batch Control Toolbar -->
+<section class="bg-surface-container-low border-b border-outline-variant px-space-md py-space-xs flex items-center justify-between">
+<!-- Control Buttons Cluster -->
+<div class="flex items-center gap-space-xs">
+<!-- [▶ Start All (Primary solid blue)] -->
+<button class="bg-primary-container text-on-primary-container hover:bg-primary text-label-sm font-label-sm font-semibold px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm font-semibold" data-icon="play_arrow">play_arrow</span>
+<span>Start All</span>
+</button>
+<!-- [⏸ Pause] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="pause">pause</span>
+<span>Pause</span>
+</button>
+<!-- [⏹ Cancel] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-error-container hover:text-on-error-container text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="stop">stop</span>
+<span>Cancel</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- [📁 Open Output Folder] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="folder">folder</span>
+<span>Open Output Folder</span>
+</button>
+</div>
+<!-- Total Batch Progress Indicator -->
+<div class="flex items-center gap-space-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Total Batch Progress: <strong class="text-on-surface font-semibold">72%</strong></span>
+<!-- Graphical Progress Bar -->
+<div class="w-36 bg-surface-container-highest rounded-full h-2 overflow-hidden border border-outline-variant">
+<div class="bg-primary h-full rounded-full transition-all duration-300" style="width: 72%;"></div>
+</div>
+<span class="text-code-xs font-code-xs text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant font-medium">
+              17/24 Complete
+            </span>
+</div>
+</section>
+<!-- Batch Queue Data Table -->
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<!-- Table Header -->
+<thead class="sticky top-0 bg-surface-container border-b border-outline-variant z-10">
+<tr>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-40">Status</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">File Name</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-32">Detected Pages</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-52">AI Engine / Mode</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-48">Execution Time / Progress</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-36 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-on-surface">
+<!-- Row 1: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container-low text-primary border border-outline-variant font-semibold">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check_circle">check_circle</span>
+                    Completed
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-medium text-on-surface hover:underline cursor-pointer">Tax_Returns_2025_Scan.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">12 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-tertiary border border-outline-variant">
+<span class="material-symbols-outlined text-xs" data-icon="neurology">neurology</span>
+                    PaddleOCR + Gemini 2.0
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-on-surface-variant">8.4s (Done)</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container text-primary hover:bg-surface-container-high transition-colors">View Docx</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Log</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container-low text-primary border border-outline-variant font-semibold">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check_circle">check_circle</span>
+                    Completed
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-medium text-on-surface hover:underline cursor-pointer">Vendor_Master_Agreement.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">6 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-on-surface border border-outline-variant">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="speed">speed</span>
+                    Fast Stirling OCR
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-on-surface-variant">3.1s (Done)</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container text-primary hover:bg-surface-container-high transition-colors">View Docx</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Log</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Blue animated spinner 'In Progress' -->
+<tr class="bg-surface-container-low/60 hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-code-xs font-code-xs bg-primary text-on-primary font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs animate-spin-custom" data-icon="sync">sync</span>
+                    In Progress
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">Annual_Audit_Report_2024.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm font-medium text-on-surface">38 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed-variant px-1.5 py-0.5 rounded text-code-xs font-code-xs font-medium border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="psychology">psychology</span>
+                    PaddleOCR + DeepSeek V3
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between text-code-xs font-code-xs">
+<span class="font-semibold text-primary">Page 22/38</span>
+<span class="text-on-surface-variant font-semibold">58%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface transition-colors shadow-sm">Pause</button>
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim transition-colors">Abort</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Queued -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100 opacity-90">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container text-on-surface border border-outline-variant font-medium">
+<span class="material-symbols-outlined text-xs text-outline" data-icon="schedule">schedule</span>
+                    Queued
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface">Medical_Records_Batch_A.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">14 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-tertiary border border-outline-variant">
+<span class="material-symbols-outlined text-xs" data-icon="neurology">neurology</span>
+                    PaddleOCR + Gemini 2.0
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-outline italic">Waiting in thread #2</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-outline hover:text-secondary transition-colors">Cancel</button>
+</td>
+</tr>
+<!-- Row 5: Queued -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100 opacity-90">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container text-on-surface border border-outline-variant font-medium">
+<span class="material-symbols-outlined text-xs text-outline" data-icon="schedule">schedule</span>
+                    Queued
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface">Logistics_Waybills_Q3.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">9 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-on-surface border border-outline-variant">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="speed">speed</span>
+                    Fast Stirling OCR
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-outline italic">Waiting in thread #3</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-outline hover:text-secondary transition-colors">Cancel</button>
+</td>
+</tr>
+<!-- Row 6: Red warning badge 'Error: Password Protected' -->
+<tr class="bg-error-container/20 hover:bg-error-container/30 transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-secondary-fixed text-on-secondary-fixed font-semibold border border-secondary/20">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="lock">lock</span>
+                    Error: Password Protected
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="lock_clock">lock_clock</span>
+<span class="font-code-sm text-code-sm font-semibold text-secondary">Confidential_Payroll_Dec.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">4 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-outline border border-outline-variant">
+                    Auto-Detect
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-secondary font-medium">Decryption Key Required</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary text-on-secondary hover:bg-secondary-container transition-colors shadow-sm font-medium">Unlock</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Skip</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Terminal Status Bar -->
+<footer class="h-7 bg-surface-container-low border-t border-outline-variant px-space-md flex items-center justify-between text-label-sm text-outline shrink-0">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1 text-code-xs font-code-xs text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block animate-pulse"></span>
+              PaddleOCR + DeepSeek V3 Processing Thread #1 (Active)
+            </span>
+<span class="text-code-xs font-code-xs">|</span>
+<span class="text-code-xs font-code-xs">Engine Profile: High Fidelity Multi-Column Docx Synthesis</span>
+</div>
+<div class="flex items-center gap-space-sm text-code-xs font-code-xs">
+<span>Disk I/O: 42.8 MB/s</span>
+<span>•</span>
+<span>Batch ID: #B-88392-CL</span>
+</div>
+</footer>
+</main>
+        <aside class="w-[300px] border-l border-outline-variant bg-surface p-space-md flex flex-col gap-space-md overflow-y-auto shrink-0 z-10">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-headline-sm" data-icon="monitoring">monitoring</span>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Pipeline Telemetry</h3>
+</div>
+<span class="text-code-xs font-code-xs text-outline">Real-time</span>
+</div>
+<!-- Metric Card 1: Total Ingestion -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="inventory_2">inventory_2</span>
+              Total Ingestion
+            </span>
+<span class="text-code-xs font-code-xs text-primary font-medium">Batch Session</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-surface font-bold">24 Files <span class="text-label-md font-label-md text-outline font-normal">(340 Pages)</span></div>
+<p class="text-code-xs font-code-xs text-outline mt-1">Stirling-PDF Ingestion Buffer Clean</p>
+</div>
+<!-- Metric Card 2: Elapsed Runtime & ETA -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="timer">timer</span>
+              Elapsed Runtime
+            </span>
+<span class="text-label-sm font-label-sm text-outline">ETA: <strong class="text-primary font-semibold">~01:15</strong></span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl text-on-surface font-bold font-code-sm">03:42</span>
+<span class="text-code-xs font-code-xs bg-surface-container text-on-surface px-1.5 py-0.5 rounded font-medium">4.2 pps avg</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1 mt-2">
+<div class="bg-primary h-full rounded-full" style="width: 74%;"></div>
+</div>
+</div>
+<!-- Metric Card 3: Success Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span>
+              Success Rate
+            </span>
+<span class="text-code-xs font-code-xs text-on-surface font-semibold">95%</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">23/24 OK <span class="text-label-sm font-label-sm text-secondary font-medium">(1 Locked)</span></div>
+<div class="flex gap-1 mt-2">
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 w-4 bg-secondary rounded-full"></div>
+</div>
+</div>
+<!-- Hardware & Workers Utilization Card -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between border-b border-outline-variant pb-1">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="developer_board">developer_board</span>
+              Hardware &amp; Workers
+            </span>
+<span class="text-code-xs font-code-xs text-primary font-semibold">ONLINE</span>
+</div>
+<!-- CPU Threads -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">CPU Threads</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">6 of 8 Active (78%)</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 78%;"></div>
+</div>
+</div>
+<!-- RAM Allocation -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">RAM Allocation</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">4.2 GB / 16.0 GB</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 26%;"></div>
+</div>
+</div>
+<!-- GPU VRAM (CUDA) -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">GPU VRAM (CUDA)</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">2.1 GB / 8.0 GB</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 26.25%;"></div>
+</div>
+</div>
+<!-- Local Stirling-PDF Engine Health -->
+<div class="mt-1 pt-space-xs border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium">Stirling-PDF Engine</span>
+</div>
+<span class="text-code-xs font-code-xs text-primary font-medium">Socket 8080 Active</span>
+</div>
+</div>
+<!-- Quick Config Accordion / Notice -->
+<div class="mt-auto bg-surface-container-low border border-outline-variant p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5" data-icon="info">info</span>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface">Background Auto-Save</span>
+<p class="text-code-xs font-code-xs text-outline leading-tight mt-0.5">Converted docx files will mirror the source folder directory tree automatically.</p>
+</div>
+</div>
+</aside>
+      </div>
+
+      <!-- ==================== 1-Click Auto-Fix Floating Action Button ==================== -->
+      <div class="absolute bottom-5 right-5 z-40">
+        <button onclick="switchTab('ocr'); window.runOCRSimulation();" class="h-11 px-4 rounded-full bg-primary-container hover:bg-primary text-on-primary font-semibold text-[13px] flex items-center gap-2 shadow-lg hover:shadow-xl btn-action ring-4 ring-primary/20">
+          <span class="material-symbols-outlined text-[20px] text-yellow-300 animate-pulse">bolt</span>
+          <span>1-Click Auto-Fix</span>
+        </button>
+      </div>
+
     </div>
-  </main>
+
+    <!-- ==================== SCREEN 6: DOCUMENT SECURITY & OPTIMIZATION MODAL ==================== -->
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all hidden" id="modal-security">
+<!-- Modern, High-Precision Modal Dialog (620px width, bg-white, rounded-2xl shadow-2xl border border-slate-200) -->
+<div class="w-[620px] bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="px-6 py-4.5 border-b border-outline-variant/60 flex items-start justify-between bg-surface-container-lowest">
+<div class="flex items-start space-x-3.5">
+<div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]" data-icon="lock">lock</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-headline-md font-headline-md text-on-surface tracking-tight">Document Security &amp; Optimization</h2>
+<div class="flex items-center space-x-2 mt-0.5">
+<span class="text-label-sm font-label-sm text-outline">Target:</span>
+<span class="text-label-sm font-label-sm font-code-sm font-mono text-on-surface-variant bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant/50">
+                  Annual_Financial_Report_2025_Final.pdf
+                </span>
+<span class="text-label-sm font-label-sm text-outline">(14.2 MB)</span>
+</div>
+</div>
+</div>
+<!-- Close Button (✕) -->
+<button aria-label="Close modal" class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150" onclick="window.closeSecurityModal()">
+<span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Tab Bar -->
+<div class="px-6 pt-2 bg-surface-container-low border-b border-outline-variant/60 flex items-center space-x-6">
+<!-- Tab 1: Protect & Encrypt (Active) -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-primary text-primary font-semibold text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<span>Protect &amp; Encrypt</span>
+</button>
+<!-- Tab 2: Decrypt & Strip -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock_open">lock_open</span>
+<span>Decrypt &amp; Strip</span>
+</button>
+<!-- Tab 3: Compress & Optimize -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="folder_zip">folder_zip</span>
+<span>Compress &amp; Optimize</span>
+</button>
+</div>
+<!-- Modal Body Content: Tab 1 Content (Protect & Encrypt) -->
+<div class="p-6 space-y-5 overflow-y-auto max-h-[540px]">
+<!-- Password Input Fields Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Form field: Document Password -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Document Password</label>
+<span class="text-code-xs font-code-xs text-primary font-semibold">Strong</span>
+</div>
+<div class="relative">
+<input class="w-full h-8 pl-3 pr-8 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm text-on-surface font-mono focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="password" value="EnterpriseKey2025#"/>
+<button class="absolute inset-y-0 right-2.5 flex items-center text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[15px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Form field: Confirm Password -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Confirm Password</label>
+<span class="text-label-sm font-label-sm text-[#059669] flex items-center space-x-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>Match</span>
+</span>
+</div>
+<div class="relative">
+<input class="w-full h-8 pl-3 pr-8 bg-surface-container-lowest border border-[#059669] rounded-lg text-body-sm text-on-surface font-mono focus:border-[#059669] focus:ring-1 focus:ring-[#059669] focus:outline-none" type="password" value="EnterpriseKey2025#"/>
+<div class="absolute inset-y-0 right-2.5 flex items-center text-[#059669] pointer-events-none">
+<span class="material-symbols-outlined text-[15px]" data-icon="check">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Level Radio / Chip selector -->
+<div class="space-y-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium block">Security Standard &amp; Key Length</label>
+<div class="grid grid-cols-2 gap-3">
+<!-- Selected chip: AES-256 (Enterprise Grade - Recommended) -->
+<div class="relative border-2 border-primary bg-surface-container-low/60 rounded-xl p-3 flex flex-col cursor-pointer transition-all shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#059669]" data-icon="shield">shield</span>
+<span class="text-label-md font-label-md font-semibold text-primary">AES-256</span>
+</div>
+<div class="w-4 h-4 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[11px]" data-icon="check">check</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface font-medium mt-1">Enterprise Grade (Recommended)</span>
+<span class="text-code-xs font-code-xs text-outline mt-0.5">FIPS 140-2 Compliant · Acrobat 9+</span>
+</div>
+<!-- Option chip: AES-128 (Legacy Compatible) -->
+<div class="relative border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low/40 rounded-xl p-3 flex flex-col cursor-pointer transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="lock_clock">lock_clock</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface-variant">AES-128</span>
+</div>
+<div class="w-4 h-4 rounded-full border border-outline-variant"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium mt-1">Legacy Compatible</span>
+<span class="text-code-xs font-code-xs text-outline mt-0.5">Acrobat 7.0+ · Broad Mobile Support</span>
+</div>
+</div>
+</div>
+<!-- Permissions Checklist (Custom styled checkboxes) -->
+<div class="space-y-2 pt-1">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Granular Access Restrictions</label>
+<span class="text-code-xs font-code-xs text-outline">Applied after authentication</span>
+</div>
+<div class="bg-surface-container-low/50 border border-outline-variant/70 rounded-xl p-3 space-y-2.5">
+<!-- Item 1: Checked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input checked="" class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" data-icon="print">print</span>
+<span class="text-body-sm font-body-sm text-on-surface">Allow Printing (High Resolution)</span>
+</div>
+</label>
+<!-- Item 2: Unchecked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="content_copy">content_copy</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Allow Copying Text and Media</span>
+</div>
+</label>
+<!-- Item 3: Unchecked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="edit_note">edit_note</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Allow Modifying Content or Annotations</span>
+</div>
+</label>
+<!-- Item 4: Checked -->
+<label class="flex items-center space-x-2.5 cursor-pointer pt-1 border-t border-outline-variant/40">
+<input checked="" class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">Require Password to Change Permissions</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Compression Preview Strip at bottom of form -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 space-y-2.5 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[17px] text-primary" data-icon="tune">tune</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface">Also Linearize &amp; Compress Streams</span>
+</div>
+<!-- Toggle switch -->
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="compress-toggle" type="checkbox"/>
+<div class="w-8 h-4.5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-primary-container"></div>
+</div>
+</div>
+<!-- Estimated reduction meter -->
+<div class="flex items-center justify-between bg-surface-container-low px-3 py-2 rounded-lg border border-outline-variant/40">
+<div class="flex items-center space-x-2">
+<span class="text-code-xs font-code-xs text-outline uppercase tracking-wider font-semibold">Projected Output</span>
+<span class="text-headline-sm font-headline-sm text-on-surface font-mono">14.2 MB ➔ ~4.6 MB</span>
+</div>
+<span class="px-2 py-0.5 bg-[#ecfdf5] text-[#059669] border border-[#059669]/30 rounded-full font-code-xs text-code-xs font-bold tracking-tight">
+                -67% size reduction
+              </span>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-6 py-3.5 bg-surface-container-low border-t border-outline-variant/60 flex items-center justify-between">
+<!-- Left Status/Module Stamp -->
+<div class="flex items-center space-x-1.5 text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="memory">memory</span>
+<span class="text-code-xs font-code-xs">Stirling-PDF Native Crypto Module v1.8</span>
+</div>
+<!-- Right Button Group -->
+<div class="flex items-center space-x-2.5">
+<!-- Cancel Button -->
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded text-label-md font-label-md font-medium text-on-surface hover:bg-surface-container transition-colors duration-150 active:translate-y-px" onclick="window.closeSecurityModal()">
+              Cancel
+            </button>
+<!-- Apply Security & Export (Cobalt blue solid button with lock icon) -->
+<button class="px-4 py-1.5 bg-primary-container hover:bg-primary text-on-primary rounded text-label-md font-label-md font-semibold flex items-center space-x-1.5 shadow-sm active:translate-y-px transition-all" onclick="window.closeSecurityModal(); window.showNotification('AES-256 Encryption &amp; Stream Optimization Applied!', 'success')">
+<span class="material-symbols-outlined text-[15px]" data-icon="lock">lock</span>
+<span>Apply Security &amp; Export</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+    <!-- ==================== SCREEN 7: COMPLETION & INSPECTION STATE DRAWER ==================== -->
+    <div class="hidden absolute inset-0 z-50 overflow-hidden flex flex-col" id="modal-completion">
+<main class="flex-1 bg-surface-container-low relative overflow-hidden flex flex-col">
+<!-- Underneath Workstation Ambient Canvas Preview (Lightly De-emphasized) -->
+<div class="absolute inset-0 p-6 flex justify-center items-center opacity-30 select-none pointer-events-none">
+<div class="w-[620px] h-[780px] bg-surface-container-lowest shadow-lg border border-outline-variant rounded p-10 flex flex-col space-y-4">
+<div class="h-6 w-48 bg-outline-variant rounded"></div>
+<div class="h-3 w-full bg-surface-container-high rounded"></div>
+<div class="h-3 w-5/6 bg-surface-container-high rounded"></div>
+<div class="h-32 border border-outline-variant rounded-lg p-2 grid grid-cols-4 gap-2">
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+<div class="bg-surface-container rounded"></div>
+</div>
+<div class="space-y-2 pt-4">
+<div class="h-2.5 w-full bg-surface-container-high rounded"></div>
+<div class="h-2.5 w-full bg-surface-container-high rounded"></div>
+<div class="h-2.5 w-3/4 bg-surface-container-high rounded"></div>
+</div>
+</div>
+</div>
+<!-- Semi-transparent Modal/Drawer Overlay Backdrop for Focus -->
+<div class="absolute inset-0 bg-on-background/20 backdrop-blur-[3px] z-10"></div>
+<!-- Screen 7: Completion & Inspection Drawer / Modal Viewport (Centered High Precision Card) -->
+<div class="relative z-20 flex-1 overflow-y-auto custom-scrollbar p-6 flex items-center justify-center">
+<div class="w-full max-w-4xl bg-surface-container-lowest border border-outline-variant rounded-xl shadow-2xl overflow-hidden flex flex-col">
+<!-- Top Card Action Bar & Status Strip -->
+<div class="px-6 py-3 bg-surface border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-code-xs text-code-xs text-outline font-semibold tracking-wide">STATUS // TASK_ID_88319 • COMPLETE</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-outline">Engine:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-code-xs text-code-xs font-semibold">Tesseract 5.3 + OmniParser v4</span>
+<button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container" onclick="window.closeCompletionModal()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<div class="p-6 md:p-8 flex flex-col space-y-6">
+<!-- Header / Hero Badge Section -->
+<div class="flex items-start space-x-5 pb-2">
+<div class="relative shrink-0">
+<!-- Vibrant Emerald Green Circle (w-16 h-16) with White Checkmark & Subtle Green Glow -->
+<div class="w-16 h-16 rounded-full bg-[#059669] text-white flex items-center justify-center shadow-[0_0_24px_rgba(5,150,105,0.35)] border-2 border-emerald-300/40">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-0.5 border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">auto_awesome</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center space-x-2 mb-1">
+<h1 class="text-headline-xl font-headline-xl text-on-surface tracking-tight font-bold">
+                      Document Successfully Reconstructed!
+                    </h1>
+<span class="px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] border border-[#059669]/30 text-label-sm font-label-sm font-semibold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span>100% Validated</span>
+</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-2xl">
+                    Neural OCR &amp; OpenXML Word synthesis finished with zero unresolvable glyphs.
+                  </p>
+</div>
+</div>
+<!-- Main Split: Left (Artifact Card & Telemetry) + Right (High Fidelity Document Preview) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column (5 Cols): Artifact Details + Telemetry -->
+<div class="lg:col-span-5 flex flex-col space-y-4">
+<!-- Generated Artifact Details Card -->
+<div class="p-4 rounded-lg bg-surface border border-outline-variant flex flex-col space-y-3">
+<div class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-outline flex items-center justify-between">
+<span>Generated Artifact</span>
+<span class="font-code-xs text-code-xs text-primary bg-surface-container px-1.5 py-0.5 rounded">DOCX OpenXML</span>
+</div>
+<!-- File Icon & Details -->
+<div class="flex items-center space-x-3.5 bg-surface-container-lowest p-3 rounded-lg border border-outline-variant">
+<!-- Word .docx icon (blue doc icon with 'W' logo badge) -->
+<div class="w-11 h-12 rounded bg-[#2563EB] relative flex flex-col items-center justify-center text-white shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[24px]">description</span>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded bg-[#1D4ED8] text-white font-bold text-[9px] flex items-center justify-center border border-white">
+                          W
+                        </div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center space-x-1.5">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface truncate">Invoice_2026.docx</span>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline mt-0.5">
+<span>File size: <strong class="text-on-surface font-medium">1.4 MB</strong></span>
+<span>•</span>
+<span>Office 365+ Ready</span>
+</div>
+</div>
+</div>
+<!-- Save Path Chip with copy button -->
+<div class="flex flex-col space-y-1">
+<span class="text-label-sm font-label-sm text-outline">Target Local Destination:</span>
+<div class="flex items-center justify-between bg-surface-container-low border border-outline-variant rounded px-2.5 py-1.5 text-code-xs font-code-xs text-on-surface">
+<div class="flex items-center space-x-1.5 truncate pr-2">
+<span class="text-[12px]">📁</span>
+<span class="truncate">C:/Users/Admin/Desktop/OmniDoc_Output/Invoice_2026.docx</span>
+</div>
+<button class="p-1 hover:bg-surface-container rounded text-outline hover:text-primary transition-colors" title="Copy path">
+<span class="material-symbols-outlined text-[13px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Benchmark & Extraction Telemetry Strip -->
+<div class="p-4 rounded-lg bg-surface border border-outline-variant flex flex-col space-y-2.5">
+<div class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-outline flex items-center justify-between">
+<span>Extraction Telemetry</span>
+<span class="font-code-xs text-code-xs text-[#059669]">Benchmarked</span>
+</div>
+<!-- 4 Required Benchmark Chips in Grid -->
+<div class="grid grid-cols-2 gap-2">
+<!-- Chip 1: Total time -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="text-label-sm">⚡</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Execution</div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">14.2s Total time</div>
+</div>
+</div>
+<!-- Chip 2: AI gap-filled -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-[#F5F3FF] text-[#7C3AED] flex items-center justify-center shrink-0">
+<span class="text-label-sm">🧠</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Neural Infill</div>
+<div class="text-label-md font-label-md font-semibold text-[#7C3AED]">18 words, 1 table</div>
+</div>
+</div>
+<!-- Chip 3: Pages processed -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="text-label-sm">📄</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Document Scope</div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">12 processed</div>
+</div>
+</div>
+<!-- Chip 4: OCR Confidence -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-[#ECFDF5] text-[#059669] flex items-center justify-center shrink-0">
+<span class="text-label-sm">🎯</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Confidence</div>
+<div class="text-headline-sm font-headline-sm font-bold text-[#059669]">99.4% Valid</div>
+</div>
+</div>
+</div>
+<!-- Structure Fidelity Mini-tags -->
+<div class="pt-2 flex flex-wrap gap-1.5">
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Vector Kerning Preserved
+                      </span>
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Native Tabular Grids
+                      </span>
+<span class="bg-surface-container text-primary text-code-xs font-code-xs px-2 py-0.5 rounded border border-outline-variant">
+                        ✓ Embedded Helvetica Fonts
+                      </span>
+</div>
+</div>
+</div>
+<!-- Right Column (7 Cols): Document Preview Card -->
+<div class="lg:col-span-7 flex flex-col">
+<div class="rounded-lg bg-surface border border-outline-variant p-3 flex flex-col flex-1 shadow-sm">
+<!-- Preview Title bar -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant text-label-sm">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[16px]">visibility</span>
+<span class="font-headline-sm font-headline-sm text-on-surface">Reconstructed Word Document Preview</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-outline">Zoom: 100%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span class="text-code-xs font-code-xs text-[#059669] font-medium">Page 1 of 12</span>
+</div>
+</div>
+<!-- High-Fidelity Clean Preview Showing Reconstructed Microsoft Word Layout -->
+<div class="flex-1 bg-surface-container-high rounded p-3 flex items-center justify-center overflow-hidden border border-outline-variant">
+<!-- Simulated Clean Microsoft Word Page Canvas (Letter/A4 aspect) -->
+<div class="w-full max-w-[440px] bg-white shadow-md border border-outline-variant rounded p-6 font-sans text-on-surface select-text">
+<!-- Invoice Letterhead / Header Layout -->
+<div class="flex justify-between items-start border-b-2 border-primary pb-3 mb-4">
+<div>
+<h2 class="text-headline-lg font-headline-lg font-bold text-primary tracking-tight">ACME GLOBAL LOGISTICS</h2>
+<p class="text-code-xs font-code-xs text-outline">Enterprise Invoicing &amp; Cleared Freight</p>
+</div>
+<div class="text-right">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container font-code-xs font-semibold text-primary">INVOICE #2026-908</span>
+<p class="text-code-xs font-code-xs text-outline mt-0.5">Date: Oct 24, 2026</p>
+</div>
+</div>
+<!-- Bill to / Ship to Columns -->
+<div class="grid grid-cols-2 gap-3 text-label-sm font-label-sm mb-4">
+<div class="bg-surface p-2 rounded border border-outline-variant/60">
+<span class="font-semibold text-on-surface block text-[10px] uppercase text-outline">Billed Client</span>
+<p class="font-medium text-on-surface">OmniGlobal Retail Corp</p>
+<p class="text-outline text-[10px]">742 Evergreen Blvd, Suite 400</p>
+</div>
+<div class="bg-surface p-2 rounded border border-outline-variant/60">
+<span class="font-semibold text-on-surface block text-[10px] uppercase text-outline">Tax ID &amp; Terms</span>
+<p class="font-medium text-on-surface">VAT-US-9930129</p>
+<p class="text-outline text-[10px]">Payment Terms: Net 30 Days</p>
+</div>
+</div>
+<!-- Reconstructed Table Layout (Native Word Table Simulation) -->
+<div class="border border-outline-variant rounded overflow-hidden mb-3">
+<table class="w-full text-left border-collapse text-[10px]">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant font-semibold text-on-surface">
+<th class="p-1.5">Description</th>
+<th class="p-1.5 text-center">Qty</th>
+<th class="p-1.5 text-right">Unit Price</th>
+<th class="p-1.5 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/60 text-on-surface">
+<tr class="hover:bg-surface-container-low">
+<td class="p-1.5 font-medium">Neural Processing Engine API Token</td>
+<td class="p-1.5 text-center">12</td>
+<td class="p-1.5 text-right font-mono">$120.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$1,440.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low">
+<td class="p-1.5 font-medium">OpenXML Document Synthesizer Node</td>
+<td class="p-1.5 text-center">1</td>
+<td class="p-1.5 text-right font-mono">$850.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$850.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low bg-surface">
+<td class="p-1.5 font-medium text-[#7C3AED] flex items-center space-x-1">
+<span>Table Infill: Stirling PDF Ingest Pass</span>
+</td>
+<td class="p-1.5 text-center">1</td>
+<td class="p-1.5 text-right font-mono">$320.00</td>
+<td class="p-1.5 text-right font-mono font-medium">$320.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Total calculation strip -->
+<div class="flex justify-end pt-1">
+<div class="w-48 space-y-1 text-right text-[10px]">
+<div class="flex justify-between text-outline">
+<span>Subtotal:</span>
+<span class="font-mono text-on-surface">$2,610.00</span>
+</div>
+<div class="flex justify-between text-outline">
+<span>Tax (8.25%):</span>
+<span class="font-mono text-on-surface">$215.33</span>
+</div>
+<div class="flex justify-between border-t border-outline-variant pt-1 text-label-sm font-bold text-primary">
+<span>Grand Total:</span>
+<span class="font-mono">$2,825.33</span>
+</div>
+</div>
+</div>
+<!-- Micro Doc Signature Stamp -->
+<div class="mt-4 pt-2 border-t border-dashed border-outline-variant flex justify-between items-center text-[9px] text-outline">
+<div class="flex items-center space-x-1 text-[#059669] font-medium">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Digitally Verified Reconstructed Word Table</span>
+</div>
+<span>Page 1 of 12</span>
+</div>
+</div>
+</div>
+<!-- Bottom Preview Utility Strip -->
+<div class="mt-2 flex items-center justify-between text-label-sm font-label-sm text-outline px-1">
+<div class="flex items-center space-x-2">
+<button class="hover:text-on-surface flex items-center space-x-0.5">
+<span class="material-symbols-outlined text-[13px]">chevron_left</span>
+<span>Prev</span>
+</button>
+<span>|</span>
+<button class="hover:text-on-surface flex items-center space-x-0.5">
+<span>Next</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center space-x-2 font-code-xs text-code-xs">
+<span class="text-[#059669]">● Structure: Perfect Hierarchy</span>
+<span class="text-outline-variant">•</span>
+<span>Tables: 1/1 Exact</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button Bar -->
+<div class="pt-4 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+<!-- Left Action Cluster -->
+<div class="flex items-center space-x-3 w-full sm:w-auto">
+<!-- Primary Button: Open in Microsoft Word (Cobalt blue #2563EB with Word icon) -->
+<button class="bg-[#2563EB] hover:bg-primary-container text-white text-body-md font-body-md font-semibold px-5 h-9 rounded-lg flex items-center space-x-2 shadow-sm transition-all duration-150 active:translate-y-0.5" onclick="window.showNotification('Opening reconstructed Word document in Microsoft Word...', 'info')">
+<span class="material-symbols-outlined text-[18px]">description</span>
+<span>Open in Microsoft Word</span>
+</button>
+<!-- Secondary Button: Open Output Folder (Slate outline button) -->
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant hover:border-outline text-body-md font-body-md font-medium px-4 h-9 rounded-lg flex items-center space-x-2 transition-colors duration-150 active:translate-y-0.5" onclick="window.showNotification('Opening Desktop/Extracted Files...', 'info')">
+<span class="material-symbols-outlined text-[18px] text-outline">folder_open</span>
+<span>Open Output Folder</span>
+</button>
+<!-- Tertiary Button: Convert Another Document (Subtle ghost link/button) -->
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low text-body-md font-body-md px-3 h-9 rounded-lg flex items-center space-x-1.5 transition-colors duration-150 active:translate-y-0.5" onclick="window.closeCompletionModal(); window.switchTab('home')">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Convert Another Document</span>
+</button>
+</div>
+<!-- Secondary Link: Inspect Full Execution JSON Log -->
+<div class="w-full sm:w-auto flex justify-end">
+<a class="text-primary hover:text-primary-fixed-dim text-label-md font-label-md flex items-center space-x-1 underline hover:no-underline" href="#">
+<span class="material-symbols-outlined text-[15px]">code</span>
+<span>Inspect Full Execution JSON Log</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+  </div>
 
   <script src="js/app.js"></script>
 </body>

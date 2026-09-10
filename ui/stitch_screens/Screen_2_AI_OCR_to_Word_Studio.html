@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniDoc Studio - AI Scanned PDF → Word (.docx) Extraction Studio</title>
+<!-- Material Symbols Outlined link -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS script -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c3c6d7",
+            "surface-dim": "#cbdbf5",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-secondary-fixed": "#410002",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "inverse-primary": "#b4c5ff",
+            "on-error-container": "#93000a",
+            "on-background": "#0b1c30",
+            "error": "#ba1a1a",
+            "surface": "#f8f9ff",
+            "tertiary-container": "#8343f4",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed": "#00174b",
+            "secondary-container": "#e02928",
+            "on-secondary-fixed-variant": "#93000b",
+            "secondary": "#bb0112",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#d2bbff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#f7edff",
+            "tertiary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "on-secondary-container": "#fffbff",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary": "#6a1edb",
+            "surface-container-high": "#dce9ff",
+            "on-surface": "#0b1c30",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "code-xs": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-xs": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    /* Custom thin scrollbar for workstation density */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #737686;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-sm antialiased overflow-hidden select-none h-screen flex flex-col justify-between">
+<!-- ================= TOP DESKTOP WINDOW CHROME (TopNavBar Shared Component) ================= -->
+<header class="bg-surface-container-lowest text-primary text-headline-sm font-headline-sm docked full-width top-0 h-10 border-b border-outline-variant flat no shadows flex items-center justify-between px-space-md w-full shrink-0 z-30">
+<!-- Left: Window controls & Brand Search -->
+<div class="flex items-center gap-space-md">
+<!-- Traffic Light macOS/Fluent style window knobs -->
+<div class="flex items-center gap-1.5 mr-1">
+<span class="w-3 h-3 rounded-full bg-secondary inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-surface-dim border border-outline inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-surface-container-high border border-outline inline-block"></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface tracking-tight">OmniDoc Studio</span>
+<span class="text-code-xs font-code-xs bg-surface-container text-primary px-1.5 py-0.5 rounded font-medium">v2.4-PRO</span>
+</div>
+<!-- Quick Search Bar (on_left as per JSON) -->
+<div class="relative flex items-center ml-2">
+<span class="material-symbols-outlined absolute left-2 text-outline text-[15px]">search</span>
+<input class="h-6 w-64 bg-surface-container-low border border-outline-variant text-body-sm font-body-sm pl-7 pr-2 rounded text-on-surface focus:outline-none focus:border-primary-container" placeholder="Search pipelines, actions, doc cache (⌘K)..." type="text"/>
+</div>
+</div>
+<!-- Center: Horizontal Navigation Links -->
+<nav class="hidden md:flex items-center space-x-space-md h-full">
+<a class="h-full flex items-center px-2 text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150" href="#">Home Dashboard</a>
+<a class="h-full flex items-center px-2 text-label-md font-label-md text-primary border-b-2 border-primary font-semibold hover:bg-surface-container-low transition-colors duration-150" href="#">AI OCR to Word</a>
+<a class="h-full flex items-center px-2 text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150" href="#">PDF Split &amp; Merge</a>
+<a class="h-full flex items-center px-2 text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150" href="#">Batch Engine</a>
+</nav>
+<!-- Right: Trailing Actions, User Profile & Native Window Icons -->
+<div class="flex items-center gap-space-sm">
+<button class="h-7 px-space-sm bg-surface-container text-on-surface border border-outline-variant rounded hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px text-label-sm font-label-sm font-medium">
+        Batch Process
+      </button>
+<button class="h-7 px-space-sm bg-primary-container text-on-primary rounded hover:bg-primary transition-colors duration-150 active:translate-y-px text-label-sm font-label-sm font-medium flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">file_download</span>
+        Export Word
+      </button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Window Icon actions from JSON: remove, crop_square, close -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[15px]">remove</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[15px]">crop_square</span></button>
+<button class="p-1 hover:bg-secondary-container hover:text-on-primary rounded"><span class="material-symbols-outlined text-[15px]">close</span></button>
+</div>
+</div>
+</header>
+<!-- ================= MAIN WORKSTATION SHELL (SideNav + Center Viewport) ================= -->
+<div class="flex-1 flex overflow-hidden w-full">
+<!-- ================= LEFT SIDEBAR (SideNavBar Shared Component) ================= -->
+<aside class="bg-surface text-primary border-r border-outline-variant flat no shadows flex flex-col justify-between p-space-sm w-64 h-full shrink-0 z-20">
+<!-- Sidebar Header -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-2 px-1 py-1">
+<div class="w-7 h-7 rounded bg-primary-container text-on-primary flex items-center justify-center font-bold text-headline-sm">
+<span class="material-symbols-outlined text-[18px]">document_scanner</span>
+</div>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">OmniDoc Studio</h1>
+<p class="text-label-sm font-label-sm text-outline leading-none">v2.4 Pro Workstation</p>
+</div>
+</div>
+<!-- Import CTA Button -->
+<button class="w-full h-8 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface font-label-md text-label-md rounded flex items-center justify-center gap-1.5 transition-colors duration-150 active:translate-y-px">
+<span class="material-symbols-outlined text-primary text-[16px]">add_circle</span>
+          Import Document
+        </button>
+<!-- Navigation Tabs: Home, Workflows, Split & Merge, OCR Pipelines, Sanitize, Archive Vault -->
+<!-- 'AI OCR to Word' page active -> OCR Pipelines highlighted -->
+<nav class="flex flex-col gap-0.5 mt-2">
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span>Workflows</span>
+</a>
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">call_split</span>
+<span>Split &amp; Merge</span>
+</a>
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 bg-surface-container text-primary font-semibold rounded-lg text-label-sm font-label-sm border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">document_scanner</span>
+<span>OCR Pipelines</span>
+</a>
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">mop</span>
+<span>Sanitize</span>
+</a>
+<a class="flex items-center gap-2.5 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">archive</span>
+<span>Archive Vault</span>
+</a>
+</nav>
+</div>
+<!-- Quick Session Info Box -->
+<div class="bg-surface-container-low border border-outline-variant p-2 rounded">
+<div class="flex items-center justify-between text-code-xs font-code-xs text-outline mb-1">
+<span>LOCAL ENGINE</span>
+<span class="flex items-center gap-1 text-primary"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ONLINE</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface font-semibold truncate">PaddleOCR v2.8 + Gemini 2.0</p>
+<p class="text-code-xs font-code-xs text-on-surface-variant">CUDA Acceleration Active</p>
+</div>
+<!-- Sidebar Footer Tabs -->
+<div class="flex flex-col gap-0.5 border-t border-outline-variant pt-2">
+<a class="flex items-center gap-2 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span>Engine Settings</span>
+</a>
+<a class="flex items-center gap-2 px-space-sm py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-150 rounded-lg text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+<span>System Health</span>
+</a>
+</div>
+</aside>
+<!-- ================= ACTIVE TWO-PANE WORKBENCH ================= -->
+<main class="flex-1 flex overflow-hidden bg-surface">
+<!-- ================= LEFT PANE: Document & Real-time Live Log ================= -->
+<section class="flex-1 flex flex-col h-full border-r border-outline-variant overflow-y-auto p-space-md gap-space-md">
+<!-- Document Card Header -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary-container/10 border border-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-on-surface tracking-tight">Scanned_Invoice_Batch_2026.pdf</span>
+<span class="bg-error-container text-secondary text-code-xs font-code-xs px-2 py-0.5 rounded font-semibold border border-secondary/20">RAW SCANNED</span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">layers</span> 12 Pages</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">save</span> 18.4 MB</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">check_circle</span> Ready for Reconstruction</span>
+</div>
+</div>
+</div>
+<button class="h-8 px-space-md bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface text-label-md font-label-md rounded flex items-center gap-1.5 transition-colors duration-150">
+<span class="material-symbols-outlined text-[16px] text-outline">info</span>
+            Inspect Metadata
+          </button>
+</div>
+<!-- Interactive Horizontal Page Thumbnail Carousel -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">Document Page Grid &amp; Selection</span>
+<span class="text-code-xs font-code-xs bg-primary-container text-on-primary px-1.5 py-0.5 rounded">3/12 Selected for processing</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<button class="hover:underline">Select All</button>
+<span class="text-outline-variant">|</span>
+<button class="hover:underline text-on-surface-variant">Clear Selection</button>
+</div>
+</div>
+<!-- Carousel Container -->
+<div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1">
+<!-- Page 1 (Checked & Active) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-primary-container rounded p-1.5 flex flex-col items-center group cursor-pointer shadow-sm">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-primary text-on-primary px-1 rounded">#1</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-3/4 bg-on-surface-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-5/6 bg-outline-variant/40 rounded"></div>
+<div class="h-8 w-full border border-dashed border-outline-variant rounded mt-1 flex items-center justify-center text-code-xs text-outline">TABLE [4x3]</div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded mt-auto"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface mt-1 font-medium">Page 1 (Done)</span>
+</div>
+<!-- Page 2 (Checked) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-primary-container rounded p-1.5 flex flex-col items-center group cursor-pointer shadow-sm">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-primary text-on-primary px-1 rounded">#2</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/2 bg-on-surface-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-4/5 bg-outline-variant/40 rounded"></div>
+<div class="h-10 w-full bg-surface-container border border-outline-variant rounded p-1">
+<div class="h-1.5 w-2/3 bg-outline-variant rounded mb-1"></div>
+<div class="h-1.5 w-1/2 bg-outline-variant rounded"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface mt-1 font-medium">Page 2 (Done)</span>
+</div>
+<!-- Page 3 (Checked & CURRENTLY PROCESSING) -->
+<div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-tertiary-container rounded p-1.5 flex flex-col items-center ring-2 ring-tertiary-container/30 group cursor-pointer shadow">
+<div class="absolute top-2 left-2 z-10">
+<input checked="" class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs bg-tertiary text-on-tertiary px-1 rounded animate-pulse">#3 ⚙</span>
+<!-- Mock preview skeleton -->
+<div class="w-full h-32 bg-surface-container-lowest border border-tertiary/40 rounded p-2 flex flex-col gap-1.5 overflow-hidden relative">
+<div class="absolute inset-0 bg-tertiary/5 animate-pulse"></div>
+<div class="h-2 w-3/5 bg-tertiary/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/60 rounded"></div>
+<div class="h-6 w-full border border-tertiary/60 rounded flex items-center justify-center text-code-xs text-tertiary">OCR SCANNING</div>
+<div class="h-1.5 w-5/6 bg-outline-variant/60 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/60 rounded mt-auto"></div>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary mt-1 font-bold">Page 3 (Active)</span>
+</div>
+<!-- Pages 4 to 12 (Unchecked / Queued) -->
+<!-- Page 4 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#4</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/3 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-2/3 bg-outline-variant/30 rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 4</span>
+</div>
+<!-- Page 5 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#5</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-1/2 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-8 w-full bg-surface-container-low border border-outline-variant rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 5</span>
+</div>
+<!-- Page 6 -->
+<div class="relative shrink-0 w-28 bg-surface-container-lowest border border-outline-variant rounded p-1.5 flex flex-col items-center group cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
+<div class="absolute top-2 left-2 z-10">
+<input class="w-3.5 h-3.5 text-primary border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<span class="absolute top-2 right-2 text-code-xs font-code-xs text-outline px-1">#6</span>
+<div class="w-full h-32 bg-surface-container-lowest border border-outline-variant rounded p-2 flex flex-col gap-1.5 overflow-hidden">
+<div class="h-2 w-2/3 bg-outline-variant/40 rounded"></div>
+<div class="h-1.5 w-full bg-outline-variant/30 rounded"></div>
+<div class="h-1.5 w-4/5 bg-outline-variant/30 rounded"></div>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1">Page 6</span>
+</div>
+<!-- Trailing Overflow Indicator -->
+<div class="shrink-0 w-24 h-36 border border-dashed border-outline-variant rounded flex flex-col items-center justify-center text-outline text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[20px] mb-1">more_horiz</span>
+<span>+6 Pages</span>
+</div>
+</div>
+</div>
+<!-- 4-Stage Visual Pipeline Stepper -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-md rounded">
+<div class="text-label-md font-label-md text-outline mb-space-sm uppercase tracking-wider">Reconstruction Execution Graph</div>
+<div class="grid grid-cols-4 gap-2 relative">
+<!-- Connecting hairline line behind stages -->
+<div class="absolute top-4 left-6 right-6 h-0.5 bg-outline-variant -z-0"></div>
+<!-- Phase 1: CLAHE Deskew (Green check) -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-500 text-emerald-600 flex items-center justify-center font-bold text-[14px] shadow-sm mb-1.5">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 1: CLAHE Deskew</span>
+<span class="text-code-xs font-code-xs text-emerald-700 font-medium">Binarized &amp; Cleaned</span>
+</div>
+<!-- Phase 2: PaddleOCR Extraction (Cobalt pulsing) -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-[14px] shadow ring-4 ring-primary-container/20 animate-pulse mb-1.5">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-primary font-bold">Phase 2: PaddleOCR</span>
+<span class="text-code-xs font-code-xs text-primary font-semibold">Extracting Glyphs (65%)</span>
+</div>
+<!-- Phase 3: AI Context Gap-Filling -->
+<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
+<span class="text-code-xs font-code-xs">3</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 3: AI Gap-Filling</span>
+<span class="text-code-xs font-code-xs text-outline">Gemini 2.0 Queued</span>
+</div>
+<!-- Phase 4: Word Docx Synthesis -->
+<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
+<span class="text-code-xs font-code-xs">4</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Phase 4: Docx Synthesis</span>
+<span class="text-code-xs font-code-xs text-outline">OpenXML Engine Ready</span>
+</div>
+</div>
+<!-- Animated Progress Bar with percentage and status -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant">
+<div class="flex items-center justify-between text-label-md font-label-md mb-1.5">
+<span class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-ping inline-block"></span>
+                Processing Page 3 of 12 — 65%
+              </span>
+<span class="text-code-xs font-code-xs text-on-surface-variant font-medium">Estimated remaining: 18s</span>
+</div>
+<!-- Bar -->
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full transition-all duration-300 w-[65%] shadow-sm"></div>
+</div>
+</div>
+</div>
+<!-- Collapsible Terminal / Event Log card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-md shadow-sm flex-1 flex flex-col min-h-[160px]">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[16px]">terminal</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Extraction Engine Runtime Stream</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface">Clear</button>
+<button class="text-code-xs font-code-xs text-on-surface-variant hover:text-on-surface px-1.5 py-0.5 rounded border border-outline-variant bg-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">unfold_less</span>
+                Minimize
+              </button>
+</div>
+</div>
+<!-- Terminal logs list -->
+<div class="font-code-sm text-code-sm space-y-1.5 overflow-y-auto pr-1 flex-1">
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="text-outline select-none">[10:42:01]</span>
+<span class="text-emerald-700 font-medium">CLAHE contrast enhancement completed (0.42s)</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface">
+<span class="text-outline select-none">[10:42:02]</span>
+<span>PaddleOCR detected <strong class="text-primary">14 text blocks</strong>, <strong class="text-primary">2 tables</strong>, 1 header title on page 3</span>
+</div>
+<div class="flex items-start gap-2 text-tertiary">
+<span class="text-outline select-none">[10:42:03]</span>
+<span class="font-medium">OpenRouter Gemini 2.0 Flash queued for table column reconciliation</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="text-outline select-none">[10:42:04]</span>
+<span>Bounding box coordinates mapped to OpenXML Word geometry (DPI translation: 300 -&gt; 72pt)</span>
+</div>
+<div class="flex items-start gap-2 text-primary font-medium animate-pulse">
+<span class="text-outline select-none">[10:42:05]</span>
+<span>Reconciling semantic hierarchy: Converting block #4 to Heading 2...</span>
+</div>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<div class="mt-auto pt-1">
+<button class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded shadow-lg shadow-primary-container/25 flex items-center justify-center gap-2 transition-all duration-150 active:translate-y-0.5">
+<span class="text-[18px]">🚀</span>
+<span>Extract &amp; Reconstruct Word Document</span>
+<span class="ml-2 text-code-xs font-code-xs bg-on-primary/20 px-2 py-0.5 rounded">Ctrl + Enter</span>
+</button>
+</div>
+</section>
+<!-- ================= RIGHT PANE: Configuration Matrix (340px) ================= -->
+<aside class="w-[340px] h-full bg-surface-container-lowest overflow-y-auto p-space-md flex flex-col gap-space-md shrink-0 border-l border-outline-variant">
+<!-- Header -->
+<div class="border-b border-outline-variant pb-space-sm flex items-center justify-between">
+<div>
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface">Configuration Matrix</h2>
+<p class="text-label-sm font-label-sm text-outline">OCR Engine &amp; Word Staging Rules</p>
+</div>
+<span class="material-symbols-outlined text-outline">tune</span>
+</div>
+<!-- Setting 1: Render DPI Slider (150–600 DPI) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-headline-sm font-headline-sm text-on-surface">Render Rasterization DPI</label>
+<span class="text-code-xs font-code-xs font-bold text-primary bg-surface-container px-2 py-0.5 rounded">300 DPI</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Higher values improve mathematical symbols &amp; small fonts.</p>
+<input class="w-full accent-primary-container cursor-pointer mt-1" max="600" min="150" step="50" type="range" value="300"/>
+<div class="flex items-center justify-between text-code-xs font-code-xs text-outline mt-0.5">
+<span>Speed (150 DPI)</span>
+<span class="text-primary font-semibold">Standard (300)</span>
+<span>High Quality (600 DPI)</span>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 2: OCR Language Dropdown -->
+<div class="flex flex-col gap-1.5">
+<label class="text-headline-sm font-headline-sm text-on-surface">OCR Language Model</label>
+<div class="relative">
+<select class="w-full h-8 bg-surface-container-low border border-outline-variant text-body-sm font-body-sm rounded px-2 text-on-surface appearance-none focus:outline-none focus:border-primary">
+<option selected="">English (US &amp; UK) + Latin Characters</option>
+<option>Multilingual (English, German, French, Spanish)</option>
+<option>East Asian (CJK + English Technical)</option>
+<option>Arabic &amp; Semitic Right-to-Left</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">arrow_drop_down</span>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Uses PaddleOCR v2.8 multi-script dictionaries.</p>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 3: AI Gap-Filling Toggle switch (Checked ON) -->
+<div class="bg-surface-container-low border border-outline-variant p-space-sm rounded flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="pr-2">
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm text-on-surface font-semibold">AI Context Gap-Filling</span>
+<span class="text-code-xs font-code-xs bg-tertiary text-on-tertiary px-1 rounded font-bold">LLM</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                Uses OpenRouter LLM to reconstruct broken text &amp; fill empty table cells.
+              </p>
+</div>
+<!-- Toggle Checkbox Switch -->
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-tertiary-container"></div>
+</label>
+</div>
+<!-- Setting 4: AI Model Selector Dropdown -->
+<div class="mt-1 pt-2 border-t border-outline-variant/60">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium block mb-1">Inference Provider &amp; Model:</label>
+<div class="relative">
+<select class="w-full h-8 bg-surface-container-lowest border border-outline-variant text-body-sm font-body-sm rounded px-2 text-on-surface appearance-none focus:outline-none focus:border-tertiary font-medium">
+<option selected="">Gemini 2.0 Flash (Free Tier ⚡)</option>
+<option>Llama 3.3 70B Instruct (High Fidelity)</option>
+<option>DeepSeek V3 (Reasoning &amp; Math Tables)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">expand_more</span>
+</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<!-- Setting 5: Docx Formatting Checkbox options -->
+<div class="flex flex-col gap-2">
+<label class="text-headline-sm font-headline-sm text-on-surface">Docx Synthesizer Rules</label>
+<div class="space-y-2">
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Auto-generate Table of Contents (TOC)</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Add Centered 'Page X of Y' Footers</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Preserve Heading Hierarchy &amp; Font Sizes</span>
+</label>
+<label class="flex items-start gap-2.5 text-body-sm font-body-sm text-on-surface cursor-pointer">
+<input checked="" class="mt-0.5 w-3.5 h-3.5 text-primary-container border-outline-variant rounded focus:ring-0 cursor-pointer" type="checkbox"/>
+<span>Convert detected tables to editable Word tables</span>
+</label>
+</div>
+</div>
+<!-- Output Target Pill -->
+<div class="mt-auto bg-surface-container p-space-sm rounded border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">description</span>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface font-semibold">Target: Microsoft Word</p>
+<p class="text-code-xs font-code-xs text-outline">OpenXML (.docx) Strict</p>
+</div>
+</div>
+<span class="text-code-xs font-code-xs bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded border border-outline-variant">ISO/IEC 29500</span>
+</div>
+</aside>
+</main>
+</div>
+<!-- ================= STATUS FOOTER CHROME ================= -->
+<footer class="h-6 bg-surface-container border-t border-outline-variant px-space-md flex items-center justify-between text-code-xs font-code-xs text-on-surface-variant select-none shrink-0">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        Core Engine: Stirling + PaddleOCR Running
+      </span>
+<span>|</span>
+<span>Active Target: Word 2016-2024 Compatible (.docx)</span>
+<span>|</span>
+<span>Memory Pressure: 412 MB / 8.0 GB</span>
+</div>
+<div class="flex items-center gap-3">
+<span>UTF-8</span>
+<span>Zoom: 100%</span>
+<span class="text-primary font-semibold">OmniDoc Studio 2026</span>
+</div>
+</footer>
+</body></html>

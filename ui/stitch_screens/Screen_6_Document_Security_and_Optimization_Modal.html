@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniDoc Studio - Document Security &amp; Optimization</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter & JetBrains Mono Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container-Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c3c6d7",
+            "surface-dim": "#cbdbf5",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-secondary-fixed": "#410002",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "inverse-primary": "#b4c5ff",
+            "on-error-container": "#93000a",
+            "on-background": "#0b1c30",
+            "error": "#ba1a1a",
+            "surface": "#f8f9ff",
+            "tertiary-container": "#8343f4",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed": "#00174b",
+            "secondary-container": "#e02928",
+            "on-secondary-fixed-variant": "#93000b",
+            "secondary": "#bb0112",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#d2bbff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#f7edff",
+            "tertiary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "on-secondary-container": "#fffbff",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary": "#6a1edb",
+            "surface-container-high": "#dce9ff",
+            "on-surface": "#0b1c30",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "code-xs": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-xs": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Custom scrollbar for high-density UI */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface m-0 p-0 overflow-hidden font-body-md select-none">
+<!-- Desktop native window frame (1440x900) -->
+<div class="w-[1440px] h-[900px] mx-auto relative overflow-hidden flex flex-col bg-surface border border-outline-variant shadow-2xl">
+<!-- TOP WINDOW CHROME (TopNavBar Shared Component Execution) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top-0 h-10 flex items-center justify-between px-space-md w-full shrink-0 z-10 select-none">
+<!-- Window Controls & Brand Identity -->
+<div class="flex items-center space-x-3">
+<!-- Native macOS/Sonoma Style Traffic Lights -->
+<div class="flex items-center space-x-1.5 mr-2">
+<div class="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e]"></div>
+<div class="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29]"></div>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">OmniDoc Studio</span>
+<!-- Search Bar (on_left) -->
+<div class="relative ml-4 w-60">
+<span class="absolute inset-y-0 left-2 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="search">search</span>
+</span>
+<input class="w-full h-7 pl-7 pr-2 bg-surface-container-low text-body-sm rounded border border-outline-variant focus:border-primary focus:ring-0 focus:outline-none" placeholder="Search commands, tools, flags..." readonly="" type="text" value="Annual_Financial_Report_2025_Final.pdf"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-4 h-full">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface h-full flex items-center px-1 text-label-md font-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150" href="#">Home Dashboard</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface h-full flex items-center px-1 text-label-md font-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150" href="#">AI OCR to Word</a>
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary font-semibold h-full flex items-center px-1 text-label-md font-label-md" href="#">PDF Split &amp; Merge</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface h-full flex items-center px-1 text-label-md font-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150" href="#">Batch Engine</a>
+</nav>
+<!-- Trailing Action Buttons & Window Controls -->
+<div class="flex items-center space-x-2">
+<button class="px-2.5 py-1 bg-surface-container-lowest border border-outline-variant text-on-surface rounded text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px">Batch Process</button>
+<button class="px-2.5 py-1 bg-primary text-on-primary rounded text-label-sm font-label-sm font-semibold hover:bg-primary-container transition-colors duration-150 active:translate-y-px">Export Word</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center space-x-1 text-on-surface-variant">
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[15px]" data-icon="remove">remove</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined text-[15px]" data-icon="crop_square">crop_square</span></button>
+<button class="p-1 hover:bg-secondary-container hover:text-on-secondary-container rounded"><span class="material-symbols-outlined text-[15px]" data-icon="close">close</span></button>
+</div>
+</div>
+</header>
+<!-- MAIN WORKSTATION CANVAS BODY (UNDERLYING WORKBENCH) -->
+<div class="flex-1 flex overflow-hidden relative">
+<!-- SideNavBar Shared Component Execution (Sanitize Active) -->
+<aside class="bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline docked left-0 top-10 h-full w-64 flex flex-col justify-between p-space-sm shrink-0 z-0">
+<!-- Top Section -->
+<div class="flex flex-col space-y-3">
+<!-- Workspace Header -->
+<div class="flex items-center space-x-2.5 px-2 py-1">
+<div class="w-7 h-7 rounded bg-primary-container flex items-center justify-center text-on-primary font-bold text-headline-sm shadow-sm">Ω</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface">OmniDoc Studio</span>
+<span class="text-code-xs font-code-xs text-outline">v2.4 Pro Workstation</span>
+</div>
+</div>
+<!-- Quick Import CTA -->
+<button class="w-full flex items-center justify-center space-x-2 py-1.5 px-3 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg text-label-sm font-label-sm font-semibold hover:bg-surface-container-low active:translate-y-px transition-colors duration-150">
+<span class="material-symbols-outlined text-[15px]" data-icon="add">add</span>
+<span>Import Document</span>
+</button>
+<!-- Primary Navigation Tabs -->
+<nav class="flex flex-col space-y-0.5 mt-2">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="account_tree">account_tree</span>
+<span>Workflows</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="call_split">call_split</span>
+<span>Split &amp; Merge</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="document_scanner">document_scanner</span>
+<span>OCR Pipelines</span>
+</a>
+<!-- Active Tab matching security & optimize operations -->
+<a class="bg-surface-container dark:bg-surface-container-high text-primary dark:text-inverse-primary font-semibold rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="mop">mop</span>
+<span>Sanitize</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[17px]" data-icon="archive">archive</span>
+<span>Archive Vault</span>
+</a>
+</nav>
+</div>
+<!-- Footer System Links -->
+<div class="border-t border-outline-variant pt-2 flex flex-col space-y-0.5">
+<a class="text-on-surface-variant hover:text-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="settings">settings</span>
+<span>Engine Settings</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface rounded-lg flex items-center space-x-2.5 px-3 py-1.5 text-label-sm font-label-sm hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="dns">dns</span>
+<span>System Health</span>
+</a>
+</div>
+</aside>
+<!-- Center Workstation Background Canvas (Dimmed in preview) -->
+<div class="flex-1 flex flex-col bg-[#f1f5f9] overflow-hidden">
+<!-- Global Tool Ribbon (44px) -->
+<div class="h-11 bg-surface-container-lowest border-b border-outline-variant px-4 flex items-center justify-between shrink-0">
+<div class="flex items-center space-x-1.5">
+<span class="px-2 py-0.5 bg-[#fef2f2] text-secondary border border-secondary/20 rounded font-code-xs text-code-xs uppercase font-semibold tracking-wider">PDF Core</span>
+<span class="text-outline mx-1">/</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Annual_Financial_Report_2025_Final.pdf</span>
+<span class="text-code-xs font-code-xs text-outline ml-2">14.2 MB · 48 Pages · Standard ISO 32000-1</span>
+</div>
+<div class="flex items-center space-x-2">
+<button class="h-7 px-2.5 bg-surface-container-lowest border border-outline-variant rounded text-label-sm font-label-sm flex items-center space-x-1 text-on-surface">
+<span class="material-symbols-outlined text-[14px]" data-icon="crop">crop</span>
+<span>Crop</span>
+</button>
+<button class="h-7 px-2.5 bg-surface-container-lowest border border-outline-variant rounded text-label-sm font-label-sm flex items-center space-x-1 text-on-surface">
+<span class="material-symbols-outlined text-[14px]" data-icon="rotate_right">rotate_right</span>
+<span>Rotate</span>
+</button>
+<button class="h-7 px-2.5 bg-[#fef2f2] border border-secondary/30 rounded text-label-sm font-label-sm flex items-center space-x-1 text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+<span>Encrypt / Sanitize</span>
+</button>
+</div>
+</div>
+<!-- Center Viewport Mockup showing document pages behind blur -->
+<div class="flex-1 flex items-center justify-center p-8 bg-slate-200/50 relative overflow-hidden">
+<!-- Document spread mockup -->
+<div class="flex space-x-6">
+<div class="w-80 h-[480px] bg-white rounded shadow-md border border-slate-300 p-6 flex flex-col space-y-4">
+<div class="h-4 w-32 bg-slate-200 rounded"></div>
+<div class="h-2 w-full bg-slate-100 rounded"></div>
+<div class="h-2 w-5/6 bg-slate-100 rounded"></div>
+<div class="h-2 w-4/6 bg-slate-100 rounded"></div>
+<div class="h-32 w-full bg-slate-50 border border-dashed border-slate-200 rounded my-4"></div>
+<div class="h-2 w-full bg-slate-100 rounded"></div>
+<div class="h-2 w-11/12 bg-slate-100 rounded"></div>
+</div>
+<div class="w-80 h-[480px] bg-white rounded shadow-md border border-slate-300 p-6 flex flex-col space-y-4">
+<div class="h-4 w-44 bg-slate-200 rounded"></div>
+<div class="grid grid-cols-2 gap-2 my-2">
+<div class="h-16 bg-slate-50 border border-slate-100 rounded"></div>
+<div class="h-16 bg-slate-50 border border-slate-100 rounded"></div>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded"></div>
+<div class="h-2 w-full bg-slate-100 rounded"></div>
+<div class="h-2 w-3/4 bg-slate-100 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Inspector Pane (Dimmed background) -->
+<aside class="w-72 bg-surface border-l border-outline-variant p-4 flex flex-col justify-between shrink-0">
+<div>
+<span class="text-headline-sm font-headline-sm text-on-surface">Properties &amp; Metatags</span>
+<div class="mt-4 space-y-3">
+<div class="text-label-sm text-outline">Linearized: <span class="text-on-surface font-mono">No</span></div>
+<div class="text-label-sm text-outline">Encryption: <span class="text-on-surface font-mono">None</span></div>
+<div class="text-label-sm text-outline">Producer: <span class="text-on-surface font-mono">OmniEngine Core</span></div>
+</div>
+</div>
+</aside>
+</div>
+<!-- ========================================================================= -->
+<!-- SCREEN 6: DOCUMENT SECURITY & OPTIMIZATION MODAL OVERLAY                   -->
+<!-- Frosted backdrop blur (backdrop-blur-sm bg-slate-900/40)                  -->
+<!-- ========================================================================= -->
+<div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all">
+<!-- Modern, High-Precision Modal Dialog (620px width, bg-white, rounded-2xl shadow-2xl border border-slate-200) -->
+<div class="w-[620px] bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="px-6 py-4.5 border-b border-outline-variant/60 flex items-start justify-between bg-surface-container-lowest">
+<div class="flex items-start space-x-3.5">
+<div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]" data-icon="lock">lock</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-headline-md font-headline-md text-on-surface tracking-tight">Document Security &amp; Optimization</h2>
+<div class="flex items-center space-x-2 mt-0.5">
+<span class="text-label-sm font-label-sm text-outline">Target:</span>
+<span class="text-label-sm font-label-sm font-code-sm font-mono text-on-surface-variant bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant/50">
+                  Annual_Financial_Report_2025_Final.pdf
+                </span>
+<span class="text-label-sm font-label-sm text-outline">(14.2 MB)</span>
+</div>
+</div>
+</div>
+<!-- Close Button (✕) -->
+<button aria-label="Close modal" class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150">
+<span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Tab Bar -->
+<div class="px-6 pt-2 bg-surface-container-low border-b border-outline-variant/60 flex items-center space-x-6">
+<!-- Tab 1: Protect & Encrypt (Active) -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-primary text-primary font-semibold text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<span>Protect &amp; Encrypt</span>
+</button>
+<!-- Tab 2: Decrypt & Strip -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock_open">lock_open</span>
+<span>Decrypt &amp; Strip</span>
+</button>
+<!-- Tab 3: Compress & Optimize -->
+<button class="flex items-center space-x-2 py-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-label-md font-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="folder_zip">folder_zip</span>
+<span>Compress &amp; Optimize</span>
+</button>
+</div>
+<!-- Modal Body Content: Tab 1 Content (Protect & Encrypt) -->
+<div class="p-6 space-y-5 overflow-y-auto max-h-[540px]">
+<!-- Password Input Fields Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Form field: Document Password -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Document Password</label>
+<span class="text-code-xs font-code-xs text-primary font-semibold">Strong</span>
+</div>
+<div class="relative">
+<input class="w-full h-8 pl-3 pr-8 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm text-on-surface font-mono focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="password" value="EnterpriseKey2025#"/>
+<button class="absolute inset-y-0 right-2.5 flex items-center text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[15px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Form field: Confirm Password -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Confirm Password</label>
+<span class="text-label-sm font-label-sm text-[#059669] flex items-center space-x-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>Match</span>
+</span>
+</div>
+<div class="relative">
+<input class="w-full h-8 pl-3 pr-8 bg-surface-container-lowest border border-[#059669] rounded-lg text-body-sm text-on-surface font-mono focus:border-[#059669] focus:ring-1 focus:ring-[#059669] focus:outline-none" type="password" value="EnterpriseKey2025#"/>
+<div class="absolute inset-y-0 right-2.5 flex items-center text-[#059669] pointer-events-none">
+<span class="material-symbols-outlined text-[15px]" data-icon="check">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Level Radio / Chip selector -->
+<div class="space-y-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium block">Security Standard &amp; Key Length</label>
+<div class="grid grid-cols-2 gap-3">
+<!-- Selected chip: AES-256 (Enterprise Grade - Recommended) -->
+<div class="relative border-2 border-primary bg-surface-container-low/60 rounded-xl p-3 flex flex-col cursor-pointer transition-all shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#059669]" data-icon="shield">shield</span>
+<span class="text-label-md font-label-md font-semibold text-primary">AES-256</span>
+</div>
+<div class="w-4 h-4 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[11px]" data-icon="check">check</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface font-medium mt-1">Enterprise Grade (Recommended)</span>
+<span class="text-code-xs font-code-xs text-outline mt-0.5">FIPS 140-2 Compliant · Acrobat 9+</span>
+</div>
+<!-- Option chip: AES-128 (Legacy Compatible) -->
+<div class="relative border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low/40 rounded-xl p-3 flex flex-col cursor-pointer transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="lock_clock">lock_clock</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface-variant">AES-128</span>
+</div>
+<div class="w-4 h-4 rounded-full border border-outline-variant"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium mt-1">Legacy Compatible</span>
+<span class="text-code-xs font-code-xs text-outline mt-0.5">Acrobat 7.0+ · Broad Mobile Support</span>
+</div>
+</div>
+</div>
+<!-- Permissions Checklist (Custom styled checkboxes) -->
+<div class="space-y-2 pt-1">
+<div class="flex items-center justify-between">
+<label class="text-label-sm font-label-sm text-on-surface-variant font-medium">Granular Access Restrictions</label>
+<span class="text-code-xs font-code-xs text-outline">Applied after authentication</span>
+</div>
+<div class="bg-surface-container-low/50 border border-outline-variant/70 rounded-xl p-3 space-y-2.5">
+<!-- Item 1: Checked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input checked="" class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" data-icon="print">print</span>
+<span class="text-body-sm font-body-sm text-on-surface">Allow Printing (High Resolution)</span>
+</div>
+</label>
+<!-- Item 2: Unchecked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="content_copy">content_copy</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Allow Copying Text and Media</span>
+</div>
+</label>
+<!-- Item 3: Unchecked -->
+<label class="flex items-center space-x-2.5 cursor-pointer">
+<input class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="edit_note">edit_note</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Allow Modifying Content or Annotations</span>
+</div>
+</label>
+<!-- Item 4: Checked -->
+<label class="flex items-center space-x-2.5 cursor-pointer pt-1 border-t border-outline-variant/40">
+<input checked="" class="w-3.5 h-3.5 rounded border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 transition-colors" type="checkbox"/>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">Require Password to Change Permissions</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Compression Preview Strip at bottom of form -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3.5 space-y-2.5 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[17px] text-primary" data-icon="tune">tune</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface">Also Linearize &amp; Compress Streams</span>
+</div>
+<!-- Toggle switch -->
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="compress-toggle" type="checkbox"/>
+<div class="w-8 h-4.5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-primary-container"></div>
+</div>
+</div>
+<!-- Estimated reduction meter -->
+<div class="flex items-center justify-between bg-surface-container-low px-3 py-2 rounded-lg border border-outline-variant/40">
+<div class="flex items-center space-x-2">
+<span class="text-code-xs font-code-xs text-outline uppercase tracking-wider font-semibold">Projected Output</span>
+<span class="text-headline-sm font-headline-sm text-on-surface font-mono">14.2 MB ➔ ~4.6 MB</span>
+</div>
+<span class="px-2 py-0.5 bg-[#ecfdf5] text-[#059669] border border-[#059669]/30 rounded-full font-code-xs text-code-xs font-bold tracking-tight">
+                -67% size reduction
+              </span>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-6 py-3.5 bg-surface-container-low border-t border-outline-variant/60 flex items-center justify-between">
+<!-- Left Status/Module Stamp -->
+<div class="flex items-center space-x-1.5 text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="memory">memory</span>
+<span class="text-code-xs font-code-xs">Stirling-PDF Native Crypto Module v1.8</span>
+</div>
+<!-- Right Button Group -->
+<div class="flex items-center space-x-2.5">
+<!-- Cancel Button -->
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded text-label-md font-label-md font-medium text-on-surface hover:bg-surface-container transition-colors duration-150 active:translate-y-px">
+              Cancel
+            </button>
+<!-- Apply Security & Export (Cobalt blue solid button with lock icon) -->
+<button class="px-4 py-1.5 bg-primary-container hover:bg-primary text-on-primary rounded text-label-md font-label-md font-semibold flex items-center space-x-1.5 shadow-sm active:translate-y-px transition-all">
+<span class="material-symbols-outlined text-[15px]" data-icon="lock">lock</span>
+<span>Apply Security &amp; Export</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

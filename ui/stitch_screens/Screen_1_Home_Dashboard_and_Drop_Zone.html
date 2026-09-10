@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniDoc Studio - v2.4 Enterprise Workstation</title>
+<!-- Material Symbols Outlined Font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Inter and JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c3c6d7",
+            "surface-dim": "#cbdbf5",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-secondary-fixed": "#410002",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "inverse-primary": "#b4c5ff",
+            "on-error-container": "#93000a",
+            "on-background": "#0b1c30",
+            "error": "#ba1a1a",
+            "surface": "#f8f9ff",
+            "tertiary-container": "#8343f4",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed": "#00174b",
+            "secondary-container": "#e02928",
+            "on-secondary-fixed-variant": "#93000b",
+            "secondary": "#bb0112",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#d2bbff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#f7edff",
+            "tertiary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "on-secondary-container": "#fffbff",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary": "#6a1edb",
+            "surface-container-high": "#dce9ff",
+            "on-surface": "#0b1c30",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "code-xs": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-xs": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md select-none overflow-hidden h-screen flex flex-col antialiased">
+<!-- Desktop Native Window Top Window Chrome (Shared Component: TopNavBar execution) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline flat no shadows docked full-width top-0 h-10 flex items-center justify-between px-space-md w-full shrink-0 z-30">
+<!-- Left: Native Window Controls and App Title -->
+<div class="flex items-center gap-3">
+<!-- Traffic Light Controls / Window Buttons -->
+<div class="flex items-center gap-1.5 mr-2">
+<button class="w-3 h-3 rounded-full bg-secondary hover:opacity-80 transition-opacity flex items-center justify-center text-on-secondary group" title="Close">
+<span class="opacity-0 group-hover:opacity-100 text-[8px] font-bold">✕</span>
+</button>
+<button class="w-3 h-3 rounded-full bg-secondary-container hover:opacity-80 transition-opacity flex items-center justify-center text-on-secondary-container group" title="Minimize">
+<span class="opacity-0 group-hover:opacity-100 text-[8px] font-bold">—</span>
+</button>
+<button class="w-3 h-3 rounded-full bg-surface-dim hover:opacity-80 transition-opacity flex items-center justify-center text-on-surface group" title="Maximize">
+<span class="opacity-0 group-hover:opacity-100 text-[8px] font-bold">▢</span>
+</button>
+</div>
+<!-- App Title Identifier -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">description</span>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">OmniDoc Studio</span>
+<span class="text-code-xs font-code-xs text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">v2.4 Enterprise Workstation</span>
+</div>
+</div>
+<!-- Center: Global Window Filename / Quick Search -->
+<div class="flex items-center w-72 max-w-sm">
+<div class="relative w-full flex items-center">
+<span class="material-symbols-outlined absolute left-2.5 text-[15px] text-outline">search</span>
+<input class="w-full h-6 pl-8 pr-3 text-label-sm font-label-sm bg-surface-container-low border border-outline-variant/60 rounded focus:border-primary focus:ring-0 focus:outline-none placeholder:text-outline transition-colors text-on-surface" placeholder="Search commands or files..." type="text"/>
+<span class="absolute right-2 text-code-xs font-code-xs text-outline bg-surface-container-lowest px-1 py-0.2 rounded border border-outline-variant/40">⌘K</span>
+</div>
+</div>
+<!-- Right Window Action Strip -->
+<div class="flex items-center gap-2">
+<button class="h-6 px-2.5 text-label-sm font-label-sm bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 active:translate-y-px transition-all">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+        Batch Process
+      </button>
+<button class="h-6 px-2.5 text-label-sm font-label-sm bg-primary hover:bg-primary-container text-on-primary rounded flex items-center gap-1 active:translate-y-px transition-all shadow-sm">
+<span class="material-symbols-outlined text-[14px]">file_download</span>
+        Export Word
+      </button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center text-outline">
+<button class="p-1 hover:bg-surface-container rounded transition-colors" title="Minimize"><span class="material-symbols-outlined text-[16px]">remove</span></button>
+<button class="p-1 hover:bg-surface-container rounded transition-colors" title="Window Toggle"><span class="material-symbols-outlined text-[16px]">crop_square</span></button>
+<button class="p-1 hover:bg-error-container hover:text-error rounded transition-colors" title="Close"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+</div>
+</header>
+<!-- Top Notice Banner -->
+<div class="bg-[#EFF6FF] border-b border-blue-100 px-space-md py-1.5 flex items-center justify-between shrink-0 transition-all duration-200" id="notice-banner">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">folder_open</span>
+<p class="text-body-sm font-body-sm text-on-surface">
+        Make OmniDoc Studio your default application for opening and editing PDF files.
+      </p>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-primary hover:bg-primary-container text-on-primary text-label-sm font-label-sm px-3 py-0.5 rounded shadow-sm active:translate-y-px transition-all">
+        Set Default
+      </button>
+<button class="text-outline hover:text-on-surface p-0.5 rounded transition-colors" onclick="document.getElementById('notice-banner').classList.add('hidden')" title="Dismiss">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Main Workstation Canvas: 3-Column Layout -->
+<main class="flex-1 flex overflow-hidden relative">
+<!-- LEFT SIDEBAR: 260px (Shared Component: SideNavBar execution) -->
+<aside class="w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col justify-between shrink-0 h-full select-none">
+<div class="flex flex-col h-full overflow-hidden">
+<!-- Brand Header Bar -->
+<div class="p-space-sm border-b border-outline-variant/60 flex items-center gap-2 shrink-0">
+<button class="p-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">menu</span>
+</button>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md font-bold text-on-surface tracking-tight">OmniDoc</span>
+<span class="text-headline-md font-headline-md font-bold text-secondary tracking-tight">Studio</span>
+</div>
+</div>
+<!-- Primary Navigation List -->
+<div class="p-space-sm space-y-1 shrink-0">
+<button class="w-full flex items-center gap-2 px-2.5 py-1.5 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors duration-150">
+<span class="material-symbols-outlined text-[16px] text-outline">search</span>
+<span>Search</span>
+</button>
+<button class="w-full flex items-center gap-2 px-2.5 py-1.5 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors duration-150">
+<span class="material-symbols-outlined text-[16px] text-outline">computer</span>
+<span>Open from computer</span>
+</button>
+<!-- Active Tab: My Files with blue indicator -->
+<button class="w-full flex items-center justify-between px-2.5 py-1.5 text-label-sm font-label-sm bg-surface-container text-primary font-semibold rounded-lg relative">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>My Files</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</button>
+<button class="w-full flex items-center gap-2 px-2.5 py-1.5 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors duration-150">
+<span class="material-symbols-outlined text-[16px] text-outline">cloud_sync</span>
+<span>Google Drive / Cloud Sync</span>
+</button>
+</div>
+<!-- Section: Recent Files Header -->
+<div class="px-space-sm pt-3 pb-1 flex items-center justify-between shrink-0">
+<span class="text-[10px] font-bold text-outline tracking-wider uppercase font-headline-sm">Files</span>
+<button class="text-outline hover:text-primary p-0.5 rounded hover:bg-surface-container transition-colors" title="Create New Folder / File">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<!-- Recent Files List Scrollable Container -->
+<div class="flex-1 overflow-y-auto px-space-sm space-y-1.5 custom-scrollbar">
+<!-- File Card 1 -->
+<div class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-label-sm font-label-sm font-medium text-on-surface truncate group-hover:text-primary transition-colors">
+                  Invoice_2026.pdf
+                </p>
+<div class="flex items-center gap-2 text-code-xs font-code-xs text-outline mt-0.5">
+<span>14.2 MB</span>
+<span>•</span>
+<span>2m ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- File Card 2 -->
+<div class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-label-sm font-label-sm font-medium text-on-surface truncate group-hover:text-primary transition-colors">
+                  Lecture_Notes_Scan.pdf
+                </p>
+<div class="flex items-center gap-2 text-code-xs font-code-xs text-outline mt-0.5">
+<span>8.5 MB</span>
+<span>•</span>
+<span>1h ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- File Card 3 -->
+<div class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-label-sm font-label-sm font-medium text-on-surface truncate group-hover:text-primary transition-colors">
+                  Contract_Vendor_Final.pdf
+                </p>
+<div class="flex items-center gap-2 text-code-xs font-code-xs text-outline mt-0.5">
+<span>1.1 MB</span>
+<span>•</span>
+<span>yesterday</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional subtle mock document for archival completeness -->
+<div class="p-2 rounded border border-outline-variant/40 bg-surface-container-lowest/60 hover:bg-surface-container-low transition-all cursor-pointer group opacity-75 hover:opacity-100">
+<div class="flex items-start gap-2">
+<div class="p-1 rounded bg-secondary-fixed/70 text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-label-sm font-label-sm font-medium text-on-surface truncate">
+                  Tax_Audit_Report_v3.pdf
+                </p>
+<div class="flex items-center gap-2 text-code-xs font-code-xs text-outline mt-0.5">
+<span>22.4 MB</span>
+<span>•</span>
+<span>3d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom User Bar (Shared SideNavBar footer style) -->
+<div class="p-space-sm border-t border-outline-variant/60 bg-surface-container-low/60 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-7 h-7 rounded bg-primary text-on-primary font-bold text-code-xs font-code-xs flex items-center justify-center shrink-0">
+              JD
+            </div>
+<div class="min-w-0">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface truncate">John Doe</p>
+<p class="text-[10px] text-outline leading-tight truncate">Enterprise Admin</p>
+</div>
+</div>
+<button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container transition-colors" title="Settings">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- CENTER VIEWPORT: Fluid Document Ingest & Conversion Canvas -->
+<section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar">
+<!-- Top Segmented Switcher & Tool Ribbon -->
+<div class="h-11 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-space-lg shrink-0 sticky top-0 z-20">
+<!-- Navigation Switcher -->
+<nav class="flex items-center gap-1 h-full">
+<!-- Active: Home (mapped from JSON navigation_links) -->
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-primary font-semibold border-b-2 border-primary transition-all">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">document_scanner</span>
+<span>AI OCR to Word</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">call_split</span>
+<span>PDF Split &amp; Merge</span>
+</button>
+<button class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Batch Engine</span>
+</button>
+</nav>
+<!-- Right Quick Actions -->
+<div class="flex items-center gap-2">
+<span class="text-code-xs font-code-xs text-outline flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Stirling Engine Ready
+          </span>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container transition-colors" title="Zoom In"><span class="material-symbols-outlined text-[16px]">zoom_in</span></button>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container transition-colors" title="Full Screen"><span class="material-symbols-outlined text-[16px]">fullscreen</span></button>
+</div>
+</div>
+<!-- Main Central Drop Hero Area -->
+<div class="flex-1 flex flex-col items-center justify-center p-space-xl min-h-[560px]">
+<!-- Dashed Container Drop Zone -->
+<div class="w-full max-w-2xl border-2 border-dashed border-outline-variant/80 hover:border-primary/70 bg-surface-container-lowest/80 rounded-xl p-8 transition-all duration-200 flex flex-col items-center text-center group shadow-sm hover:shadow-md">
+<!-- Stylized 3D-effect Document & Folder Vector Graphic -->
+<div class="relative w-36 h-32 mb-4 flex items-center justify-center">
+<!-- Back Folder Layer -->
+<div class="absolute w-28 h-20 bg-blue-200 rounded-lg shadow-sm transform -rotate-6 translate-y-1 transition-transform group-hover:-rotate-8"></div>
+<!-- Middle Accent Layer (Cobalt) -->
+<div class="absolute w-28 h-20 bg-primary-container rounded-lg shadow-md transform rotate-3 -translate-y-1 flex items-start justify-end p-2 transition-transform group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 text-[18px]">auto_awesome</span>
+</div>
+<!-- Front Floating White Document Sheet with hairline gridlines -->
+<div class="relative z-10 w-24 h-28 bg-surface-container-lowest rounded-md shadow-lg border border-outline-variant/60 p-2.5 flex flex-col justify-between transform transition-transform group-hover:-translate-y-1">
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span>
+<span class="text-code-xs font-code-xs text-outline font-semibold">PDF</span>
+</div>
+<!-- Skeleton guides -->
+<div class="space-y-1.5 my-auto">
+<div class="h-1.5 bg-surface-container-high rounded w-full"></div>
+<div class="h-1.5 bg-surface-container-high rounded w-4/5"></div>
+<div class="h-1.5 bg-surface-container rounded w-3/5"></div>
+<div class="h-1 bg-primary/20 rounded w-full"></div>
+</div>
+<div class="flex items-center justify-between text-[8px] text-outline font-code-xs">
+<span>P.01</span>
+<span class="material-symbols-outlined text-primary text-[12px]">verified</span>
+</div>
+</div>
+<!-- Ambient glow behind vector -->
+<div class="absolute inset-0 bg-primary/5 filter blur-xl rounded-full pointer-events-none"></div>
+</div>
+<!-- Hero Typography -->
+<h1 class="text-headline-xl font-headline-xl font-bold text-on-surface tracking-tight mb-1">
+            OmniDoc Studio
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-md mb-6">
+            Drop in or add an existing PDF to get started. High-precision OCR extraction, split/merge transformations, and neural docx synthesis.
+          </p>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3">
+<button class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold rounded flex items-center gap-2 shadow-sm active:translate-y-px transition-all">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span>Open from computer</span>
+</button>
+<button class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-label-md font-label-md font-medium rounded flex items-center gap-1.5 active:translate-y-px transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-outline">add</span>
+<span>Open Files</span>
+</button>
+</div>
+<!-- Supported format tags -->
+<div class="mt-6 flex items-center gap-2 text-code-xs font-code-xs text-outline">
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">PDF 1.4-2.0</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">TIFF/Scans</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">Native Docx Engine</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/40">Max 500 MB</span>
+</div>
+</div>
+<!-- Quick Pipeline Status Indicators below Dropzone -->
+<div class="w-full max-w-2xl mt-4 grid grid-cols-3 gap-3">
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Sub-second Parsing</p>
+<p class="text-[10px] text-outline">Multi-threaded Stirling core</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Neural Layout AI</p>
+<p class="text-[10px] text-outline">Preserves table geometry</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/50 flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-surface-container-high text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+</div>
+<div class="text-left">
+<p class="text-label-sm font-label-sm font-semibold text-on-surface">Offline Quarantine</p>
+<p class="text-[10px] text-outline">Air-gapped security mode</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT SIDEBAR: 300px Inspector & Tools Directory -->
+<aside class="w-[300px] bg-surface dark:bg-inverse-surface border-l border-outline-variant dark:border-outline flex flex-col shrink-0 h-full overflow-hidden select-none">
+<!-- Top Policy & AI Engine Status Card -->
+<div class="p-space-sm border-b border-outline-variant/60 bg-surface-container-low shrink-0">
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant/60 p-2.5 shadow-sm space-y-2">
+<div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/40">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface">System Diagnostic</span>
+<span class="text-[10px] text-primary font-code-xs font-semibold">ALL ONLINE</span>
+</div>
+<!-- Status Rows -->
+<div class="space-y-1.5">
+<!-- Row 1: Ingestion -->
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[15px] text-outline">hard_drive</span>
+                Ingestion
+              </span>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-code-xs font-code-xs text-on-surface font-medium">Local Disk</span>
+</div>
+</div>
+<!-- Row 2: Security -->
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[15px] text-emerald-600">lock</span>
+                Security
+              </span>
+<span class="text-code-xs font-code-xs bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">
+                AES-256 Enabled
+              </span>
+</div>
+<!-- Row 3: AI Engine -->
+<div class="flex items-center justify-between text-body-sm font-body-sm pt-0.5">
+<span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[15px] text-tertiary">neurology</span>
+                AI Engine
+              </span>
+<span class="text-code-xs font-code-xs bg-tertiary-fixed text-on-tertiary-fixed font-semibold px-1.5 py-0.5 rounded border border-tertiary-fixed-dim">
+                Gemini 2.0 Flash (Free)
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tools Search Bar -->
+<div class="p-space-sm border-b border-outline-variant/60 shrink-0">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[15px] text-outline">tune</span>
+<input class="w-full h-7 pl-8 pr-3 text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant/70 rounded-full focus:border-primary focus:ring-0 focus:outline-none placeholder:text-outline text-on-surface shadow-inner" placeholder="Search tools..." type="text"/>
+</div>
+</div>
+<!-- Tools Directory Header -->
+<div class="px-space-sm pt-2.5 pb-1 flex items-center justify-between shrink-0">
+<span class="text-[10px] font-bold text-outline tracking-wider uppercase font-headline-sm">Recommended Tools</span>
+<span class="text-code-xs font-code-xs text-outline">9 Active</span>
+</div>
+<!-- Action Items List (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-space-sm py-1 space-y-1 custom-scrollbar">
+<!-- Tool 1: PDF to Word AI Extractor -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 hover:border-tertiary/40 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-tertiary text-[17px]">edit_document</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-tertiary transition-colors">
+              PDF to Word AI Extractor
+            </span>
+</div>
+<span class="text-[9px] font-code-xs font-semibold px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary-fixed-dim shrink-0">
+            AI
+          </span>
+</button>
+<!-- Tool 2: Split PDF by Pages / Ranges -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 hover:border-amber-400 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-secondary text-[17px]">call_split</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Split PDF by Pages / Ranges
+            </span>
+</div>
+<span class="text-[9px] font-code-xs font-semibold px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 shrink-0">
+            POPULAR
+          </span>
+</button>
+<!-- Tool 3: Merge Multiple PDFs -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[17px]">join_inner</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Merge Multiple PDFs
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 4: Compress & Linearize Streams -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[17px]">compress</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Compress &amp; Linearize Streams
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 5: Rotate & Delete Pages -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[17px]">sync</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Rotate &amp; Delete Pages
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 6: OCR & Deskew Scans (PaddleOCR) -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[17px]">document_scanner</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              OCR &amp; Deskew Scans (PaddleOCR)
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 7: Extract Images / Images to PDF -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[17px]">image</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Extract Images / Images to PDF
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 8: Password Protect & Decrypt -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-secondary text-[17px]">lock_reset</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Password Protect &amp; Decrypt
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Tool 9: Metadata & Title Editor -->
+<button class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between transition-all text-left group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[17px]">label</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium truncate group-hover:text-primary transition-colors">
+              Metadata &amp; Title Editor
+            </span>
+</div>
+<span class="material-symbols-outlined text-outline text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+</div>
+<!-- Stirling-PDF Engine micro status in sidebar footer -->
+<div class="p-space-sm border-t border-outline-variant/60 bg-surface-container-lowest flex items-center justify-between text-code-xs font-code-xs text-outline shrink-0">
+<span>Stirling Core: Active</span>
+<span>Build 2026.04.1</span>
+</div>
+</aside>
+<!-- Floating Action Button in Bottom-Right Corner -->
+<div class="absolute bottom-5 right-5 z-40">
+<button class="h-11 px-4 rounded-full bg-primary-container hover:bg-primary text-on-primary font-semibold text-label-md font-label-md flex items-center gap-2 shadow-lg hover:shadow-xl active:scale-95 transition-all duration-150 ring-4 ring-primary/20">
+<span class="material-symbols-outlined text-[20px] text-yellow-300 animate-pulse">bolt</span>
+<span>1-Click Auto-Fix</span>
+</button>
+</div>
+</main>
+<script>
+    // Contextual drag & drop indicator handler
+    window.addEventListener('dragover', (e) => e.preventDefault());
+    window.addEventListener('drop', (e) => e.preventDefault());
+  </script>
+</body></html>

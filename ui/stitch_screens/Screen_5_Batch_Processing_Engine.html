@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniDoc Studio - Batch Processing Engine</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c3c6d7",
+            "surface-dim": "#cbdbf5",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-secondary-fixed": "#410002",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "inverse-primary": "#b4c5ff",
+            "on-error-container": "#93000a",
+            "on-background": "#0b1c30",
+            "error": "#ba1a1a",
+            "surface": "#f8f9ff",
+            "tertiary-container": "#8343f4",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed": "#00174b",
+            "secondary-container": "#e02928",
+            "on-secondary-fixed-variant": "#93000b",
+            "secondary": "#bb0112",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#d2bbff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#f7edff",
+            "tertiary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "on-secondary-container": "#fffbff",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary": "#6a1edb",
+            "surface-container-high": "#dce9ff",
+            "on-surface": "#0b1c30",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "code-xs": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-xs": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    @keyframes spin-fast {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .animate-spin-custom {
+      animation: spin-fast 1s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-sm antialiased select-none overflow-hidden h-screen w-screen flex flex-col justify-between">
+<!-- Desktop Window Root Frame (1440x900 native canvas container) -->
+<div class="w-full h-full flex flex-col bg-surface border border-outline-variant shadow-2xl overflow-hidden">
+<!-- TopNavBar (Shared Component JSON Blueprint & Native Desktop Window Chrome) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface text-primary dark:text-inverse-primary docked full-width top-0 h-10 border-b border-outline-variant dark:border-outline flat no shadows flex items-center justify-between px-space-md w-full shrink-0 z-30">
+<!-- Window Title & Brand & Search Bar Left -->
+<div class="flex items-center gap-space-md">
+<!-- macOS / Fluent Window Traffic Light Accents -->
+<div class="flex items-center gap-1.5 mr-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container inline-block"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-highest inline-block border border-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-dim inline-block border border-outline-variant"></span>
+</div>
+<!-- Brand Logo -->
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">OmniDoc Studio</span>
+<span class="text-code-xs font-code-xs px-1.5 py-0.5 rounded bg-surface-container-low text-primary border border-outline-variant">PRO</span>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-space-xs"></div>
+<!-- Global Search Bar (on_left per JSON) -->
+<div class="flex items-center bg-surface-container-low px-space-sm py-0.5 rounded border border-outline-variant w-56">
+<span class="material-symbols-outlined text-outline text-label-sm mr-1" data-icon="search">search</span>
+<input class="bg-transparent border-none text-label-sm font-label-sm text-on-surface focus:ring-0 p-0 w-full placeholder:text-outline outline-none" placeholder="Search batch, tasks, files..." type="text"/>
+<span class="text-code-xs font-code-xs text-outline bg-surface-container-lowest px-1 rounded border border-outline-variant">⌘K</span>
+</div>
+</div>
+<!-- Navigation Links from JSON (Batch Engine Active) -->
+<nav class="flex items-center gap-space-md h-full">
+<!-- Home Dashboard -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md h-full flex items-center px-space-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+          Home Dashboard
+        </a>
+<!-- AI OCR to Word -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md h-full flex items-center px-space-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+          AI OCR to Word
+        </a>
+<!-- PDF Split & Merge -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface text-label-md font-label-md h-full flex items-center px-space-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+          PDF Split &amp; Merge
+        </a>
+<!-- Batch Engine (ACTIVE STATE MATCHING PAGE INTENT) -->
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary font-semibold text-label-md font-label-md h-full flex items-center px-space-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75 flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-label-md" data-icon="bolt">bolt</span>
+          Batch Engine
+        </a>
+</nav>
+<!-- Trailing Actions & Window Windowing Controls (From JSON) -->
+<div class="flex items-center gap-space-sm">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded hover:bg-surface-container-low transition-colors duration-150 active:translate-y-px transition-transform duration-75">
+          Batch Process
+        </button>
+<button class="bg-primary-container text-on-primary-container text-label-sm font-label-sm font-semibold px-space-sm py-1 rounded hover:bg-primary transition-colors duration-150 active:translate-y-px transition-transform duration-75 shadow-sm">
+          Export Word
+        </button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Window Chrome Icons per JSON: trailing_icon_actions: ["remove", "crop_square", "close"] -->
+<div class="flex items-center text-outline gap-1">
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-low rounded text-outline hover:text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+</button>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-low rounded text-outline hover:text-on-surface">
+<span class="material-symbols-outlined text-xs" data-icon="crop_square">crop_square</span>
+</button>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-secondary-container hover:text-on-secondary rounded text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Workstation Layout (SideNav + Central Canvas + Right Metric Inspector) -->
+<div class="flex-1 flex overflow-hidden">
+<!-- SideNavBar (Shared Component JSON Blueprint) -->
+<aside class="bg-surface dark:bg-inverse-surface docked left-0 top-10 h-full w-60 border-r border-outline-variant dark:border-outline flat no shadows flex flex-col justify-between p-space-sm shrink-0 z-20">
+<!-- SideNav Header & Primary CTA -->
+<div class="flex flex-col gap-space-sm">
+<!-- Sidebar Header Block -->
+<div class="px-space-xs py-1 flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-primary-container flex items-center justify-center text-on-primary font-bold text-headline-sm">
+<span class="material-symbols-outlined text-base" data-icon="account_tree">account_tree</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface leading-tight">OmniDoc Studio</h2>
+<p class="text-label-sm font-label-sm text-outline">v2.4 Pro Workstation</p>
+</div>
+</div>
+<!-- Primary CTA from JSON -->
+<button class="w-full bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-on-surface text-label-md font-label-md py-1.5 px-space-sm rounded-lg flex items-center justify-center gap-space-xs transition-colors duration-150 active:translate-y-px transition-transform duration-75 shadow-sm">
+<span class="material-symbols-outlined text-primary text-label-md" data-icon="add_circle">add_circle</span>
+<span>Import Document</span>
+</button>
+<div class="h-px bg-outline-variant my-space-xs"></div>
+<!-- SideNav Navigation Links from JSON -->
+<nav class="flex flex-col gap-0.5">
+<!-- Home -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<!-- Workflows (Active Contextual Folder Batch Engine) -->
+<a class="bg-surface-container dark:bg-surface-container-high text-primary dark:text-inverse-primary font-semibold rounded-lg px-space-sm py-1.5 flex items-center justify-between text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-lg" data-icon="account_tree">account_tree</span>
+<span>Workflows</span>
+</div>
+<span class="text-code-xs font-code-xs bg-primary text-on-primary px-1.5 py-0.2 rounded-full">ACTIVE</span>
+</a>
+<!-- Split & Merge -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="call_split">call_split</span>
+<span>Split &amp; Merge</span>
+</a>
+<!-- OCR Pipelines -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="document_scanner">document_scanner</span>
+<span>OCR Pipelines</span>
+</a>
+<!-- Sanitize -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="mop">mop</span>
+<span>Sanitize</span>
+</a>
+<!-- Archive Vault -->
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-150 active:translate-y-px transition-transform duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="archive">archive</span>
+<span>Archive Vault</span>
+</a>
+</nav>
+</div>
+<!-- SideNav Footer Tabs from JSON -->
+<div class="flex flex-col gap-0.5 pt-space-xs border-t border-outline-variant">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center gap-space-xs text-label-sm font-label-sm hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span>Engine Settings</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg px-space-sm py-1.5 flex items-center justify-between text-label-sm font-label-sm hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="dns">dns</span>
+<span>System Health</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+</a>
+</div>
+</aside>
+<!-- Central Main Viewport -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface-container-lowest overflow-hidden">
+<!-- Top Folder Selector Banner -->
+<section class="border-b border-outline-variant bg-surface px-space-md py-space-sm flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm flex-1">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="folder_open">folder_open</span>
+<div class="flex flex-col">
+<span class="text-code-xs font-code-xs text-outline uppercase tracking-wider">Source Ingestion Directory</span>
+<div class="flex items-center gap-space-xs mt-0.5">
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant px-space-sm py-1 rounded w-96 shadow-sm">
+<span class="material-symbols-outlined text-outline text-label-sm mr-1" data-icon="terminal">terminal</span>
+<input class="font-code-sm text-code-sm text-on-surface bg-transparent border-none p-0 w-full focus:ring-0 outline-none" readonly="" type="text" value="C:/Scanned_Archive_2026/"/>
+</div>
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm" data-icon="drive_folder_upload">drive_folder_upload</span>
+                  Browse Folder
+                </button>
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                  ↻ Rescan
+                </button>
+</div>
+</div>
+</div>
+<!-- File Count Status Badge -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome_motion">auto_awesome_motion</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">24 Files Detected</span>
+</div>
+</section>
+<!-- Batch Control Toolbar -->
+<section class="bg-surface-container-low border-b border-outline-variant px-space-md py-space-xs flex items-center justify-between">
+<!-- Control Buttons Cluster -->
+<div class="flex items-center gap-space-xs">
+<!-- [▶ Start All (Primary solid blue)] -->
+<button class="bg-primary-container text-on-primary-container hover:bg-primary text-label-sm font-label-sm font-semibold px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm font-semibold" data-icon="play_arrow">play_arrow</span>
+<span>Start All</span>
+</button>
+<!-- [⏸ Pause] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="pause">pause</span>
+<span>Pause</span>
+</button>
+<!-- [⏹ Cancel] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-error-container hover:text-on-error-container text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="stop">stop</span>
+<span>Cancel</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- [📁 Open Output Folder] -->
+<button class="bg-surface-container-lowest border border-outline-variant hover:bg-surface text-on-surface text-label-sm font-label-sm px-space-sm py-1 rounded flex items-center gap-1 transition-colors shadow-sm active:translate-y-px">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="folder">folder</span>
+<span>Open Output Folder</span>
+</button>
+</div>
+<!-- Total Batch Progress Indicator -->
+<div class="flex items-center gap-space-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Total Batch Progress: <strong class="text-on-surface font-semibold">72%</strong></span>
+<!-- Graphical Progress Bar -->
+<div class="w-36 bg-surface-container-highest rounded-full h-2 overflow-hidden border border-outline-variant">
+<div class="bg-primary h-full rounded-full transition-all duration-300" style="width: 72%;"></div>
+</div>
+<span class="text-code-xs font-code-xs text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant font-medium">
+              17/24 Complete
+            </span>
+</div>
+</section>
+<!-- Batch Queue Data Table -->
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<!-- Table Header -->
+<thead class="sticky top-0 bg-surface-container border-b border-outline-variant z-10">
+<tr>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-40">Status</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">File Name</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-32">Detected Pages</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-52">AI Engine / Mode</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-48">Execution Time / Progress</th>
+<th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-36 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-on-surface">
+<!-- Row 1: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container-low text-primary border border-outline-variant font-semibold">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check_circle">check_circle</span>
+                    Completed
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-medium text-on-surface hover:underline cursor-pointer">Tax_Returns_2025_Scan.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">12 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-tertiary border border-outline-variant">
+<span class="material-symbols-outlined text-xs" data-icon="neurology">neurology</span>
+                    PaddleOCR + Gemini 2.0
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-on-surface-variant">8.4s (Done)</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container text-primary hover:bg-surface-container-high transition-colors">View Docx</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Log</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container-low text-primary border border-outline-variant font-semibold">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check_circle">check_circle</span>
+                    Completed
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-medium text-on-surface hover:underline cursor-pointer">Vendor_Master_Agreement.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">6 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-on-surface border border-outline-variant">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="speed">speed</span>
+                    Fast Stirling OCR
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-on-surface-variant">3.1s (Done)</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container text-primary hover:bg-surface-container-high transition-colors">View Docx</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Log</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Blue animated spinner 'In Progress' -->
+<tr class="bg-surface-container-low/60 hover:bg-surface-container-low transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-code-xs font-code-xs bg-primary text-on-primary font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs animate-spin-custom" data-icon="sync">sync</span>
+                    In Progress
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">Annual_Audit_Report_2024.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm font-medium text-on-surface">38 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed-variant px-1.5 py-0.5 rounded text-code-xs font-code-xs font-medium border border-tertiary/20">
+<span class="material-symbols-outlined text-xs" data-icon="psychology">psychology</span>
+                    PaddleOCR + DeepSeek V3
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between text-code-xs font-code-xs">
+<span class="font-semibold text-primary">Page 22/38</span>
+<span class="text-on-surface-variant font-semibold">58%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface transition-colors shadow-sm">Pause</button>
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim transition-colors">Abort</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Queued -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100 opacity-90">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container text-on-surface border border-outline-variant font-medium">
+<span class="material-symbols-outlined text-xs text-outline" data-icon="schedule">schedule</span>
+                    Queued
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface">Medical_Records_Batch_A.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">14 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-tertiary border border-outline-variant">
+<span class="material-symbols-outlined text-xs" data-icon="neurology">neurology</span>
+                    PaddleOCR + Gemini 2.0
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-outline italic">Waiting in thread #2</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-outline hover:text-secondary transition-colors">Cancel</button>
+</td>
+</tr>
+<!-- Row 5: Queued -->
+<tr class="hover:bg-surface-container-low transition-colors duration-100 opacity-90">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-surface-container text-on-surface border border-outline-variant font-medium">
+<span class="material-symbols-outlined text-xs text-outline" data-icon="schedule">schedule</span>
+                    Queued
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface">Logistics_Waybills_Q3.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">9 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-on-surface border border-outline-variant">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="speed">speed</span>
+                    Fast Stirling OCR
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-outline italic">Waiting in thread #3</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-lowest border border-outline-variant text-outline hover:text-secondary transition-colors">Cancel</button>
+</td>
+</tr>
+<!-- Row 6: Red warning badge 'Error: Password Protected' -->
+<tr class="bg-error-container/20 hover:bg-error-container/30 transition-colors duration-100">
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-code-xs font-code-xs bg-secondary-fixed text-on-secondary-fixed font-semibold border border-secondary/20">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="lock">lock</span>
+                    Error: Password Protected
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="lock_clock">lock_clock</span>
+<span class="font-code-sm text-code-sm font-semibold text-secondary">Confidential_Payroll_Dec.pdf</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-body-sm text-on-surface-variant">4 pages</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded text-code-xs font-code-xs text-outline border border-outline-variant">
+                    Auto-Detect
+                  </span>
+</td>
+<td class="py-2.5 px-space-md">
+<span class="font-code-sm text-code-sm text-secondary font-medium">Decryption Key Required</span>
+</td>
+<td class="py-2.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary text-on-secondary hover:bg-secondary-container transition-colors shadow-sm font-medium">Unlock</button>
+<button class="px-1.5 py-0.5 rounded text-label-sm font-label-sm text-outline hover:text-on-surface hover:bg-surface-container-low">Skip</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Terminal Status Bar -->
+<footer class="h-7 bg-surface-container-low border-t border-outline-variant px-space-md flex items-center justify-between text-label-sm text-outline shrink-0">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1 text-code-xs font-code-xs text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block animate-pulse"></span>
+              PaddleOCR + DeepSeek V3 Processing Thread #1 (Active)
+            </span>
+<span class="text-code-xs font-code-xs">|</span>
+<span class="text-code-xs font-code-xs">Engine Profile: High Fidelity Multi-Column Docx Synthesis</span>
+</div>
+<div class="flex items-center gap-space-sm text-code-xs font-code-xs">
+<span>Disk I/O: 42.8 MB/s</span>
+<span>•</span>
+<span>Batch ID: #B-88392-CL</span>
+</div>
+</footer>
+</main>
+<!-- Right Metric & Hardware Monitor Panel (300px) -->
+<aside class="w-[300px] border-l border-outline-variant bg-surface p-space-md flex flex-col gap-space-md overflow-y-auto shrink-0 z-10">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-headline-sm" data-icon="monitoring">monitoring</span>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Pipeline Telemetry</h3>
+</div>
+<span class="text-code-xs font-code-xs text-outline">Real-time</span>
+</div>
+<!-- Metric Card 1: Total Ingestion -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="inventory_2">inventory_2</span>
+              Total Ingestion
+            </span>
+<span class="text-code-xs font-code-xs text-primary font-medium">Batch Session</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-surface font-bold">24 Files <span class="text-label-md font-label-md text-outline font-normal">(340 Pages)</span></div>
+<p class="text-code-xs font-code-xs text-outline mt-1">Stirling-PDF Ingestion Buffer Clean</p>
+</div>
+<!-- Metric Card 2: Elapsed Runtime & ETA -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="timer">timer</span>
+              Elapsed Runtime
+            </span>
+<span class="text-label-sm font-label-sm text-outline">ETA: <strong class="text-primary font-semibold">~01:15</strong></span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl text-on-surface font-bold font-code-sm">03:42</span>
+<span class="text-code-xs font-code-xs bg-surface-container text-on-surface px-1.5 py-0.5 rounded font-medium">4.2 pps avg</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1 mt-2">
+<div class="bg-primary h-full rounded-full" style="width: 74%;"></div>
+</div>
+</div>
+<!-- Metric Card 3: Success Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span>
+              Success Rate
+            </span>
+<span class="text-code-xs font-code-xs text-on-surface font-semibold">95%</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">23/24 OK <span class="text-label-sm font-label-sm text-secondary font-medium">(1 Locked)</span></div>
+<div class="flex gap-1 mt-2">
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 w-4 bg-secondary rounded-full"></div>
+</div>
+</div>
+<!-- Hardware & Workers Utilization Card -->
+<div class="bg-surface-container-lowest border border-outline-variant p-space-sm rounded-lg shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between border-b border-outline-variant pb-1">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="developer_board">developer_board</span>
+              Hardware &amp; Workers
+            </span>
+<span class="text-code-xs font-code-xs text-primary font-semibold">ONLINE</span>
+</div>
+<!-- CPU Threads -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">CPU Threads</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">6 of 8 Active (78%)</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 78%;"></div>
+</div>
+</div>
+<!-- RAM Allocation -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">RAM Allocation</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">4.2 GB / 16.0 GB</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 26%;"></div>
+</div>
+</div>
+<!-- GPU VRAM (CUDA) -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">GPU VRAM (CUDA)</span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">2.1 GB / 8.0 GB</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 26.25%;"></div>
+</div>
+</div>
+<!-- Local Stirling-PDF Engine Health -->
+<div class="mt-1 pt-space-xs border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium">Stirling-PDF Engine</span>
+</div>
+<span class="text-code-xs font-code-xs text-primary font-medium">Socket 8080 Active</span>
+</div>
+</div>
+<!-- Quick Config Accordion / Notice -->
+<div class="mt-auto bg-surface-container-low border border-outline-variant p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5" data-icon="info">info</span>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm font-semibold text-on-surface">Background Auto-Save</span>
+<p class="text-code-xs font-code-xs text-outline leading-tight mt-0.5">Converted docx files will mirror the source folder directory tree automatically.</p>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</body></html>
