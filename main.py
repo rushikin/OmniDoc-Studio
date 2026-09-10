@@ -144,6 +144,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch", "-b", default=None, help="Path to folder: process all PDFs inside.")
     parser.add_argument("--gui", action="store_true", help="Launch CustomTkinter Desktop GUI.")
     parser.add_argument("--ui", action="store_true", help="Launch Modern Workstation UI.")
+    parser.add_argument("--cli", action="store_true", help="Launch interactive CLI mode.")
     args = parser.parse_args()
 
     if args.gui:
@@ -157,8 +158,14 @@ def parse_args() -> argparse.Namespace:
         run_ui.main()
         sys.exit(0)
 
-    if not args.input and not args.batch:
+    if args.cli:
         return interactive_mode()
+
+    if not args.input and not args.batch:
+        # Default behavior for normal double-click: open the full unified Workstation App directly!
+        import run_ui
+        run_ui.main()
+        sys.exit(0)
 
     args.interactive = False
     return args

@@ -12,11 +12,15 @@
 
 ---
 
-## 💾 Instant Download (Windows Standalone Setup)
+## 💾 Instant Download (Standard Windows Setup & Installer)
 
-[![Download OmniDoc Studio Setup](https://img.shields.io/badge/Download-OmniDoc%20Studio%20v2.4%20Setup%20(ZIP)-2ea44f?style=for-the-badge&logo=windows)](https://github.com/rushikin/OmniDoc-Studio/releases/latest)
+[![Download Windows Installer](https://img.shields.io/badge/Download-OmniDoc%20Studio%20v2.4%20Installer%20(.exe)-0078D6?style=for-the-badge&logo=windows)](https://github.com/rushikin/OmniDoc-Studio/releases/latest)
+[![Download Portable ZIP](https://img.shields.io/badge/Download-Portable%20Setup%20(ZIP)-2ea44f?style=for-the-badge&logo=zip)](https://github.com/rushikin/OmniDoc-Studio/releases/latest)
 
-> 📦 **Single Downloadable Setup File**: Download [`OmniDocStudio_v2.4_Setup.zip`](https://github.com/rushikin/OmniDoc-Studio/releases/latest) from the **[GitHub Releases](https://github.com/rushikin/OmniDoc-Studio/releases)** page. Includes the full offline PaddleOCR engine, PyWebView workstation UI, and Stirling PDF tools — ready to run with zero installation or Python dependencies needed!
+> 📦 **Native Windows App Installation**:
+> - **Installer (`OmniDocStudio_v2.4_Setup_Installer.exe`)**: Standard Windows setup wizard that installs OmniDoc Studio directly into your **Windows Apps List**, **Start Menu**, **Desktop**, and allows pinning to **Taskbar** with one click!
+> - **Unified Application Experience**: No command prompts or separate modes. Directly opens the complete 7-screen enterprise workstation featuring OCR, Visual Splitter, Merge Queue, Batch Engine, and Security Suite.
+> - **Standalone ZIP (`OmniDocStudio_v2.4_Setup.zip`)**: Zero-install portable edition. Available on the **[GitHub Releases](https://github.com/rushikin/OmniDoc-Studio/releases)** page.
 
 ---
 
