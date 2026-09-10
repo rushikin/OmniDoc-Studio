@@ -1,4 +1,4 @@
-﻿# OmniDoc Studio 🚀
+# OmniDoc Studio 🚀
 ### Enterprise-Grade Scanned PDF to Word (DOCX) AI Extractor & Stirling-PDF Suite
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -9,6 +9,12 @@
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6.svg)](https://microsoft.com)
 
 > **OmniDoc Studio** is a modern, high-performance desktop workstation combining neural Optical Character Recognition (OCR), multimodal Large Language Models (LLMs), and an offline native **Stirling-PDF** manipulation suite. It converts blurry, skewed, and degraded scanned PDFs into formatted, editable Microsoft Word (`.docx`) documents while providing offline PDF tools (Split, Merge, Rotate, Compress, Unlock, and Metadata Editing).
+
+---
+
+## 📸 Workstation Preview
+
+![OmniDoc Studio Workstation Preview](ui/preview.png)
 
 ---
 
