@@ -1,0 +1,33 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.spec.bak
+
+# Secrets & Environment Variables
+.env
+.env.local
+
+# Large local caches and temporary files
+logs/*.json
+output/
+temp/
+*.docx
+*.pdf
+!ui/sample*.pdf
+
+# Stirling-PDF git submodule/clone directory
+Stirling-PDF/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

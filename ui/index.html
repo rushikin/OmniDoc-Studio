@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OmniDoc Studio - v2.4 Enterprise Workstation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'outline-variant': '#c3c6d7',
+            'surface-dim': '#cbdbf5',
+            'surface': '#f8f9ff',
+            'primary-container': '#2563eb',
+            'primary': '#004ac6',
+            'on-primary': '#ffffff',
+            'on-surface': '#0b1c30',
+            'on-surface-variant': '#434655',
+            'secondary': '#bb0112',
+            'secondary-fixed': '#ffdad6',
+            'surface-container-lowest': '#ffffff',
+            'surface-container-low': '#eff4ff',
+            'surface-container': '#e5eeff',
+            'surface-container-high': '#dce9ff',
+            'tertiary': '#6a1edb',
+            'tertiary-fixed': '#eaddff',
+            'outline': '#737686',
+            'error-container': '#ffdad6',
+            'error': '#ba1a1a'
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="css/animations.css"/>
+</head>
+<body class="bg-surface text-on-surface select-none overflow-hidden h-screen flex flex-col antialiased font-['Inter']">
+
+  <header class="bg-surface-container-lowest border-b border-outline-variant docked full-width top-0 h-10 flex items-center justify-between px-3 w-full shrink-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 mr-2">
+        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block cursor-pointer hover:opacity-80"></span>
+        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block cursor-pointer hover:opacity-80"></span>
+        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block cursor-pointer hover:opacity-80"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-[18px]">description</span>
+        <span class="text-[13px] font-bold text-on-surface tracking-tight">OmniDoc Studio</span>
+        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded font-mono font-medium">v2.4 Workstation</span>
+      </div>
+    </div>
+    <div class="flex items-center w-72 max-w-sm">
+      <div class="relative w-full flex items-center">
+        <span class="material-symbols-outlined absolute left-2.5 text-[15px] text-outline">search</span>
+        <input class="w-full h-6 pl-8 pr-3 text-[11px] bg-surface-container-low border border-outline-variant/60 rounded focus:border-primary focus:ring-0 focus:outline-none placeholder:text-outline text-on-surface" placeholder="Search commands, OCR tools (⌘K)..." type="text"/>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="switchTab('batch')" class="h-6 px-2.5 text-[11px] bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action shadow-xs">
+        <span class="material-symbols-outlined text-[14px]">bolt</span> Batch Process
+      </button>
+      <button onclick="switchTab('ocr')" class="h-6 px-2.5 text-[11px] bg-primary-container hover:bg-primary text-on-primary rounded flex items-center gap-1 btn-action shadow-sm">
+        <span class="material-symbols-outlined text-[14px]">file_download</span> Export Word
+      </button>
+    </div>
+  </header>
+  <div class="bg-[#EFF6FF] border-b border-blue-100 px-3 py-1.5 flex items-center justify-between shrink-0" id="notice-banner">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[18px]">folder_open</span>
+      <p class="text-[12px] text-on-surface">Make OmniDoc Studio your default application for opening and editing PDF files.</p>
+    </div>
+    <button class="text-outline hover:text-on-surface p-0.5 rounded" onclick="document.getElementById('notice-banner').classList.add('hidden')"><span class="material-symbols-outlined text-[16px]">close</span></button>
+  </div>
+  <main class="flex-1 flex overflow-hidden relative">
+
+    <aside class="w-[260px] bg-surface border-r border-outline-variant flex flex-col justify-between shrink-0 h-full select-none">
+      <div class="flex flex-col h-full overflow-hidden">
+        <div class="p-2 border-b border-outline-variant/60 flex items-center gap-2 shrink-0">
+          <div class="flex items-baseline gap-1">
+            <span class="text-[15px] font-bold text-on-surface tracking-tight">OmniDoc</span>
+            <span class="text-[15px] font-bold text-secondary tracking-tight">Studio</span>
+          </div>
+        </div>
+        <div class="p-2 space-y-1 shrink-0">
+          <button onclick="switchTab('home')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">home</span> <span>Home</span></button>
+          <button onclick="switchTab('ocr')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] bg-surface-container text-primary font-semibold rounded-lg"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-primary">document_scanner</span> <span>AI OCR to Word</span></div><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></button>
+          <button onclick="switchTab('split')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>Split & Page Grid</span></button>
+          <button onclick="switchTab('merge')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Workbench</span></button>
+          <button onclick="switchTab('batch')" class="w-full flex items-center gap-2 px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></button>
+        </div>
+        <div class="px-2 pt-3 pb-1 flex items-center justify-between shrink-0"><span class="text-[10px] font-bold text-outline tracking-wider uppercase">Recent Documents</span></div>
+        <div class="flex-1 overflow-y-auto px-2 space-y-1.5">
+          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+            <div class="flex items-start gap-2"><div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><div class="min-w-0 flex-1"><p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Invoice_2026.pdf</p><div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>14.2 MB</span><span>•</span><span>2m ago</span></div></div></div>
+          </div>
+          <div onclick="switchTab('ocr')" class="p-2 rounded border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+            <div class="flex items-start gap-2"><div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0 mt-0.5"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><div class="min-w-0 flex-1"><p class="text-[11px] font-medium text-on-surface truncate group-hover:text-primary">Lecture_Notes_Scan.pdf</p><div class="flex items-center gap-2 text-[10px] font-mono text-outline mt-0.5"><span>8.5 MB</span><span>•</span><span>1h ago</span></div></div></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar">
+      <div class="h-11 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-4 shrink-0 sticky top-0 z-20">
+        <nav class="flex items-center gap-1 h-full">
+          <button id="nav-home" onclick="switchTab('home')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-primary border-b-2 border-primary transition-all"><span class="material-symbols-outlined text-[16px]">home</span> <span>Home</span></button>
+          <button id="nav-ocr" onclick="switchTab('ocr')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">document_scanner</span> <span>AI OCR to Word</span></button>
+          <button id="nav-split" onclick="switchTab('split')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>PDF Split & Organize</span></button>
+          <button id="nav-merge" onclick="switchTab('merge')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Queue</span></button>
+          <button id="nav-batch" onclick="switchTab('batch')" class="h-full flex items-center gap-1.5 px-3 text-[12px] font-medium text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></button>
+        </nav>
+        <span class="text-[10px] font-mono text-outline flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Stirling + PaddleOCR Ready</span>
+      </div>
+
+      <!-- PANE 1: HOME -->
+      <div id="pane-home" class="flex-1 flex flex-col items-center justify-center p-6 min-h-[560px]">
+        <div id="main-dropzone" onclick="switchTab('ocr'); window.showNotification('Loaded Invoice_2026.pdf into AI OCR Workbench');" class="w-full max-w-2xl border-2 border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest/80 rounded-xl p-8 flex flex-col items-center text-center group shadow-sm hover:shadow-md cursor-pointer transition-all">
+          <div class="relative w-36 h-32 mb-4 flex items-center justify-center anim-float">
+            <div class="absolute w-28 h-20 bg-blue-200 rounded-lg shadow-sm transform -rotate-6 translate-y-1"></div>
+            <div class="absolute w-28 h-20 bg-primary-container rounded-lg shadow-md transform rotate-3 -translate-y-1 flex items-start justify-end p-2"><span class="material-symbols-outlined text-white/40 text-[18px]">auto_awesome</span></div>
+            <div class="relative z-10 w-24 h-28 bg-surface-container-lowest rounded-md shadow-lg border border-outline-variant/60 p-2.5 flex flex-col justify-between overflow-hidden">
+              <div class="anim-scanline"></div>
+              <div class="flex items-center justify-between border-b border-outline-variant/40 pb-1.5"><span class="material-symbols-outlined text-secondary text-[16px]">picture_as_pdf</span><span class="text-[10px] font-mono text-outline font-semibold">PDF</span></div>
+              <div class="space-y-1.5 my-auto"><div class="h-1.5 bg-surface-container-high rounded w-full"></div><div class="h-1.5 bg-surface-container-high rounded w-4/5"></div><div class="h-1.5 bg-surface-container rounded w-3/5"></div></div>
+              <div class="flex items-center justify-between text-[8px] text-outline font-mono"><span>P.01</span> <span class="material-symbols-outlined text-primary text-[12px]">verified</span></div>
+            </div>
+          </div>
+          <h1 class="text-[24px] font-bold text-on-surface tracking-tight mb-1 shimmer-text">OmniDoc Studio</h1>
+          <p class="text-[13px] text-on-surface-variant max-w-md mb-6">Drop in or add an existing PDF to get started. High-precision OCR extraction, split/merge transformations, and neural docx synthesis.</p>
+          <div class="flex items-center gap-3">
+            <button onclick="event.stopPropagation(); switchTab('ocr'); window.showNotification('Selected document for OCR extraction');" class="h-9 px-5 bg-primary-container hover:bg-primary text-on-primary text-[12px] font-semibold rounded flex items-center gap-2 shadow-sm btn-action"><span class="material-symbols-outlined text-[18px]">folder_open</span> <span>Open from computer</span></button>
+            <button onclick="event.stopPropagation(); switchTab('split'); window.showNotification('Opened Split & Organize View');" class="h-9 px-5 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant text-[12px] font-medium rounded flex items-center gap-1.5 shadow-sm btn-action"><span class="material-symbols-outlined text-[18px] text-outline">add</span> <span>Open Files</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 2: OCR -->
+      <div id="pane-ocr" class="hidden flex-1 flex overflow-hidden p-4 gap-4">
+        <div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-1">
+          <div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded bg-secondary-fixed text-secondary flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">picture_as_pdf</span></div>
+              <div><span id="target-filename-ocr" class="text-[15px] font-bold text-on-surface">Invoice_2026.pdf</span><div class="text-[11px] text-on-surface-variant mt-0.5">12 Pages • 18.4 MB • <span class="text-primary font-medium">Ready</span></div></div>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest border border-outline-variant p-4 rounded">
+            <div class="grid grid-cols-4 gap-2 text-center text-[12px] mb-3">
+              <div class="text-emerald-700 font-semibold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> Phase 1: Deskew</div>
+              <div class="text-primary font-bold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Phase 2: PaddleOCR</div>
+              <div class="text-outline">Phase 3: AI Gap-Filling</div>
+              <div class="text-outline">Phase 4: Word Docx</div>
+            </div>
+            <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden"><div id="ocr-prog-bar" class="h-full bg-primary-container rounded-full transition-all duration-300 w-[65%]"></div></div>
+            <p id="ocr-prog-text" class="text-[11px] text-on-surface-variant mt-2 font-medium">Processing Page 3 of 12 — 65%</p>
+          </div>
+          <div class="bg-surface-container-lowest border border-outline-variant rounded p-3 flex-1 flex flex-col min-h-[160px]">
+            <div class="flex items-center justify-between border-b border-outline-variant pb-1.5 mb-1.5"><span class="text-[12px] font-semibold flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">terminal</span> Live Terminal Log</span></div>
+            <div id="terminal-log-content" class="font-mono text-[11px] space-y-1 overflow-y-auto flex-1 text-on-surface-variant">
+              <div>[10:42:01] CLAHE contrast enhancement completed (0.42s)</div>
+              <div>[10:42:02] PaddleOCR detected 14 text blocks, 2 tables, 1 header title</div>
+              <div>[10:42:03] OpenRouter Gemini 2.0 Flash queued for column reconciliation</div>
+            </div>
+          </div>
+          <button id="btn-run-ocr" onclick="window.runOCRSimulation()" class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary font-bold text-[14px] rounded shadow-md flex items-center justify-center gap-2 btn-action">
+            <span>🚀</span> <span>Extract & Reconstruct Word Document</span>
+          </button>
+        </div>
+        <div class="w-[300px] bg-surface-container-lowest border border-outline-variant p-4 rounded flex flex-col gap-4 shrink-0 overflow-y-auto">
+          <h2 class="text-[15px] font-bold border-b border-outline-variant pb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[18px]">tune</span> OCR & AI Settings
+          </h2>
+          <div class="space-y-1">
+            <label class="text-[12px] font-semibold flex items-center justify-between">
+              <span>Render DPI</span>
+              <span id="dpi-val" class="font-mono text-primary font-bold">300 DPI</span>
+            </label>
+            <input type="range" min="150" max="600" value="300" step="50" oninput="document.getElementById('dpi-val').textContent = this.value + ' DPI'" class="w-full accent-primary cursor-pointer"/>
+            <div class="flex justify-between text-[10px] text-outline font-mono"><span>150 DPI</span><span>300 DPI</span><span>600 DPI</span></div>
+          </div>
+          <div class="p-3 bg-surface-container-low border border-outline-variant rounded-lg space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[12px] font-bold text-primary flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">psychology</span> OpenRouter AI</span>
+              <input type="checkbox" checked onchange="window.showNotification(this.checked ? 'Neural Context Engine Enabled' : 'Raw OCR Mode Active')" class="w-4 h-4 text-primary rounded cursor-pointer"/>
+            </div>
+            <select onchange="window.showNotification('Switched Model: ' + this.value)" class="w-full h-8 text-[12px] bg-surface-container-lowest border border-outline-variant rounded px-2 font-medium focus:border-primary focus:outline-none">
+              <option value="Gemini 2.0 Flash">Gemini 2.0 Flash (Free ⚡)</option>
+              <option value="Llama 3.3 70B">Llama 3.3 70B Instruct (Free)</option>
+              <option value="Mistral Small 24B">Mistral Small 24B (Free)</option>
+              <option value="DeepSeek V3">DeepSeek V3 (Free)</option>
+            </select>
+          </div>
+          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-lg space-y-1.5 text-[11px]">
+            <span class="font-semibold text-on-surface flex items-center gap-1"><span class="material-symbols-outlined text-emerald-600 text-[15px]">auto_fix_high</span> Auto-Enhancements</span>
+            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> CLAHE Contrast Equalizer</label>
+            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> Deskew (±10° Hough Angle)</label>
+            <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface"><input type="checkbox" checked class="rounded text-primary"/> Multi-column Gap Reconciliation</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 3: SPLIT -->
+      <div id="pane-split" class="hidden flex-1 flex flex-col overflow-hidden p-4">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-[14px] font-bold">Interactive Page Visualizer & Splitter</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 text-primary font-semibold">Click cards to toggle selection</span>
+          </div>
+          <button onclick="window.showNotification('Split pages exported to Desktop/Extracted Files!', 'success')" class="h-8 px-4 bg-primary-container text-on-primary rounded font-semibold text-[12px] btn-action flex items-center gap-1.5 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">file_download</span> Export Split Files
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto grid grid-cols-4 gap-4 p-2 custom-scrollbar">
+          <div onclick="window.toggleCardSelection(this, 1)" class="border-2 border-primary anim-glow bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
+            <div class="w-full flex justify-between items-center mb-2">
+              <span class="text-[12px] font-bold text-primary">Page #1</span>
+              <span class="status-badge text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-primary text-white">SELECTED</span>
+            </div>
+            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
+              <div class="space-y-1.5"><div class="h-2 bg-slate-200 rounded w-3/4"></div><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-5/6"></div></div>
+              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Title / Header</span><span>OCR Ready</span></div>
+            </div>
+          </div>
+          <div onclick="window.toggleCardSelection(this, 2)" class="border-2 border-primary anim-glow bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
+            <div class="w-full flex justify-between items-center mb-2">
+              <span class="text-[12px] font-bold text-primary">Page #2</span>
+              <span class="status-badge text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-primary text-white">SELECTED</span>
+            </div>
+            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
+              <div class="grid grid-cols-3 gap-1 border border-slate-200 p-1 rounded"><div class="h-2 bg-blue-100 rounded"></div><div class="h-2 bg-blue-100 rounded"></div><div class="h-2 bg-blue-100 rounded"></div></div>
+              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Financial Table</span><span>OCR Ready</span></div>
+            </div>
+          </div>
+          <div onclick="window.toggleCardSelection(this, 3)" class="border border-outline-variant bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
+            <div class="w-full flex justify-between items-center mb-2">
+              <span class="text-[12px] font-medium text-on-surface">Page #3</span>
+              <span class="status-badge text-[10px] font-mono text-outline">READY</span>
+            </div>
+            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
+              <div class="space-y-1.5"><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-4/5"></div><div class="h-1.5 bg-slate-100 rounded w-full"></div></div>
+              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Body Text</span><span>Idle</span></div>
+            </div>
+          </div>
+          <div onclick="window.toggleCardSelection(this, 4)" class="border border-outline-variant bg-surface-container-lowest rounded-xl p-3 flex flex-col items-center cursor-pointer interactive-card shadow-sm group">
+            <div class="w-full flex justify-between items-center mb-2">
+              <span class="text-[12px] font-medium text-on-surface">Page #4</span>
+              <span class="status-badge text-[10px] font-mono text-outline">READY</span>
+            </div>
+            <div class="w-full aspect-[1/1.4] bg-white border border-outline-variant/60 rounded p-2 flex flex-col justify-between group-hover:border-primary transition-colors">
+              <div class="space-y-1.5"><div class="h-1.5 bg-slate-100 rounded w-full"></div><div class="h-1.5 bg-slate-100 rounded w-3/5"></div></div>
+              <div class="text-[9px] font-mono text-outline flex justify-between"><span>Appendix</span><span>Idle</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 4: MERGE -->
+      <div id="pane-merge" class="hidden flex-1 flex p-6 gap-6 overflow-hidden">
+        <div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[18px] font-bold tracking-tight">Merge & Sequence Document Queue</h2>
+            <button onclick="window.showNotification('Added document to queue')" class="text-[11px] px-2.5 py-1 bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action">
+              <span class="material-symbols-outlined text-[14px]">add</span> Add PDF
+            </button>
+          </div>
+          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between shadow-sm interactive-card">
+            <div class="flex items-center gap-3">
+              <div class="p-1.5 rounded bg-secondary-fixed text-secondary"><span class="material-symbols-outlined text-[20px]">picture_as_pdf</span></div>
+              <div>
+                <span class="font-semibold text-[13px] text-on-surface">01_Executive_Summary_Signed.pdf</span>
+                <div class="text-[11px] font-mono text-outline mt-0.5">6 Pages • 2.8 MB • SHA-256 Valid</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_upward</span>
+              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_downward</span>
+              <button onclick="this.closest('.interactive-card').remove(); window.showNotification('Removed file from merge queue')" class="text-outline hover:text-secondary p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </div>
+          </div>
+          <div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between shadow-sm interactive-card">
+            <div class="flex items-center gap-3">
+              <div class="p-1.5 rounded bg-secondary-fixed text-secondary"><span class="material-symbols-outlined text-[20px]">picture_as_pdf</span></div>
+              <div>
+                <span class="font-semibold text-[13px] text-on-surface">02_Financial_Tables_Q1-Q4.pdf</span>
+                <div class="text-[11px] font-mono text-outline mt-0.5">24 Pages • 8.1 MB • SHA-256 Valid</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_upward</span>
+              <span class="material-symbols-outlined text-outline hover:text-primary cursor-pointer icon-tilt">arrow_downward</span>
+              <button onclick="this.closest('.interactive-card').remove(); window.showNotification('Removed file from merge queue')" class="text-outline hover:text-secondary p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </div>
+          </div>
+        </div>
+        <aside class="w-80 bg-surface-container-lowest border border-outline-variant p-4 rounded-xl flex flex-col justify-between shrink-0">
+          <div class="space-y-4">
+            <h3 class="text-[15px] font-bold border-b border-outline-variant pb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]">tune</span> Assembly Rules</h3>
+            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
+              <span>Linearize Fast Web View</span>
+              <input type="checkbox" checked class="rounded text-primary"/>
+            </label>
+            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
+              <span>Preserve Bookmarks & Outline</span>
+              <input type="checkbox" checked class="rounded text-primary"/>
+            </label>
+            <label class="flex items-center justify-between text-[12px] font-medium text-on-surface cursor-pointer">
+              <span>Compress Embedded JPEGs</span>
+              <input type="checkbox" checked class="rounded text-primary"/>
+            </label>
+          </div>
+          <button onclick="window.showNotification('Documents joined into Merged_OmniDoc_Export.pdf!', 'success')" class="w-full h-11 bg-primary-container hover:bg-primary text-on-primary rounded-lg font-bold text-[13px] btn-action flex items-center justify-center gap-2 shadow-md">
+            <span class="material-symbols-outlined text-[18px]">merge_type</span> Merge into Single PDF
+          </button>
+        </aside>
+      </div>
+
+      <!-- PANE 5: BATCH -->
+      <div id="pane-batch" class="hidden flex-1 flex flex-col p-6 gap-4 overflow-hidden">
+        <div class="flex justify-between items-center bg-surface-container-lowest p-3 rounded-xl border border-outline-variant shadow-sm">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[20px]">folder_open</span> <span class="font-mono text-[12px] font-semibold text-on-surface">C:/Scanned_Archive_2026/</span></div>
+          <button onclick="window.showNotification('Rescanned directory: 24 PDF files found.', 'info')" class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded-md text-[11px] font-medium btn-action flex items-center gap-1.5 text-primary border border-outline-variant/40">
+            <span class="material-symbols-outlined text-[14px]">refresh</span> Rescan Directory
+          </button>
+        </div>
+        <div class="flex-1 border border-outline-variant rounded-xl bg-surface-container-lowest overflow-y-auto p-3 space-y-2 custom-scrollbar">
+          <div class="p-2.5 border border-outline-variant/50 rounded-lg flex items-center justify-between text-[12px] interactive-card">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-emerald-600 text-[18px]">task_alt</span>
+              <span class="font-semibold text-on-surface">Batch_Scan_Archive_01.pdf</span>
+            </div>
+            <span class="text-emerald-700 font-mono text-[11px] font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">14 Pages Completed</span>
+          </div>
+          <div class="p-2.5 border border-outline-variant/50 rounded-lg flex items-center justify-between text-[12px] interactive-card">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-primary text-[18px] animate-spin">sync</span>
+              <span class="font-semibold text-on-surface">Invoice_Contract_2026.pdf</span>
+            </div>
+            <span class="text-primary font-mono text-[11px] font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Processing 45%</span>
+          </div>
+        </div>
+        <button onclick="window.showNotification('Batch execution active across 24 files!', 'success')" class="h-11 bg-primary-container hover:bg-primary text-on-primary font-bold text-[13px] rounded-lg btn-action flex items-center justify-center gap-2 shadow-md">
+          <span class="material-symbols-outlined text-[18px]">play_arrow</span> Start All Batch Ingestion
+        </button>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDEBAR: TOOLS -->
+    <aside class="w-[280px] bg-surface border-l border-outline-variant flex flex-col shrink-0 h-full overflow-hidden select-none">
+      <div class="p-2 border-b border-outline-variant/60 bg-surface-container-low shrink-0">
+        <div class="bg-surface-container-lowest rounded-lg border border-outline-variant/60 p-2 shadow-sm space-y-1.5">
+          <div class="flex items-center justify-between border-b border-outline-variant/40 pb-1">
+            <span class="text-[11px] font-semibold text-on-surface">System Diagnostic</span>
+            <span class="text-[9px] text-primary font-mono font-semibold">ALL ONLINE</span>
+          </div>
+          <div class="flex justify-between text-[11px]"><span class="text-outline">Security</span> <span class="font-mono text-emerald-700 font-semibold">AES-256 Enabled</span></div>
+          <div class="flex justify-between text-[11px]"><span class="text-outline">AI Model</span> <span class="font-mono text-tertiary font-semibold">Gemini 2.0 Flash</span></div>
+        </div>
+      </div>
+      <div class="px-2 pt-2 pb-1 text-[10px] font-bold text-outline tracking-wider uppercase">Stirling PDF Tools</div>
+      <div class="flex-1 overflow-y-auto px-2 space-y-1 custom-scrollbar">
+        <button onclick="switchTab('ocr')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[17px] icon-tilt">edit_document</span><span class="text-[11px] font-medium">PDF to Word AI Extractor</span></div>
+          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">AI</span>
+        </button>
+        <button onclick="switchTab('split')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-[17px] icon-tilt">call_split</span><span class="text-[11px] font-medium">Split PDF by Pages</span></div>
+          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 font-bold">HOT</span>
+        </button>
+        <button onclick="switchTab('merge')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[17px] icon-tilt">join_inner</span><span class="text-[11px] font-medium">Merge Multiple PDFs</span></div>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </button>
+        <button onclick="window.showNotification('Streams compressed and linearized via Stirling core!', 'success')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[17px] icon-tilt">compress</span><span class="text-[11px] font-medium">Compress & Linearize</span></div>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </button>
+        <button onclick="window.showNotification('Pages rotated 90° clockwise!', 'info')" class="w-full p-2 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 flex items-center justify-between text-left group interactive-card">
+          <div class="flex items-center gap-2"><span class="material-symbols-outlined text-on-surface-variant text-[17px] icon-tilt">sync</span><span class="text-[11px] font-medium">Rotate & Clean Pages</span></div>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 1-Click Auto-Fix Floating Action Button -->
+    <div class="absolute bottom-5 right-5 z-40">
+      <button onclick="switchTab('ocr'); window.runOCRSimulation();" class="h-11 px-4 rounded-full bg-primary-container hover:bg-primary text-on-primary font-semibold text-[13px] flex items-center gap-2 shadow-lg hover:shadow-xl btn-action ring-4 ring-primary/20">
+        <span class="material-symbols-outlined text-[20px] text-yellow-300 animate-pulse">bolt</span>
+        <span>1-Click Auto-Fix</span>
+      </button>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
