@@ -14,6 +14,13 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
+# Ensure current directory and _internal are in sys.path
+base_dir = Path(__file__).resolve().parent
+internal_dir = base_dir / "_internal"
+for p in (str(base_dir), str(internal_dir)):
+    if p not in sys.path and os.path.exists(p):
+        sys.path.insert(0, p)
+
 try:
     import webview
 except ImportError:

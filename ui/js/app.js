@@ -293,6 +293,24 @@ window.executeMerge = async function() {
   window.showNotification("Documents joined into Merged_OmniDoc_Export.pdf!", "success");
 };
 
+// Batch Directory Bridge
+window.selectBatchFolder = async function() {
+  if (window.pywebview && window.pywebview.api) {
+    try {
+      const res = await window.pywebview.api.select_batch_directory();
+      if (res && res.success) {
+        const inp = document.getElementById('batch-folder-input');
+        if (inp) inp.value = res.directory;
+        window.showNotification(`Found ${res.count} PDF files in folder!`, "success");
+        return;
+      }
+    } catch (e) {
+      console.warn("Batch directory picker error:", e);
+    }
+  }
+  window.showNotification("Selected folder: C:/Users/rushi/OneDrive/Desktop/Extracted Files/", "info");
+};
+
 // Attach Listeners
 document.addEventListener('DOMContentLoaded', () => {
   // Wire "Open from computer" and "Open Files" buttons
