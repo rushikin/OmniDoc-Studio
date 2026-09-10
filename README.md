@@ -12,6 +12,14 @@
 
 ---
 
+## 💾 Instant Download (Windows Standalone Setup)
+
+[![Download OmniDoc Studio Setup](https://img.shields.io/badge/Download-OmniDoc%20Studio%20v2.4%20Setup%20(ZIP)-2ea44f?style=for-the-badge&logo=windows)](https://github.com/rushikin/OmniDoc-Studio/releases/latest)
+
+> 📦 **Single Downloadable Setup File**: Download [`OmniDocStudio_v2.4_Setup.zip`](https://github.com/rushikin/OmniDoc-Studio/releases/latest) from the **[GitHub Releases](https://github.com/rushikin/OmniDoc-Studio/releases)** page. Includes the full offline PaddleOCR engine, PyWebView workstation UI, and Stirling PDF tools — ready to run with zero installation or Python dependencies needed!
+
+---
+
 ## 📸 Workstation Preview
 
 ![OmniDoc Studio Workstation Preview](ui/preview.png)
