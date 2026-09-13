@@ -151,27 +151,27 @@
 
         <!-- Primary Navigation Tabs -->
         <div class="p-2 space-y-1 shrink-0">
-          <button id="nav-home" onclick="switchTab('home')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] font-semibold bg-surface-container text-primary rounded-lg">
+          <button id="nav-home" onclick="switchTab('home')" class="nav-item-sidebar active-nav w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] font-semibold bg-surface-container text-primary rounded-lg">
             <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-primary">home</span> <span>Home</span></div>
             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
           </button>
-          <button id="nav-ocr" onclick="switchTab('ocr')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+          <button id="nav-ocr" onclick="switchTab('ocr')" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
             <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">document_scanner</span> <span>AI OCR to Word</span></div>
           </button>
-          <button id="nav-split" onclick="switchTab('split')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
-            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>Split & Organize</span></div>
+          <button id="nav-split" onclick="switchTab('split')" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call_split</span> <span>Split &amp; Organize</span></div>
           </button>
-          <button id="nav-merge" onclick="switchTab('merge')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+          <button id="nav-merge" onclick="switchTab('merge')" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
             <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call_merge</span> <span>Merge Workbench</span></div>
           </button>
-          <button id="nav-batch" onclick="switchTab('batch')" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+          <button id="nav-batch" onclick="switchTab('batch')" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
             <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">bolt</span> <span>Batch Engine</span></div>
           </button>
-          <button onclick="window.openSecurityModal()" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
-            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">lock</span> <span>Security & Crypt</span></div>
+          <button onclick="window.openSecurityModal()" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">lock</span> <span>Security &amp; Crypt</span></div>
             <span class="text-[9px] font-mono px-1 py-0.2 rounded bg-surface-container text-primary font-bold">AES</span>
           </button>
-          <button onclick="window.openCompletionModal()" class="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
+          <button onclick="window.openCompletionModal()" class="nav-item-sidebar w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">
             <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-600">task_alt</span> <span>Completion Inspector</span></div>
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           </button>
@@ -236,19 +236,19 @@
 <!-- Navigation Switcher -->
 <nav class="flex items-center gap-1 h-full">
 <!-- Active: Home (mapped from JSON navigation_links) -->
-<button onclick="switchTab('home')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-primary font-semibold border-b-2 border-primary transition-all">
+<button id="topnav-home" onclick="switchTab('home')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-primary font-semibold border-b-2 border-primary transition-all">
 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">home</span>
 <span>Home</span>
 </button>
-<button onclick="switchTab('ocr')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<button id="topnav-ocr" onclick="switchTab('ocr')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
 <span class="material-symbols-outlined text-[16px]">document_scanner</span>
 <span>AI OCR to Word</span>
 </button>
-<button onclick="switchTab('split')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<button id="topnav-split" onclick="switchTab('split')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
 <span class="material-symbols-outlined text-[16px]">call_split</span>
 <span>PDF Split &amp; Merge</span>
 </button>
-<button onclick="switchTab('batch')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<button id="topnav-batch" onclick="switchTab('batch')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
 <span class="material-symbols-outlined text-[16px]">bolt</span>
 <span>Batch Engine</span>
 </button>
@@ -267,7 +267,7 @@
 <!-- Main Central Drop Hero Area -->
 <div class="flex-1 flex flex-col items-center justify-center p-space-xl min-h-[560px]">
 <!-- Dashed Container Drop Zone -->
-<div class="w-full max-w-2xl border-2 border-dashed border-outline-variant/80 hover:border-primary/70 bg-surface-container-lowest/80 rounded-xl p-8 transition-all duration-200 flex flex-col items-center text-center group shadow-sm hover:shadow-md">
+<div id="dropzone" class="dropzone-idle w-full max-w-2xl border-2 border-dashed border-outline-variant/80 hover:border-primary/70 bg-surface-container-lowest/80 rounded-xl p-8 transition-all duration-200 flex flex-col items-center text-center group shadow-sm hover:shadow-md">
 <!-- Stylized 3D-effect Document & Folder Vector Graphic -->
 <div class="relative w-36 h-32 mb-4 flex items-center justify-center">
 <!-- Back Folder Layer -->
@@ -507,31 +507,31 @@
 <!-- Connecting hairline line behind stages -->
 <div class="absolute top-4 left-6 right-6 h-0.5 bg-outline-variant -z-0"></div>
 <!-- Phase 1: CLAHE Deskew (Green check) -->
-<div class="relative z-10 flex flex-col items-center text-center">
+<div id="phase-1" class="relative z-10 flex flex-col items-center text-center">
 <div class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-500 text-emerald-600 flex items-center justify-center font-bold text-[14px] shadow-sm mb-1.5">
 <span class="material-symbols-outlined text-[16px]">check</span>
 </div>
 <span class="text-headline-sm font-headline-sm text-on-surface">Phase 1: CLAHE Deskew</span>
 <span class="text-code-xs font-code-xs text-emerald-700 font-medium">Binarized &amp; Cleaned</span>
 </div>
-<!-- Phase 2: PaddleOCR Extraction (Cobalt pulsing) -->
-<div class="relative z-10 flex flex-col items-center text-center">
-<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-[14px] shadow ring-4 ring-primary-container/20 animate-pulse mb-1.5">
+<!-- Phase 2: PaddleOCR Extraction (active pulse) -->
+<div id="phase-2" class="relative z-10 flex flex-col items-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-[14px] shadow phase-pulse-active mb-1.5">
 <span class="material-symbols-outlined text-[16px]">sync</span>
 </div>
 <span class="text-headline-sm font-headline-sm text-primary font-bold">Phase 2: PaddleOCR</span>
-<span class="text-code-xs font-code-xs text-primary font-semibold">Extracting Glyphs (65%)</span>
+<span id="phase-2-label" class="text-code-xs font-code-xs text-primary font-semibold">Extracting Glyphs (65%)</span>
 </div>
 <!-- Phase 3: AI Context Gap-Filling -->
-<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div id="phase-3" class="relative z-10 flex flex-col items-center text-center opacity-70">
 <div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
 <span class="text-code-xs font-code-xs">3</span>
 </div>
 <span class="text-headline-sm font-headline-sm text-on-surface">Phase 3: AI Gap-Filling</span>
-<span class="text-code-xs font-code-xs text-outline">Gemini 2.0 Queued</span>
+<span id="diag-model-name" class="text-code-xs font-code-xs text-outline">Gemini 2.0 Flash Queued</span>
 </div>
 <!-- Phase 4: Word Docx Synthesis -->
-<div class="relative z-10 flex flex-col items-center text-center opacity-70">
+<div id="phase-4" class="relative z-10 flex flex-col items-center text-center opacity-70">
 <div class="w-8 h-8 rounded-full bg-surface-container-lowest border border-outline text-outline flex items-center justify-center font-bold text-[14px] mb-1.5">
 <span class="text-code-xs font-code-xs">4</span>
 </div>
@@ -598,8 +598,18 @@
 </button>
 </div>
 </section>
-<!-- ================= RIGHT PANE: Configuration Matrix (340px) ================= -->
-<aside class="w-[340px] h-full bg-surface-container-lowest overflow-y-auto p-space-md flex flex-col gap-space-md shrink-0 border-l border-outline-variant">
+      <!-- ================= RIGHT PANE: Configuration Matrix (340px) ================= -->
+      <!-- TICKET-05: Sidebar peek tab (visible when collapsed) -->
+      <button id="sidebar-peek-tab" onclick="window.toggleRightSidebar()" title="Expand settings panel"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-30 w-5 h-12 bg-surface-container border border-outline-variant rounded-l flex items-center justify-center text-outline hover:text-primary transition-colors shadow-sm hidden">
+        <span class="material-symbols-outlined text-[14px]">tune</span>
+      </button>
+      <aside id="right-sidebar" class="w-[340px] h-full bg-surface-container-lowest overflow-y-auto p-space-md flex flex-col gap-space-md shrink-0 border-l border-outline-variant relative">
+      <!-- Collapse toggle -->
+      <button onclick="window.toggleRightSidebar()" title="Collapse settings panel"
+        class="absolute top-2 right-2 z-10 w-6 h-6 rounded flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+      </button>
 <!-- Header -->
 <div class="border-b border-outline-variant pb-space-sm flex items-center justify-between">
 <div>
@@ -659,8 +669,8 @@
 <!-- Setting 4: AI Model Selector Dropdown -->
 <div class="mt-1 pt-2 border-t border-outline-variant/60">
 <label class="text-label-sm font-label-sm text-on-surface-variant font-medium block mb-1">Inference Provider &amp; Model:</label>
-<div class="relative">
-<select class="w-full h-8 bg-surface-container-lowest border border-outline-variant text-body-sm font-body-sm rounded px-2 text-on-surface appearance-none focus:outline-none focus:border-tertiary font-medium">
+<div class="relative select-ripple-wrapper">
+<select id="ai-model-select" class="w-full h-8 bg-surface-container-lowest border border-outline-variant text-body-sm font-body-sm rounded pl-2 pr-7 text-on-surface appearance-none focus:outline-none focus:border-tertiary font-medium truncate" style="text-overflow:ellipsis;">
 <option selected="">Gemini 2.0 Flash (Free Tier ⚡)</option>
 <option>Llama 3.3 70B Instruct (High Fidelity)</option>
 <option>DeepSeek V3 (Reasoning &amp; Math Tables)</option>

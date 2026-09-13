@@ -1,71 +1,153 @@
-﻿/* OmniDoc Studio Comprehensive Micro-Animation System */
+/* OmniDoc Studio — Complete Micro-Animation System v2.4 */
 
-/* ── 1. Keyframe Definitions ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   1. KEYFRAME LIBRARY
+   ═══════════════════════════════════════════════════════════ */
+
 @keyframes subtlePulse {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.85; }
+  50%       { transform: scale(1.05); opacity: 0.85; }
 }
 
 @keyframes glowBorder {
-  0%, 100% { border-color: rgba(37, 99, 235, 0.35); box-shadow: 0 0 10px rgba(37, 99, 235, 0.1); }
-  50% { border-color: rgba(37, 99, 235, 0.85); box-shadow: 0 0 20px rgba(37, 99, 235, 0.25); }
+  0%, 100% { border-color: rgba(37,99,235,0.35); box-shadow: 0 0 10px rgba(37,99,235,0.10); }
+  50%       { border-color: rgba(37,99,235,0.85); box-shadow: 0 0 20px rgba(37,99,235,0.25); }
 }
 
 @keyframes floatElement {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-7px) rotate(1.2deg); }
+  50%       { transform: translateY(-7px) rotate(1.2deg); }
 }
 
 @keyframes laserScan {
-  0% { top: 0%; opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
+  0%   { top: 0%;  opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
   100% { top: 96%; opacity: 0; }
 }
 
 @keyframes shimmerGradient {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
 }
 
 @keyframes pulseDot {
-  0% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.3); opacity: 1; }
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  50%  { transform: scale(1.3); opacity: 1; }
   100% { transform: scale(0.9); opacity: 0.7; }
 }
 
 @keyframes badgeBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  50%       { transform: translateY(-3px); }
 }
 
 @keyframes rippleEffect {
-  0% { transform: scale(0); opacity: 0.6; }
+  0%   { transform: scale(0); opacity: 0.6; }
   100% { transform: scale(4); opacity: 0; }
 }
 
 @keyframes rotateGear {
-  0% { transform: rotate(0deg); }
+  0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
 @keyframes popIn {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0%   { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
 }
 
 @keyframes slideDownToast {
-  0% { transform: translateY(20px) scale(0.96); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0%   { transform: translateY(20px) scale(0.96); opacity: 0; }
+  100% { transform: translateY(0)    scale(1);    opacity: 1; }
 }
 
-/* ── 2. Utility & Interactive Classes ───────────────────────────────── */
+/* ── TICKET-01: Nav spring pill slide ─────────────────────── */
+@keyframes pillSlide {
+  0%   { transform: translateY(4px) scaleX(0.96); opacity: 0.7; }
+  60%  { transform: translateY(-1px) scaleX(1.01); opacity: 1; }
+  100% { transform: translateY(0)   scaleX(1);    opacity: 1; }
+}
 
-/* Laser scan animation */
+/* ── Part 1 §1: Nav icon bounce ──────────────────────────── */
+@keyframes iconBounce {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.92); }
+  70%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ── Part 1 §1: Hover accent left bar ───────────────────── */
+@keyframes accentBarExpand {
+  0%   { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+/* ── Part 1 §2: Marching ants dashoffset ─────────────────── */
+@keyframes marchingAnts {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -20; }
+}
+@keyframes marchingAntsBorder {
+  0%   { background-position: 0 0, 100% 0, 100% 100%, 0 100%; }
+  100% { background-position: 20px 0, 100% 20px, calc(100% - 20px) 100%, 0 calc(100% - 20px); }
+}
+
+/* ── Part 1 §2: File card enter (fade+slide) ─────────────── */
+@keyframes fileCardEnter {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ── Part 1 §2: Card processing sheen ───────────────────── */
+@keyframes cardSheen {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ── Part 1 §3: OCR phase pulse ring ─────────────────────── */
+@keyframes phaseRing {
+  0%   { box-shadow: 0 0 0 0   rgba(59,130,246,0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(59,130,246,0); }
+  100% { box-shadow: 0 0 0 0   rgba(59,130,246,0); }
+}
+
+/* ── Part 1 §3: Log entry slide in ──────────────────────── */
+@keyframes logEntryIn {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Part 1 §4: Dropdown unfold (origin top) ─────────────── */
+@keyframes dropdownUnfold {
+  0%   { opacity: 0; transform: scaleY(0.95) translateY(-6px); }
+  100% { opacity: 1; transform: scaleY(1)    translateY(0); }
+}
+
+/* ── Part 1 §4: Ripple on click ─────────────────────────── */
+@keyframes selectRipple {
+  0%   { transform: scale(0); opacity: 0.45; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* ── Part 1 §5: Sidebar drawer ──────────────────────────── */
+@keyframes sidebarClose {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+@keyframes sidebarOpen {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Laser scan line */
 .anim-scanline {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, transparent, #2563eb, #8343f4, transparent);
   box-shadow: 0 0 14px #2563eb;
@@ -75,16 +157,12 @@
 }
 
 /* Glowing border */
-.anim-glow {
-  animation: glowBorder 2.5s infinite ease-in-out;
-}
+.anim-glow { animation: glowBorder 2.5s infinite ease-in-out; }
 
-/* Floating physics */
-.anim-float {
-  animation: floatElement 4s ease-in-out infinite;
-}
+/* Floating element */
+.anim-float { animation: floatElement 4s ease-in-out infinite; }
 
-/* Shimmer gradient text */
+/* Shimmer text */
 .shimmer-text {
   background: linear-gradient(90deg, #0b1c30 0%, #2563eb 50%, #0b1c30 100%);
   background-size: 200% auto;
@@ -94,25 +172,151 @@
   animation: shimmerGradient 4.5s linear infinite;
 }
 
-/* Interactive Card Elevation & Magnetic Feedback */
+/* ── TICKET-01: Sidebar nav active pill ───────────────────── */
+.nav-pill-active {
+  animation: pillSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Part 1 §1: Icon bounce on click ─────────────────────── */
+.nav-icon-bounce .material-symbols-outlined {
+  animation: iconBounce 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Part 1 §1: Hover accent glow bar ───────────────────── */
+.nav-item-sidebar {
+  position: relative;
+  overflow: hidden;
+}
+.nav-item-sidebar::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(180deg, #2563eb, #8343f4);
+  box-shadow: 0 0 8px rgba(37,99,235,0.6);
+  transform-origin: center;
+  transform: scaleY(0);
+  opacity: 0;
+  transition: none;
+}
+.nav-item-sidebar:hover::before {
+  animation: accentBarExpand 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.nav-item-sidebar.active-nav::before {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+/* ── Part 1 §2: Marching ants dropzone ──────────────────── */
+.dropzone-idle {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dropzone-drag {
+  transform: translateY(-4px) scale(1.01) !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 12px 32px rgba(37,99,235,0.18) !important;
+  background-image:
+    repeating-linear-gradient(90deg, #2563eb 0, #2563eb 8px, transparent 8px, transparent 16px),
+    repeating-linear-gradient(90deg, #2563eb 0, #2563eb 8px, transparent 8px, transparent 16px),
+    repeating-linear-gradient(0deg, #2563eb 0, #2563eb 8px, transparent 8px, transparent 16px),
+    repeating-linear-gradient(0deg, #2563eb 0, #2563eb 8px, transparent 8px, transparent 16px) !important;
+  background-size: 32px 2px, 32px 2px, 2px 32px, 2px 32px !important;
+  background-position: 0 0, 0 100%, 0 0, 100% 0 !important;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y !important;
+  animation: marchingAntsBorder 0.5s linear infinite !important;
+}
+
+/* ── Part 1 §2: File card enter animation ────────────────── */
+.file-card-enter {
+  animation: fileCardEnter 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Part 1 §2: Card processing sheen ───────────────────── */
+.card-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.card-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: cardSheen 2.4s linear infinite;
+  pointer-events: none;
+}
+
+/* ── Part 1 §3: Active phase pulse ring ─────────────────── */
+.phase-pulse-active {
+  animation: phaseRing 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Part 1 §3: Log entry slide in ─────────────────────── */
+.log-entry-anim {
+  animation: logEntryIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+/* ── Part 1 §4: Custom dropdown unfold ─────────────────── */
+.dropdown-open {
+  animation: dropdownUnfold 0.14s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+}
+
+/* ── Part 1 §4: Select ripple wrapper ──────────────────── */
+.select-ripple-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.select-ripple-wrapper .ripple-dot {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(37,99,235,0.35);
+  pointer-events: none;
+  transform: scale(0);
+  animation: selectRipple 0.36s ease-out forwards;
+}
+
+/* ── Part 1 §4: Toggle spring snap ─────────────────────── */
+.toggle-snap:active { transform: scale(0.85); }
+.toggle-snap { transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ── Part 1 §5: Right sidebar drawer ───────────────────── */
+#right-sidebar {
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 200ms ease;
+}
+#right-sidebar.sidebar-collapsed {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+#sidebar-peek-tab {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#right-sidebar.sidebar-collapsed ~ #sidebar-peek-tab,
+#sidebar-peek-tab:hover {
+  transform: translateX(-4px);
+}
+
+/* ── Existing utilities (kept) ──────────────────────────── */
 .interactive-card {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.2s ease;
 }
-
 .interactive-card:hover {
   transform: translateY(-2.5px);
-  box-shadow: 0 10px 25px -5px rgba(11, 28, 48, 0.08),
-              0 4px 10px -3px rgba(11, 28, 48, 0.04);
+  box-shadow: 0 10px 25px -5px rgba(11,28,48,0.08), 0 4px 10px -3px rgba(11,28,48,0.04);
 }
-
 .interactive-card:active {
   transform: translateY(0px) scale(0.985);
-  box-shadow: 0 2px 6px rgba(11, 28, 48, 0.06);
+  box-shadow: 0 2px 6px rgba(11,28,48,0.06);
 }
 
-/* Action Button Micro-Interactions */
 .btn-action {
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1),
@@ -120,60 +324,32 @@
   position: relative;
   overflow: hidden;
 }
-
 .btn-action:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 6px 16px rgba(37,99,235,0.25);
 }
-
 .btn-action:active {
   transform: translateY(1px) scale(0.97);
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 2px 4px rgba(37,99,235,0.15);
 }
 
-/* Magnetic Micro-Icon Tilt */
-.icon-tilt {
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+.icon-tilt { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.group:hover .icon-tilt { transform: rotate(12deg) scale(1.15); }
 
-.group:hover .icon-tilt {
-  transform: rotate(12deg) scale(1.15);
-}
+.pulse-indicator { animation: pulseDot 2s infinite ease-in-out; }
+.badge-live      { animation: badgeBounce 3s ease-in-out infinite; }
 
-/* Pulse indicator dot */
-.pulse-indicator {
-  animation: pulseDot 2s infinite ease-in-out;
-}
-
-/* Status badge micro-bounce */
-.badge-live {
-  animation: badgeBounce 3s ease-in-out infinite;
-}
-
-/* Smooth Tab Fade/Slide Transitions */
 .tab-pane-transition {
   animation: popIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Notification Toast Animation */
 .toast-anim {
   animation: slideDownToast 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom workstation thin scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: #eff4ff;
-}
-::-webkit-scrollbar-thumb {
-  background: #c3c6d7;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
-}
+/* ── Custom thin scrollbar ────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #eff4ff; }
+::-webkit-scrollbar-thumb { background: #c3c6d7; border-radius: 4px; transition: background 0.2s; }
+::-webkit-scrollbar-thumb:hover { background: #2563eb; }
