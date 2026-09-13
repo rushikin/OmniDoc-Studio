@@ -1,6 +1,6 @@
 ; Script generated for OmniDoc Studio
 #define MyAppName "OmniDoc Studio"
-#define MyAppVersion "2.4"
+#define MyAppVersion "2.5"
 #define MyAppPublisher "OmniDoc Technologies"
 #define MyAppURL "https://github.com/rushikin/OmniDoc-Studio"
 #define MyAppExeName "OmniDocStudio.exe"
@@ -18,7 +18,7 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=C:\Users\rushi\Downloads
-OutputBaseFilename=OmniDocStudio_v2.4_Setup_Installer
+OutputBaseFilename=OmniDocStudio_v2.5_Setup_Installer
 SetupIconFile=c:\Users\rushi\OneDrive\Desktop\ocr\app_icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=zip/1
