@@ -399,7 +399,7 @@
 </div>
 </div>
 <!-- Carousel Container -->
-<div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1">
+<div id="ocr-carousel-container" class="flex items-center gap-3 overflow-x-auto pb-2 pt-1">
 <!-- Page 1 (Checked & Active) -->
 <div class="relative shrink-0 w-28 bg-surface-container-low border-2 border-primary-container rounded p-1.5 flex flex-col items-center group cursor-pointer shadow-sm">
 <div class="absolute top-2 left-2 z-10">
@@ -777,7 +777,7 @@
 </div>
 <!-- Interactive Page Grid View: 4-column responsive grid -->
 <div class="flex-1 overflow-y-auto p-space-lg">
-<div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-space-lg max-w-7xl mx-auto">
+<div id="split-page-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-space-lg max-w-7xl mx-auto">
 <!-- Page 1 (SELECTED) -->
 <div class="group relative bg-surface-container-lowest rounded-xl border-2 border-primary shadow-sm p-space-sm flex flex-col items-center transition-all duration-150 hover:shadow-md">
 <div class="w-full flex items-center justify-between mb-space-xs z-10">
@@ -1773,7 +1773,7 @@
 <!-- File Count Status Badge -->
 <div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg border border-outline-variant">
 <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome_motion">auto_awesome_motion</span>
-<span class="font-code-sm text-code-sm font-semibold text-primary">24 Files Detected</span>
+<span id="batch-count-badge" class="font-code-sm text-code-sm font-semibold text-primary">24 Files Detected</span>
 </div>
 </section>
 <!-- Batch Control Toolbar -->
@@ -1828,7 +1828,7 @@
 <th class="py-2 px-space-md text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold w-36 text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant font-body-sm text-on-surface">
+<tbody id="batch-table-body" class="divide-y divide-outline-variant font-body-sm text-on-surface">
 <!-- Row 1: Completed -->
 <tr class="hover:bg-surface-container-low transition-colors duration-100">
 <td class="py-2.5 px-space-md">
