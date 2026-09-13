@@ -32,10 +32,6 @@ from rich.rule import Rule
 from dotenv import load_dotenv
 load_dotenv()
 
-from pdf_converter import pdf_to_images
-from ocr_engine import OCREngine
-from word_generator import WordGenerator
-import sys
 if sys.platform.startswith("win"):
     try:
         sys.stdout.reconfigure(encoding="utf-8")
@@ -218,6 +214,7 @@ def run_pipeline(args, selected_model: str | None):
     # -- Phase 1: PDF -> Images -----------------------------------------
     console.print("\n[bold magenta]Phase 1/4:[/bold magenta] Converting PDF pages to images...")
     try:
+        from pdf_converter import pdf_to_images
         with console.status("[bold cyan]Converting PDF...", spinner="dots"):
             page_images = pdf_to_images(
                 pdf_path=args.input,
@@ -236,6 +233,7 @@ def run_pipeline(args, selected_model: str | None):
     # -- Phase 2: OCR Init ----------------------------------------------
     console.print("\n[bold magenta]Phase 2/4:[/bold magenta] Initializing OCR Engine (PaddleOCR)...")
     try:
+        from ocr_engine import OCREngine
         with console.status("[bold cyan]Loading OCR models...", spinner="dots"):
             ocr = OCREngine(language=args.lang, use_gpu=False)
         console.print("  [green]✓ Engine initialized.[/green]")
@@ -302,6 +300,7 @@ def run_pipeline(args, selected_model: str | None):
     # -- Phase 4: Word Document Generation ------------------------------
     console.print("\n[bold magenta]Phase 4/4:[/bold magenta] Building Word document...")
     try:
+        from word_generator import WordGenerator
         with console.status("[bold cyan]Generating .docx...", spinner="dots"):
             generator = WordGenerator()
             # Generate Table of Contents if multiple titles found
