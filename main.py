@@ -54,7 +54,7 @@ def interactive_mode() -> argparse.Namespace:
     with no command-line arguments. Offers to launch Desktop GUI, Modern Workstation, or CLI.
     """
     console.print(Panel(
-        "[bold cyan]OmniDoc Studio — v2.4 Enterprise Workstation[/bold cyan]\n\n"
+        "[bold cyan]OmniDoc Studio — v2.5 Enterprise Workstation[/bold cyan]\n\n"
         "[1] Launch Desktop GUI (CustomTkinter Multi-Tool Suite)\n"
         "[2] Launch Modern Workstation UI (Full Micro-Animations & Stirling Tools)\n"
         "[3] Run in Terminal / CLI Mode (Process PDF directly here)",

@@ -1,4 +1,4 @@
-// OmniDoc Studio — Full Interactive Controller v2.4
+// OmniDoc Studio — Full Interactive Controller v2.5
 // Fixes: TICKET-01 (nav sync), TICKET-03 (model→diagnostic), TICKET-04 (dropdown clip),
 //        TICKET-05 (collapsible sidebar), Part 1 micro-animations (all sections)
 
@@ -7,13 +7,14 @@ let selectedPages = new Set([1, 2]);
 let activeDoc = { filename: null, path: null, size_mb: null, pages: 0 };
 let stagedMergeFiles = [];
 let _sidebarOpen = true;
+let _homeSidebarOpen = true;
 let _ocrCounterRaf = null;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TICKET-01: Unified Tab Switcher (sidebar + top-bar in sync)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const TOP_NAV_TABS   = ['home', 'ocr', 'split', 'batch'];   // tabs present in top bar
+const TOP_NAV_TABS   = ['home', 'ocr', 'split', 'merge', 'batch'];   // tabs present in top bar
 const SIDE_NAV_TABS  = ['home', 'ocr', 'split', 'merge', 'batch'];
 
 window.switchTab = function(tabId) {
@@ -87,6 +88,20 @@ window.toggleRightSidebar = function() {
     if (peekTab) peekTab.classList.add('hidden');
   } else {
     sidebar.classList.add('sidebar-collapsed');
+    if (peekTab) peekTab.classList.remove('hidden');
+  }
+};
+
+window.toggleHomeSidebar = function() {
+  const sidebar = document.getElementById('home-sidebar');
+  const peekTab = document.getElementById('home-peek-tab');
+  if (!sidebar) return;
+  _homeSidebarOpen = !_homeSidebarOpen;
+  if (_homeSidebarOpen) {
+    sidebar.classList.remove('hidden');
+    if (peekTab) peekTab.classList.add('hidden');
+  } else {
+    sidebar.classList.add('hidden');
     if (peekTab) peekTab.classList.remove('hidden');
   }
 };
@@ -165,10 +180,18 @@ function wireModelSelector() {
     const short = selected.replace(/\s*\(.*?\)/g, '').trim();
     if (diag) {
       diag.textContent = short + ' Queued';
-      // Brief highlight flash
       diag.classList.add('text-primary');
       setTimeout(() => diag.classList.remove('text-primary'), 1200);
     }
+    // Update global indicators: System Diagnostic on Home pane, and Header indicator (TICKET-03)
+    document.querySelectorAll('.global-ai-model-display').forEach(el => {
+      el.textContent = selected;
+      el.classList.add('text-primary');
+      setTimeout(() => el.classList.remove('text-primary'), 1200);
+    });
+    document.querySelectorAll('.global-ai-model-name').forEach(el => {
+      el.textContent = short;
+    });
   });
 }
 

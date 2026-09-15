@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OmniDoc Studio - v2.4 Enterprise Workstation</title>
+  <title>OmniDoc Studio - v2.5 Enterprise Workstation</title>
   <!-- Material Symbols Outlined -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <!-- Inter & JetBrains Mono Fonts -->
@@ -101,7 +101,7 @@
       <div class="flex items-center gap-2">
         <img src="img/brand_logo.png" alt="Logo" class="w-4 h-4 rounded-xs" />
         <span class="text-[13px] font-bold text-on-surface tracking-tight">OmniDoc Studio</span>
-        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded font-mono font-medium">v2.4 Workstation</span>
+        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded font-mono font-medium">v2.5 Workstation</span>
       </div>
     </div>
     <div class="flex items-center w-72 max-w-sm">
@@ -111,6 +111,11 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
+      <!-- Active Global Model Indicator -->
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary-fixed-dim font-medium hidden md:inline-flex items-center gap-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+        <span class="global-ai-model-name">Gemini 2.0 Flash</span>
+      </span>
       <button onclick="window.openSecurityModal()" class="h-6 px-2.5 text-[11px] bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant/50 rounded flex items-center gap-1 btn-action shadow-xs">
         <span class="material-symbols-outlined text-[14px]">lock</span> Security & Compress
       </button>
@@ -146,7 +151,7 @@
               <span class="text-[15px] font-bold text-secondary tracking-tight">Studio</span>
             </div>
           </div>
-          <span class="text-[9px] font-mono text-outline uppercase bg-surface-container px-1 py-0.5 rounded">v2.4</span>
+          <span class="text-[9px] font-mono text-outline uppercase bg-surface-container px-1 py-0.5 rounded">v2.5</span>
         </div>
 
         <!-- Primary Navigation Tabs -->
@@ -230,7 +235,8 @@
     <div class="flex-1 flex overflow-hidden relative">
 
       <!-- ==================== PANE 1: HOME DASHBOARD & DROP ZONE (Screen 1) ==================== -->
-      <section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar" id="pane-home">
+      <div id="pane-home" class="flex-1 flex flex-row overflow-hidden relative">
+        <section class="flex-1 flex flex-col bg-background relative overflow-y-auto custom-scrollbar">
 <!-- Top Segmented Switcher & Tool Ribbon -->
 <div class="h-11 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-space-lg shrink-0 sticky top-0 z-20">
 <!-- Navigation Switcher -->
@@ -246,7 +252,11 @@
 </button>
 <button id="topnav-split" onclick="switchTab('split')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
 <span class="material-symbols-outlined text-[16px]">call_split</span>
-<span>PDF Split &amp; Merge</span>
+<span>Split &amp; Organize</span>
+</button>
+<button id="topnav-merge" onclick="switchTab('merge')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">call_merge</span>
+<span>Merge Workbench</span>
 </button>
 <button id="topnav-batch" onclick="switchTab('batch')" class="h-full flex items-center gap-1.5 px-3 text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors">
 <span class="material-symbols-outlined text-[16px]">bolt</span>
@@ -354,7 +364,113 @@
 </div>
 </div>
 </div>
-</section>
+        </section>
+
+        <!-- TICKET-05 & TICKET-03: Collapsible Right Sidebar with System Diagnostic -->
+        <button id="home-peek-tab" onclick="window.toggleHomeSidebar()" title="Expand System Diagnostic &amp; Tools"
+          class="absolute right-0 top-1/2 -translate-y-1/2 z-30 w-5 h-12 bg-surface-container border border-outline-variant rounded-l flex items-center justify-center text-outline hover:text-primary transition-colors shadow-sm hidden">
+          <span class="material-symbols-outlined text-[14px]">tune</span>
+        </button>
+
+        <aside id="home-sidebar" class="w-[300px] bg-surface border-l border-outline-variant flex flex-col shrink-0 h-full overflow-hidden select-none relative transition-all duration-250">
+          <button onclick="window.toggleHomeSidebar()" title="Collapse Panel"
+            class="absolute top-2 right-2 z-10 w-6 h-6 rounded flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+          </button>
+
+          <!-- Top Policy & AI Engine Status Card (TICKET-03) -->
+          <div class="p-space-sm border-b border-outline-variant/60 bg-surface-container-low shrink-0">
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant/60 p-2.5 shadow-sm space-y-2">
+              <div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/40">
+                <span class="text-label-sm font-label-sm font-semibold text-on-surface">System Diagnostic</span>
+                <span class="text-[10px] text-primary font-code-xs font-semibold">ALL ONLINE</span>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-body-sm font-body-sm">
+                  <span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+                    <span class="material-symbols-outlined text-[15px] text-outline">hard_drive</span> Ingestion
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-code-xs font-code-xs text-on-surface font-medium">Local Disk</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between text-body-sm font-body-sm">
+                  <span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+                    <span class="material-symbols-outlined text-[15px] text-emerald-600">lock</span> Security
+                  </span>
+                  <span class="text-code-xs font-code-xs bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">
+                    AES-256 Enabled
+                  </span>
+                </div>
+                <div class="flex items-center justify-between text-body-sm font-body-sm pt-0.5">
+                  <span class="text-on-surface-variant flex items-center gap-1.5 text-label-sm font-label-sm">
+                    <span class="material-symbols-outlined text-[15px] text-tertiary">neurology</span> AI Engine
+                  </span>
+                  <span id="sys-diag-ai-model" class="global-ai-model-display text-code-xs font-code-xs bg-tertiary-fixed text-on-tertiary-fixed font-semibold px-1.5 py-0.5 rounded border border-tertiary-fixed-dim">
+                    Gemini 2.0 Flash (Free ⚡)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tools Directory Header -->
+          <div class="px-space-sm pt-2.5 pb-1 flex items-center justify-between shrink-0">
+            <span class="text-[10px] font-bold text-outline tracking-wider uppercase font-headline-sm">Stirling PDF Tools</span>
+            <span class="text-code-xs font-code-xs text-outline">5 Quick Tools</span>
+          </div>
+
+          <!-- Tools List -->
+          <div class="flex-1 overflow-y-auto px-space-sm pb-space-sm space-y-1.5 custom-scrollbar">
+            <div onclick="switchTab('ocr')" class="p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+              <div class="flex items-start gap-2">
+                <div class="p-1 rounded bg-primary-container/10 text-primary shrink-0"><span class="material-symbols-outlined text-[16px]">document_scanner</span></div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[11px] font-semibold text-on-surface group-hover:text-primary">AI OCR to Word</p>
+                  <p class="text-[10px] text-outline">Reconstruct scanned docs to DOCX</p>
+                </div>
+              </div>
+            </div>
+            <div onclick="switchTab('split')" class="p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+              <div class="flex items-start gap-2">
+                <div class="p-1 rounded bg-secondary-fixed text-secondary shrink-0"><span class="material-symbols-outlined text-[16px]">call_split</span></div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[11px] font-semibold text-on-surface group-hover:text-primary">Split &amp; Organize</p>
+                  <p class="text-[10px] text-outline">Visual page splitter &amp; reorder</p>
+                </div>
+              </div>
+            </div>
+            <div onclick="switchTab('merge')" class="p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+              <div class="flex items-start gap-2">
+                <div class="p-1 rounded bg-emerald-50 text-emerald-600 shrink-0"><span class="material-symbols-outlined text-[16px]">call_merge</span></div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[11px] font-semibold text-on-surface group-hover:text-primary">Merge Workbench</p>
+                  <p class="text-[10px] text-outline">Join multiple PDFs into one</p>
+                </div>
+              </div>
+            </div>
+            <div onclick="switchTab('batch')" class="p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+              <div class="flex items-start gap-2">
+                <div class="p-1 rounded bg-tertiary-fixed text-tertiary shrink-0"><span class="material-symbols-outlined text-[16px]">bolt</span></div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[11px] font-semibold text-on-surface group-hover:text-primary">Batch Processing Engine</p>
+                  <p class="text-[10px] text-outline">Mass scan entire directories</p>
+                </div>
+              </div>
+            </div>
+            <div onclick="window.openSecurityModal()" class="p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container-low transition-all cursor-pointer group interactive-card">
+              <div class="flex items-start gap-2">
+                <div class="p-1 rounded bg-amber-50 text-amber-600 shrink-0"><span class="material-symbols-outlined text-[16px]">lock</span></div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[11px] font-semibold text-on-surface group-hover:text-primary">Security &amp; Encryption</p>
+                  <p class="text-[10px] text-outline">AES-256 password &amp; compress</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
 
       <!-- ==================== PANE 2: AI OCR TO WORD STUDIO (Screen 2) ==================== -->
       <main class="flex-1 flex overflow-hidden bg-surface hidden" id="pane-ocr">

@@ -343,7 +343,7 @@ def main():
 
     api = BridgeAPI()
     window = webview.create_window(
-        title="OmniDoc Studio — v2.4 Enterprise Workstation",
+        title="OmniDoc Studio — v2.5 Enterprise Workstation",
         url=str(index_file.resolve()),
         width=1380,
         height=860,
